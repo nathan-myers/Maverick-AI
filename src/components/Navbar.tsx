@@ -1,5 +1,6 @@
 import { Github, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import React from 'react';
 
 export function Navbar() {
   return (
@@ -10,10 +11,11 @@ export function Navbar() {
           <span className="text-xl font-bold">Maverick AI</span>
         </Link>
         <div className="flex items-center space-x-6">
-          <a href="#features" className="hover:text-blue-400 transition-colors">Features</a>
-          <a href="#about" className="hover:text-blue-400 transition-colors">About</a>
+          <a href="/Pricing" className="hover:text-blue-400 transition-colors">Pricing</a>
+          <a href="/features" className="hover:text-blue-400 transition-colors">Features</a>
+          <Link to="/about" className="hover:text-blue-400 transition-colors">About</Link>
           <div 
-            onClick={() => window.open('https://github.com/MehulPardeshi/content-moderation', '_blank')}
+            onClick={() => window.open('https://github.com/Swifty9/Maverick-AI', '_blank')}
             className="cursor-pointer"
           >
             <Github className="h-6 w-6" />

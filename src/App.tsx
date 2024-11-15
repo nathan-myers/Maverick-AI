@@ -4,7 +4,9 @@ import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { ModerateText } from './pages/ModerateText';
 import { Results } from './pages/Results';
-
+import { About } from './pages/about';
+import { Features } from './pages/features';
+import { Pricing } from './pages/pricing';
 function App() {
   return (
     <BrowserRouter>
@@ -12,6 +14,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/moderate-text" element={<ModerateText />} />
           <Route path="/results" element={<Results />} />
         </Routes>
