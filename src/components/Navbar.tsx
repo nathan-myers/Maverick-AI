@@ -7,7 +7,7 @@ export function Navbar() {
       <div className="flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <Shield className="h-8 w-8 text-blue-400" />
-          <span className="text-xl font-bold">CleanText</span>
+          <span className="text-xl font-bold">Maverik AI</span>
         </Link>
         <div className="flex items-center space-x-6">
           <a href="#features" className="hover:text-blue-400 transition-colors">Features</a>
