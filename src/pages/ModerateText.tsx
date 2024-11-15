@@ -1,5 +1,5 @@
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { TextArea } from '../components/TextArea';
@@ -20,7 +20,7 @@ export function ModerateText() {
     try {
       const result = await moderateText(text);
       navigate('/results', { state: result });
-    } catch (err) {
+    } catch {
       setError('Failed to analyze text. Please try again.');
       setIsAnalyzing(false);
     }

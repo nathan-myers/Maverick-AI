@@ -1,5 +1,4 @@
 import { ArrowLeft, Download } from 'lucide-react';
-import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 
