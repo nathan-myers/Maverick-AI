@@ -12,10 +12,12 @@ export function Navbar() {
         <div className="flex items-center space-x-6">
           <a href="#features" className="hover:text-blue-400 transition-colors">Features</a>
           <a href="#about" className="hover:text-blue-400 transition-colors">About</a>
-          <a href="https://github.com" className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20 transition-colors">
-            <Github className="h-5 w-5" />
-            <span>Github</span>
-          </a>
+          <div 
+            onClick={() => window.open('https://github.com/MehulPardeshi/content-moderation', '_blank')}
+            className="cursor-pointer"
+          >
+            <Github className="h-6 w-6" />
+          </div>
         </div>
       </div>
     </nav>
