@@ -57,7 +57,7 @@ export function ModerateText() {
           onClick={handleAnalyze}
           disabled={!text.trim() || isAnalyzing}
           icon={isAnalyzing ? Loader2 : undefined}
-          className={isAnalyzing ? 'animate-spin' : ''}
+          iconClassName={isAnalyzing ? 'animate-spin' : ''}
         >
           {isAnalyzing ? 'Analyzing...' : 'Analyze Text'}
         </Button>

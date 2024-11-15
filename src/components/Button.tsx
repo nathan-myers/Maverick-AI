@@ -4,12 +4,14 @@ import { LucideIcon } from 'lucide-react';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
   icon?: LucideIcon;
+  iconClassName?: string;
 }
 
 export function Button({ 
   children, 
   variant = 'primary', 
   icon: Icon,
+  iconClassName = '',
   className = '',
   ...props 
 }: ButtonProps) {
@@ -24,7 +26,7 @@ export function Button({
       className={`${baseStyles} ${variants[variant]} ${className}`}
       {...props}
     >
-      {Icon && <Icon className="h-5 w-5" />}
+      {Icon && <Icon className={`h-5 w-5 ${iconClassName || ''}`} />}
       {children && <span>{children}</span>}
     </button>
   );
