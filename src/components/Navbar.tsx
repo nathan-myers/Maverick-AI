@@ -11,8 +11,8 @@ export function Navbar() {
           <span className="text-xl font-bold">Maverick AI</span>
         </Link>
         <div className="flex items-center space-x-6">
-          <a href="/pricing" className="hover:text-blue-400 transition-colors">Pricing</a>
-          <a href="/features" className="hover:text-blue-400 transition-colors">Features</a>
+          <Link to="/pricing" className="hover:text-blue-400 transition-colors">Pricing</Link>
+          <Link to="/features" className="hover:text-blue-400 transition-colors">Features</Link>
           <Link to="/about" className="hover:text-blue-400 transition-colors">About</Link>
           <div 
             onClick={() => window.open('https://github.com/Swifty9/Maverick-AI', '_blank')}
