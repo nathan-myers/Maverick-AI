@@ -1,4 +1,4 @@
-import { Rocket, Shield, Zap } from 'lucide-react';
+import { Rocket, Shield, Zap, FileText, CheckCircle, BarChart2 } from 'lucide-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
@@ -62,18 +62,27 @@ export function Home() {
         <h2 className="text-4xl font-bold mb-6 text-center">How It Works</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-blue-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <FileText className="h-6 w-6 text-blue-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Input Content</h3>
             <p className="text-gray-400">
               Submit text content through our intuitive interface or API for instant analysis.
             </p>
           </div>
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-purple-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <Zap className="h-6 w-6 text-purple-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">AI Analysis</h3>
             <p className="text-gray-400">
               Our advanced AI models analyze content for toxicity, spam, and inappropriate material.
             </p>
           </div>
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <BarChart2 className="h-6 w-6 text-green-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Detailed Reports</h3>
             <p className="text-gray-400">
               Receive comprehensive reports with confidence scores and specific content flags.
@@ -86,18 +95,27 @@ export function Home() {
         <h2 className="text-4xl font-bold mb-6 text-center">Key Benefits</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-blue-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <Shield className="h-6 w-6 text-blue-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Enhanced Safety</h3>
             <p className="text-gray-400">
               Protect users from harmful content with real-time detection of threats and hate speech.
             </p>
           </div>
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-purple-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <CheckCircle className="h-6 w-6 text-purple-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Time Efficiency</h3>
             <p className="text-gray-400">
               Automate content moderation to save time and resources while maintaining high accuracy.
             </p>
           </div>
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <Rocket className="h-6 w-6 text-green-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Scalable Solution</h3>
             <p className="text-gray-400">
               Handle increasing content volumes without compromising on moderation quality.
@@ -110,18 +128,27 @@ export function Home() {
         <h2 className="text-4xl font-bold mb-6 text-center">Advanced Features</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-blue-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <Zap className="h-6 w-6 text-blue-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Multi-Category Detection</h3>
             <p className="text-gray-400">
               Detect multiple types of inappropriate content including toxicity, spam, and personal attacks.
             </p>
           </div>
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-purple-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <CheckCircle className="h-6 w-6 text-purple-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Confidence Scoring</h3>
             <p className="text-gray-400">
               Get detailed confidence scores for each detected issue to make informed decisions.
             </p>
           </div>
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+              <FileText className="h-6 w-6 text-green-400" />
+            </div>
             <h3 className="text-xl font-semibold mb-2">Exportable Reports</h3>
             <p className="text-gray-400">
               Download comprehensive moderation reports for documentation and analysis.
