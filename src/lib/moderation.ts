@@ -98,26 +98,24 @@ export async function moderateText(text: string): Promise<ModerationResult> {
   const predictions = await model.classify([text]);
   
   const flags: Flag[] = [];
-  let totalToxicity = 0;
   let maxToxicity = 0;
   let spamScore = 0;
   let profanityCount = 0;
-  let urlCount = (text.match(/(https?:\/\/[^\s]+)|(www\.[^\s]+)/g) || []).length;
+  const urlCount = (text.match(/(https?:\/\/[^\s]+)|(www\.[^\s]+)/g) || []).length;
   
   // Check AI model predictions
   predictions.forEach((prediction) => {
     const confidence = prediction.results[0].probabilities[1];
-    totalToxicity += confidence;
     maxToxicity = Math.max(maxToxicity, confidence);
     
     if (confidence > 0.5) {
       const type = getTypeFromLabel(prediction.label);
       flags.push({
-        word: findOffendingPhrase(text, prediction.label),
+        word: findOffendingPhrase(text),
         type,
         reason: `${prediction.label.replace(/_/g, ' ')} detected`,
         confidence: Math.round(confidence * 100) / 100,
-        context: getTextContext(text, findOffendingPhrase(text, prediction.label))
+        context: getTextContext(text, findOffendingPhrase(text))
       });
     }
   });
@@ -198,7 +196,7 @@ function getTypeFromLabel(label: string): Flag['type'] {
   }
 }
 
-function findOffendingPhrase(text: string, label: string): string {
+function findOffendingPhrase(text: string): string {
   // Simple implementation - in a real system, you'd want more sophisticated phrase detection
   const words = text.split(/\s+/);
   return words.slice(0, 10).join(' ') + (words.length > 10 ? '...' : '');
