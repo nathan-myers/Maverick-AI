@@ -31,6 +31,8 @@ In the future, this software API could serve as a comprehensive moderation backb
 + TensorFlow.js for AI-powered analysis
 + Tailwind CSS for styling
 + Vite for blazing fast development
++ Node js for backend
++ Github Actions for CI/CD
 
 ### Getting Started
 
