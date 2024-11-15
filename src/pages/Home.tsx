@@ -57,6 +57,78 @@ export function Home() {
           </p>
         </div>
       </div>
+
+      <section className="mt-20">
+        <h2 className="text-4xl font-bold mb-6 text-center">How It Works</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Step 1: Sign Up</h3>
+            <p className="text-gray-400">
+              Create an account and choose a plan that fits your needs.
+            </p>
+          </div>
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Step 2: Integrate</h3>
+            <p className="text-gray-400">
+              Use our API to integrate Maverick AI with your platform.
+            </p>
+          </div>
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Step 3: Moderate</h3>
+            <p className="text-gray-400">
+              Start moderating content in real-time with our advanced AI.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-20">
+        <h2 className="text-4xl font-bold mb-6 text-center">Benefits</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Benefit 1</h3>
+            <p className="text-gray-400">
+              Protect your community with real-time content moderation.
+            </p>
+          </div>
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Benefit 2</h3>
+            <p className="text-gray-400">
+              Improve user experience by filtering inappropriate content.
+            </p>
+          </div>
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Benefit 3</h3>
+            <p className="text-gray-400">
+              Gain insights with detailed analytics reports.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-20">
+        <h2 className="text-4xl font-bold mb-6 text-center">Additional Info</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Info 1</h3>
+            <p className="text-gray-400">
+              Our AI is constantly learning and improving to provide the best moderation.
+            </p>
+          </div>
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Info 2</h3>
+            <p className="text-gray-400">
+              We offer 24/7 support to help you with any issues.
+            </p>
+          </div>
+          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <h3 className="text-xl font-semibold mb-2">Info 3</h3>
+            <p className="text-gray-400">
+              Our service is scalable to meet the needs of any size community.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
