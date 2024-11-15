@@ -1,6 +1,6 @@
 # Content Moderation Software
 
-### Deploy Link : https://content-moderation-omega.vercel.app/
+### Deploy Link : https://maverickai.vercel.app/
 ____
 
 ## AI-Powered Content Moderation Software
