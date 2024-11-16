@@ -7,6 +7,7 @@ import { Results } from './pages/Results';
 import { About } from './pages/about';
 import { Features } from './pages/features';
 import { Pricing } from './pages/pricing';
+import { Contributors } from './pages/Contributors';
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/features" element={<Features />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contributors" element={<Contributors />} />
           <Route path="/moderate-text" element={<ModerateText />} />
           <Route path="/results" element={<Results />} />
         </Routes>
