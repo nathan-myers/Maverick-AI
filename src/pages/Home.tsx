@@ -91,7 +91,7 @@ export function Home() {
         </div>
       </section>
 
-      <section className="mt-20">
+      {/* <section className="mt-20">
         <h2 className="text-4xl font-bold mb-6 text-center">Key Benefits</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
@@ -122,9 +122,9 @@ export function Home() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className="mt-20">
+      {/* <section className="mt-20">
         <h2 className="text-4xl font-bold mb-6 text-center">Advanced Features</h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
@@ -155,7 +155,7 @@ export function Home() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }
