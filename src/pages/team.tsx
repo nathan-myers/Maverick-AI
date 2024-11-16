@@ -39,17 +39,17 @@ export function Team() {
             key={member.name}
             className="bg-gradient-to-b from-gray-800 via-gray-900 to-black p-6 rounded-xl shadow-lg transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300"
           >
-            <div className="flex items-center space-x-4 mb-6">
+            <div className="flex flex-col items-center mb-6">
               <img
                 src={member.avatar_url}
                 alt={`${member.name}'s avatar`}
-                className="w-16 h-16 rounded-full border-2 border-purple-500"
+                className="w-24 h-24 rounded-full border-2 border-purple-500 mb-4 object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=random`;
                 }}
               />
-              <div>
+              <div className="text-center">
                 <h3 className="text-2xl font-semibold text-white mb-1">{member.name}</h3>
                 <p className="text-purple-400">{member.role}</p>
               </div>
