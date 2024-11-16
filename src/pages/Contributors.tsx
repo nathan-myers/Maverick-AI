@@ -114,6 +114,23 @@ export function Contributors() {
           </div>
         ))}
       </div>
+
+      <div className="max-w-3xl mx-auto text-center mt-16 p-8 rounded-xl border border-gray-700">
+        <h2 className="text-3xl font-bold mb-4 text-white">
+          Join Us at Swifty9
+        </h2>
+        <p className="text-lg text-gray-300 mb-6">
+          We always invite contributors to our projects. Be a part of our team at Swifty9 and help us build amazing things together!
+        </p>
+        <a
+          href="https://github.com/Swifty9"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Contribute Now
+        </a>
+      </div>
     </main>
   );
 }
