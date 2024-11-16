@@ -1,6 +1,6 @@
 # Content Moderation Software
 
-### Deploy Link : https://maverickai.vercel.app/
+### Deploy Link : https://maverick-ai.onrender.com/
 ____
 
 ## AI-Powered Content Moderation Software
@@ -31,14 +31,26 @@ In the future, this software API could serve as a comprehensive moderation backb
 + TensorFlow.js for AI-powered analysis
 + Tailwind CSS for styling
 + Vite for blazing fast development
-+ Node js for backend
++ Node js & Supabase for backend
 + Github Actions for CI/CD
++ Docker for containerization
 
 ### Getting Started
 
-1. Clone the repository: *git clone https://github.com/yourusername/content-moderation-software.git*
-2. Install dependencies: *npm install*
-3. Start the development server: *npm run dev*
+1. Fork the repository
+2. Clone the repository: *git clone https://github.com/yourusername/content-moderation-software.git*
+
+## Running the project
+
+### 1. Via Docker
+1. Install dependencies: *npm install* in root directory
+2. Start Docker Desktop
+3. Run command `docker-compose up --build` in root directory
+4. In Docker Desktop, go to Containers section and select 'maverick-ai'. Now click on `3000:80` port to open website in browser
+
+### 2. Via Node JS
+1. Install dependencies: *npm install* in root directory
+2. Start the development server: *npm run dev* in root directory
 
 ### How It Works
 
