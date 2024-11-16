@@ -1,25 +1,26 @@
 import React from 'react';
 
 const teamMembers = [
-  {
-    name: 'Mehul Pardeshi',
-    avatar_url: '/assets/mehul.jpg',
-    role: 'ML Lead & Visionary',
-    skills: ['Machine Learning', 'Python', 'Project Management'],
-  },
-  {
-    name: 'Divyesh Mali',
-    avatar_url: '/assets/divyesh.jpg',
-    role: 'React Expert & Large Scale Development',
-    skills: ['React', 'JavaScript', 'Scalability'],
-  },
-  {
-    name: 'Siddhesh Rajale',
-    avatar_url: '/assets/siddhesh.jpg',
-    role: 'Frontend Developer & System Designer',
-    skills: ['HTML', 'CSS', 'System Design'],
-  },
-];
+    {
+      name: 'Mehul Pardeshi',
+      avatar_url: '/assets/mehul.jpeg', 
+      role: 'ML Lead & Visionary',
+      skills: ['Machine Learning', 'Python', 'Project Management'],
+    },
+    {
+      name: 'Divyesh Mali',
+      avatar_url: '/assets/dd.jpeg', 
+      role: 'React Expert & Large Scale Development',
+      skills: ['React', 'JavaScript', 'Scalability'],
+    },
+    {
+      name: 'Siddhesh Rajale',
+      avatar_url: '/assets/sid.jpeg', 
+      role: 'Frontend Developer & System Designer',
+      skills: ['HTML', 'CSS', 'System Design'],
+    },
+  ];
+  
 
 export function Team() {
   return (
