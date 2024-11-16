@@ -8,7 +8,11 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "sync-contributors": "tsx src/scripts/syncContributors.ts"
+    "sync-contributors": "tsx src/scripts/syncContributors.ts",
+    "docker:build": "docker build -t maverick-ai .",
+    "docker:run": "docker run -p 3000:80 maverick-ai",
+    "docker:compose": "docker-compose up",
+    "docker:compose:build": "docker-compose up --build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.1",
