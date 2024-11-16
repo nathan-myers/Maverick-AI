@@ -13,7 +13,7 @@ interface Contributor {
 const contributors: Contributor[] = [
   {
     name: "Mehul Pardeshi",
-    avatar: "../assets/mehul.jpeg",
+    avatar: "assets\mehul.jpeg",
     github: "MehulPardeshi",
     contributions: 12,
     role: "AI Model Developer"
