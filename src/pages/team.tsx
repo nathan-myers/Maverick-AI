@@ -16,8 +16,8 @@ const teamMembers = [
     {
       name: 'Siddhesh Rajale',
       avatar_url: '/assets/sid.jpeg', 
-      role: 'Frontend Developer & System Designer',
-      skills: ['HTML', 'CSS', 'System Design'],
+      role: 'System Design & Architecture',
+      skills: ['React', 'TypeScript', 'System Design'],
     },
   ];
   
