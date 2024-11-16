@@ -1,4 +1,6 @@
 import { Github, GitFork } from 'lucide-react';
+import  Image  from '../assets/WhatsApp Image 2024-11-16 at 02.57.32.jpeg';
+
 
 interface Contributor {
   name: string;
@@ -11,21 +13,21 @@ interface Contributor {
 const contributors: Contributor[] = [
   {
     name: "Mehul Pardeshi",
-    avatar: "src/assets/WhatsApp Image 2024-11-16 at 02.57.32.jpeg",
+    avatar: "/assets/WhatsApp Image 2024-11-16 at 02.57.32.jpeg",
     github: "MehulPardeshi",
     contributions: 127,
     role: "AI Model Developer"
   },
   {
     name: "Siddhesh Rajale",
-    avatar: "src/assets/WhatsApp Image 2024-11-16 at 02.57.53.jpeg",
+    avatar: "/assets/WhatsApp Image 2024-11-16 at 02.57.53.jpeg",
     github: "Siddheshuncodes",
     contributions: 89,
     role: "Systems Design"
   },
   {
     name: "Divyesh Mali",
-    avatar: "src/assets/WhatsApp Image 2024-11-16 at 02.59.07.jpeg",
+    avatar: "/assets/WhatsApp Image 2024-11-16 at 02.59.07.jpeg",
     github: "divyesh-mali",
     contributions: 76,
     role: "Frontend Developer"
@@ -98,4 +100,4 @@ export function Contributors() {
       </div>
     </main>
   );
-} 
+}
