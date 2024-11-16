@@ -7,6 +7,9 @@ import { About } from './pages/about';
 import { Features } from './pages/features';
 import { Pricing } from './pages/pricing';
 import { Contributors } from './pages/Contributors';
+import { Mission } from './pages/mission';
+import { Team } from './pages/team';
+import { Global } from './pages/global';
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +19,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/features" element={<Features />} />
+          <Route path="/mission" element={<Mission />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/global" element={<Global />} />
           <Route path="/about" element={<About />} />
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/moderate-text" element={<ModerateText />} />
