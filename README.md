@@ -69,6 +69,201 @@ The application uses TensorFlow.js toxicity models to analyze text content in re
 + Confidence scores
 + Context highlighting
 + Overall toxicity assessment
+---
+
+### Data Flow Architecture
+```mermaid
+sequenceDiagram
+    participant GHA as GitHub Actions
+    participant GH as GitHub API
+    participant SS as Sync Script
+    participant SB as Supabase
+    participant WEB as Web Frontend
+    participant UI as User Interface
+
+    Note over GHA: Triggers every 6 hours
+    
+    GHA->>SS: Initialize sync process
+    activate SS
+    
+    SS->>GH: Request contributors list
+    Note right of GH: Endpoint: /repos/{owner}/{repo}/contributors
+    GH-->>SS: Return contributor data
+    
+    loop For each contributor
+        SS->>GH: Fetch detailed user info
+        Note right of GH: Endpoint: /users/{username}
+        GH-->>SS: Return user details
+        
+        SS->>SS: Apply role mapping
+        Note right of SS: Map custom roles<br/>Transform data format
+        
+        SS->>SB: Upsert contributor data
+        Note right of SB: Table: contributors
+        SB-->>SS: Confirm storage
+    end
+    
+    deactivate SS
+    
+    WEB->>SB: Request contributors
+    activate WEB
+    SB-->>WEB: Return contributor list
+    
+    WEB->>UI: Render contributor grid
+    Note right of UI: Display with avatars,<br/>roles, and contribution count
+    
+    UI-->>WEB: User interaction
+    deactivate WEB
+```
+---
+
+### Database Schema
+```mermaid
+erDiagram
+    CONTRIBUTORS {
+        string github_username PK
+        string name
+        string avatar_url
+        integer contributions
+        string role
+        timestamp last_updated
+    }
+
+    ROLE_MAPPING {
+        string username PK
+        string role FK
+    }
+
+    CUSTOM_ROLES {
+        string role_id PK
+        string role_name
+        string description
+        timestamp created_at
+    }
+
+    SYNC_LOGS {
+        string log_id PK
+        timestamp sync_time
+        string status
+        text error_message
+        integer contributors_updated
+    }
+
+    CONTRIBUTORS ||--o{ ROLE_MAPPING : has
+    ROLE_MAPPING }o--|| CUSTOM_ROLES : uses
+    CONTRIBUTORS ||--o{ SYNC_LOGS : tracked_in
+```
+
+---
+
+### Deployment
+```mermaid
+graph TB
+    subgraph "Production Environment"
+        NGINX[Nginx Server]
+        DOCKER[Docker Container]
+        ENV[Environment Variables]
+        STATIC[Static Assets]
+    end
+
+    subgraph "Build Process"
+        NPM[npm build]
+        VITE[Vite Bundler]
+        TS[TypeScript Compiler]
+    end
+
+    subgraph "Version Control"
+        GIT[Git Repository]
+        GHA[GitHub Actions]
+        SECRETS[GitHub Secrets]
+    end
+
+    subgraph "External Services"
+        GITHUB[GitHub API]
+        SUPABASE[Supabase]
+    end
+
+    GIT --> GHA
+    SECRETS --> GHA
+    GHA --> NPM
+    NPM --> VITE
+    VITE --> TS
+    TS --> DOCKER
+    DOCKER --> NGINX
+    ENV --> DOCKER
+    STATIC --> NGINX
+    
+    classDef primary fill:#2563eb,stroke:#fff,stroke-width:2px,color:#fff
+    classDef secondary fill:#4b5563,stroke:#fff,stroke-width:2px,color:#fff
+    classDef external fill:#059669,stroke:#fff,stroke-width:2px,color:#fff
+```
+
+---
+
+### System Components
+
+```mermaid
+graph TB
+    subgraph "Frontend Application"
+        WEB[Web Interface]
+        COMP[React Components]
+        HOOKS[React Hooks]
+        ROUTE[React Router]
+        
+        WEB --> COMP
+        COMP --> HOOKS
+        WEB --> ROUTE
+    end
+
+    subgraph "Backend Services"
+        GHA[GitHub Actions]
+        SYNC[Sync Service]
+        FETCH[Data Fetcher]
+        TRANS[Data Transformer]
+        
+        GHA --> SYNC
+        SYNC --> FETCH
+        FETCH --> TRANS
+    end
+
+    subgraph "External APIs"
+        GITHUB[GitHub API]
+        SUPA[Supabase API]
+        
+        FETCH --> GITHUB
+        TRANS --> SUPA
+    end
+
+    subgraph "Database Layer"
+        DB[(Supabase DB)]
+        CACHE[Cache Layer]
+        
+        SUPA --> DB
+        DB --> CACHE
+    end
+
+    subgraph "CI/CD Pipeline"
+        DOCKER[Docker Container]
+        NGINX[Nginx Server]
+        ENV[Environment Variables]
+        
+        DOCKER --> NGINX
+        ENV --> DOCKER
+    end
+
+    WEB --> SUPA
+    SYNC --> DB
+    
+    classDef primary fill:#2563eb,stroke:#fff,stroke-width:2px,color:#fff
+    classDef secondary fill:#4b5563,stroke:#fff,stroke-width:2px,color:#fff
+    classDef external fill:#059669,stroke:#fff,stroke-width:2px,color:#fff
+    
+    class WEB,COMP,HOOKS,ROUTE primary
+    class GHA,SYNC,FETCH,TRANS secondary
+    class GITHUB,SUPA external
+```
+
+---
    
 ## Contributing
 
