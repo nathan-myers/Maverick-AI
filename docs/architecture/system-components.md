@@ -1,3 +1,4 @@
+```mermaid
 graph TB
     subgraph "Frontend Application"
         WEB[Web Interface]
