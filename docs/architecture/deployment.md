@@ -1,3 +1,4 @@
+```mermaid
 graph TB
     subgraph "Production Environment"
         NGINX[Nginx Server]
