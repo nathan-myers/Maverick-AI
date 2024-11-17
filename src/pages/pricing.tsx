@@ -1,4 +1,3 @@
-import React from 'react';
 import { DollarSign, CreditCard, TrendingUp } from 'lucide-react';
 
 export function Pricing() {

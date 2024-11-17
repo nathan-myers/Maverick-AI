@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function Global() {
     return (
         <main className="container mx-auto px-6 py-20">
