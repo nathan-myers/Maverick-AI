@@ -2,9 +2,9 @@ import { supabase } from './supabase';
 import { fetchGitHubContributors, fetchUserDetails } from './github';
 
 const ROLE_MAPPING: Record<string, string> = {
-  'MehulPardeshi': 'AI Model Developer',
-  'Siddheshuncodes': 'Systems Design',
-  'divyesh-mali': 'Frontend Developer',
+  'MehulPardeshi': 'AI/ML Engineer',
+  'Siddheshuncodes': 'Full Stack Web & App Developer',
+  'divyesh-mali': 'Full Stack Web & App Developer',
 };
 
 export async function syncContributors() {
