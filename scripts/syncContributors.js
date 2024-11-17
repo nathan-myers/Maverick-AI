@@ -1,11 +1,10 @@
-import { syncContributors } from '../lib/contributorSync';
+import { syncContributors } from '../lib/contributorSync.js';  // Note the .js extension
 import dotenv from 'dotenv';
 
-// Load environment variables
 dotenv.config();
 
-// Run the sync
 console.log('Starting contributor sync...');
+
 syncContributors()
   .then(() => {
     console.log('Contributors synced successfully');
