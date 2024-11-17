@@ -8,23 +8,28 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: |
+          npm install -g tsx
           npm ci
 
       - name: Run sync script
-        run: npx tsx src/scripts/syncContributors.ts
+        run: tsx src/scripts/syncContributors.ts
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          VITE_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           VITE_GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_KEY }}
