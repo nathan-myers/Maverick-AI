@@ -3,7 +3,11 @@ name: Sync Contributors
 on:
   schedule:
     - cron: '0 */6 * * *'  # Runs every 6 hours
-  workflow_dispatch:
+  workflow_dispatch:  # Allows manual triggering
+  push:
+    paths:
+      - 'src/lib/github.ts'
+      - 'src/lib/contributorSync.ts'
 
 jobs:
   sync:
