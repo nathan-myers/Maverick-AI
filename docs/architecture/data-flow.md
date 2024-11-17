@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant GHA as GitHub Actions
     participant GH as GitHub API
