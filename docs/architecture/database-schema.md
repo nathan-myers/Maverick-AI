@@ -1,3 +1,4 @@
+```mermaid
 erDiagram
     CONTRIBUTORS {
         string github_username PK
