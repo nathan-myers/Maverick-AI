@@ -2,27 +2,29 @@ name: Sync Contributors
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight
-  workflow_dispatch:  # Allows manual triggering
+    - cron: '0 */6 * * *'  # Runs every 6 hours
+  workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm ci
 
       - name: Run sync script
-        run: node scripts/syncContributors.js
+        run: npx tsx src/scripts/syncContributors.ts
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          VITE_GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
