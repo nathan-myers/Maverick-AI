@@ -2,8 +2,8 @@ name: Sync Contributors
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Runs every 6 hours
-  workflow_dispatch:  # Allows manual triggering
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
   push:
     paths:
       - 'src/lib/github.ts'
@@ -29,15 +29,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Debug directory structure
-        run: |
-          pwd
-          ls -la
-          ls -la src/lib
-          ls -la src/scripts
-
       - name: Run sync script
-        run: NODE_ENV=production npx tsx src/scripts/syncContributors.ts
+        run: npx tsx src/scripts/syncContributors.ts
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
