@@ -108,6 +108,7 @@ export function Global() {
             <div className="mt-16 text-center">
                 <p className="text-lg text-gray-400">
                     No matter where you are in the world, Maverick AI is here to help you ensure a safe and inclusive online environment. Our AI technology adapts to local needs and cultures, empowering communities to thrive safely online.
+                    
                 </p>
             </div>
         </main>
