@@ -80,7 +80,9 @@ sequenceDiagram
     participant SB as Supabase
     participant WEB as Web Frontend
     participant UI as User Interface
-
+    participant TF as TensorFlow.js
+    participant HF as HuggingFace API
+    
     Note over GHA: Triggers every 6 hours
     
     GHA->>SS: Initialize sync process
@@ -111,6 +113,25 @@ sequenceDiagram
     
     WEB->>UI: Render contributor grid
     Note right of UI: Display with avatars,<br/>roles, and contribution count
+    
+    Note over UI: User submits text for moderation
+    
+    UI->>WEB: Text submission
+    
+    par AI Analysis
+        WEB->>TF: Toxicity classification
+        TF-->>WEB: TensorFlow predictions
+    and
+        WEB->>HF: Text classification
+        Note right of HF: Models: toxic-comment & emotions
+        HF-->>WEB: HuggingFace predictions
+    end
+    
+    WEB->>WEB: Combine & process predictions
+    Note right of WEB: Calculate toxicity scores<br/>Generate content flags
+    
+    WEB->>UI: Display moderation results
+    Note right of UI: Show flags, scores,<br/>and detailed analysis
     
     UI-->>WEB: User interaction
     deactivate WEB
@@ -149,9 +170,42 @@ erDiagram
         integer contributors_updated
     }
 
+    MODERATION_RESULTS {
+        string result_id PK
+        text input_text
+        float overall_toxicity
+        float spam_score
+        integer profanity_count
+        float emotional_intensity
+        timestamp created_at
+        string user_id FK
+    }
+
+    CONTENT_FLAGS {
+        string flag_id PK
+        string result_id FK
+        string word
+        string flag_type
+        string reason
+        float confidence
+        string context
+    }
+
+    AI_PREDICTIONS {
+        string prediction_id PK
+        string result_id FK
+        string model_source
+        string model_name
+        json raw_prediction
+        timestamp prediction_time
+    }
+
     CONTRIBUTORS ||--o{ ROLE_MAPPING : has
     ROLE_MAPPING }o--|| CUSTOM_ROLES : uses
     CONTRIBUTORS ||--o{ SYNC_LOGS : tracked_in
+    MODERATION_RESULTS ||--|{ CONTENT_FLAGS : contains
+    MODERATION_RESULTS ||--|{ AI_PREDICTIONS : includes
+    CONTRIBUTORS ||--o{ MODERATION_RESULTS : requests
 ```
 
 ---
@@ -164,6 +218,7 @@ graph TB
         DOCKER[Docker Container]
         ENV[Environment Variables]
         STATIC[Static Assets]
+        CACHE[Redis Cache]
     end
 
     subgraph "Build Process"
@@ -181,6 +236,17 @@ graph TB
     subgraph "External Services"
         GITHUB[GitHub API]
         SUPABASE[Supabase]
+        subgraph "AI Services"
+            TF[TensorFlow.js]
+            HF[HuggingFace API]
+            MODELS[AI Models Cache]
+        end
+    end
+
+    subgraph "Monitoring"
+        LOGS[Application Logs]
+        METRICS[Performance Metrics]
+        ALERTS[Alert System]
     end
 
     GIT --> GHA
@@ -193,9 +259,26 @@ graph TB
     ENV --> DOCKER
     STATIC --> NGINX
     
+    DOCKER --> TF
+    DOCKER --> HF
+    TF --> MODELS
+    HF --> MODELS
+    
+    DOCKER --> CACHE
+    MODELS --> CACHE
+    
+    DOCKER --> LOGS
+    LOGS --> ALERTS
+    METRICS --> ALERTS
+    
     classDef primary fill:#2563eb,stroke:#fff,stroke-width:2px,color:#fff
     classDef secondary fill:#4b5563,stroke:#fff,stroke-width:2px,color:#fff
     classDef external fill:#059669,stroke:#fff,stroke-width:2px,color:#fff
+    classDef ai fill:#9333ea,stroke:#fff,stroke-width:2px,color:#fff
+    classDef monitoring fill:#dc2626,stroke:#fff,stroke-width:2px,color:#fff
+
+    class TF,HF,MODELS ai
+    class LOGS,METRICS,ALERTS monitoring
 ```
 
 ---
@@ -209,10 +292,12 @@ graph TB
         COMP[React Components]
         HOOKS[React Hooks]
         ROUTE[React Router]
+        MOD_UI[Moderation UI]
         
         WEB --> COMP
         COMP --> HOOKS
         WEB --> ROUTE
+        COMP --> MOD_UI
     end
 
     subgraph "Backend Services"
@@ -220,6 +305,15 @@ graph TB
         SYNC[Sync Service]
         FETCH[Data Fetcher]
         TRANS[Data Transformer]
+        
+        subgraph "AI Services"
+            TF[TensorFlow Service]
+            HF[HuggingFace Service]
+            MOD[Moderation Logic]
+            
+            TF --> MOD
+            HF --> MOD
+        end
         
         GHA --> SYNC
         SYNC --> FETCH
@@ -229,17 +323,21 @@ graph TB
     subgraph "External APIs"
         GITHUB[GitHub API]
         SUPA[Supabase API]
+        HF_API[HuggingFace API]
         
         FETCH --> GITHUB
         TRANS --> SUPA
+        HF --> HF_API
     end
 
     subgraph "Database Layer"
         DB[(Supabase DB)]
         CACHE[Cache Layer]
+        MOD_CACHE[Moderation Cache]
         
         SUPA --> DB
         DB --> CACHE
+        MOD --> MOD_CACHE
     end
 
     subgraph "CI/CD Pipeline"
@@ -251,16 +349,33 @@ graph TB
         ENV --> DOCKER
     end
 
+    subgraph "Model Management"
+        TF_MODELS[TensorFlow Models]
+        HF_MODELS[HuggingFace Models]
+        MODEL_CACHE[Model Cache]
+        
+        TF_MODELS --> MODEL_CACHE
+        HF_MODELS --> MODEL_CACHE
+        MODEL_CACHE --> TF
+        MODEL_CACHE --> HF
+    end
+
     WEB --> SUPA
     SYNC --> DB
+    MOD_UI --> MOD
+    MOD --> DB
     
     classDef primary fill:#2563eb,stroke:#fff,stroke-width:2px,color:#fff
     classDef secondary fill:#4b5563,stroke:#fff,stroke-width:2px,color:#fff
     classDef external fill:#059669,stroke:#fff,stroke-width:2px,color:#fff
+    classDef ai fill:#9333ea,stroke:#fff,stroke-width:2px,color:#fff
+    classDef cache fill:#ca8a04,stroke:#fff,stroke-width:2px,color:#fff
     
     class WEB,COMP,HOOKS,ROUTE primary
     class GHA,SYNC,FETCH,TRANS secondary
-    class GITHUB,SUPA external
+    class GITHUB,SUPA,HF_API external
+    class TF,HF,MOD,TF_MODELS,HF_MODELS,MOD_UI ai
+    class CACHE,MOD_CACHE,MODEL_CACHE cache
 ```
 
 ---
