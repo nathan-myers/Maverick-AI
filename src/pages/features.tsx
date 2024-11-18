@@ -1,5 +1,4 @@
 import { Code, Cpu, Layout } from 'lucide-react';
-import React from 'react';
 
 export function Features() {
     return (
