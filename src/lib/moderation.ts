@@ -1,4 +1,5 @@
 import * as toxicity from '@tensorflow-models/toxicity';
+import { getHuggingFaceClassification, HuggingFaceResult } from './huggingface';
 
 export interface ModerationResult {
   text: string;
@@ -9,12 +10,23 @@ export interface ModerationResult {
     toxicityScore: number;
     profanityCount: number;
     urlCount: number;
+    emotionalIntensity: number;
+  };
+  aiPredictions?: {
+    huggingface?: HuggingFaceResult;
+    tensorflow?: Array<{
+      label: string;
+      results: Array<{
+        probabilities: Float32Array;
+        match: boolean;
+      }>;
+    }>;
   };
 }
 
 export interface Flag {
   word: string;
-  type: 'offensive' | 'spam' | 'inappropriate' | 'hate_speech' | 'profanity' | 'threat' | 'personal_attack' | 'scam';
+  type: 'offensive' | 'spam' | 'inappropriate' | 'hate_speech' | 'profanity' | 'threat' | 'personal_attack' | 'scam' | 'emotional_content' | 'toxicity';
   reason: string;
   confidence: number;
   context?: string;
@@ -94,31 +106,71 @@ export async function initModel() {
 }
 
 export async function moderateText(text: string): Promise<ModerationResult> {
-  const model = await initModel();
-  const predictions = await model.classify([text]);
+  // Get both TensorFlow and HuggingFace predictions
+  const [tfPredictions, hfPredictions] = await Promise.all([
+    initModel().then(model => model.classify([text])),
+    getHuggingFaceClassification(text)
+  ]);
   
   const flags: Flag[] = [];
   let maxToxicity = 0;
   let spamScore = 0;
   let profanityCount = 0;
+  let emotionScore = 0;
   const urlCount = (text.match(/(https?:\/\/[^\s]+)|(www\.[^\s]+)/g) || []).length;
   
-  // Check AI model predictions
-  predictions.forEach((prediction) => {
+  // Process TensorFlow predictions
+  tfPredictions.forEach((prediction) => {
     const confidence = prediction.results[0].probabilities[1];
     maxToxicity = Math.max(maxToxicity, confidence);
     
     if (confidence > 0.5) {
-      const type = getTypeFromLabel(prediction.label);
       flags.push({
         word: findOffendingPhrase(text),
-        type,
+        type: getTypeFromLabel(prediction.label),
         reason: `${prediction.label.replace(/_/g, ' ')} detected`,
         confidence: Math.round(confidence * 100) / 100,
         context: getTextContext(text, findOffendingPhrase(text))
       });
     }
   });
+
+  // Add HuggingFace predictions if available
+  if (hfPredictions) {
+    // Get all scores and find the maximum
+    const hfToxicity = Math.max(...Object.values(hfPredictions.toxicity)
+      .filter(value => typeof value === 'object' && 'score' in value)
+      .map(r => r.score));
+    maxToxicity = Math.max(maxToxicity, hfToxicity);
+
+    if (hfToxicity > 0.5) {
+      // Get the label from the first prediction (index 0)
+      const toxicityLabel = hfPredictions.toxicity[0]?.label || 'toxic content';
+      flags.push({
+        word: '',
+        type: 'offensive',
+        reason: `HuggingFace detected ${toxicityLabel}`,
+        confidence: Math.round(hfToxicity * 100) / 100,
+        context: text
+      });
+    }
+
+    // Calculate emotion score
+    emotionScore = Math.max(...Object.values(hfPredictions.emotion)
+      .filter(value => typeof value === 'object' && 'score' in value)
+      .map(r => r.score));
+    
+    if (emotionScore > 0.7) {
+      const emotionLabel = hfPredictions.emotion[0]?.label || 'emotional';
+      flags.push({
+        word: '',
+        type: 'emotional_content',
+        reason: `High ${emotionLabel} content detected`,
+        confidence: Math.round(emotionScore * 100) / 100,
+        context: text
+      });
+    }
+  }
 
   // Check spam patterns
   spamPatterns.forEach(({ pattern, type, confidence, reason }) => {
@@ -172,7 +224,12 @@ export async function moderateText(text: string): Promise<ModerationResult> {
       spamScore: spamScore / 5,
       toxicityScore: maxToxicity,
       profanityCount,
-      urlCount
+      urlCount,
+      emotionalIntensity: emotionScore
+    },
+    aiPredictions: {
+      huggingface: hfPredictions || undefined,
+      tensorflow: tfPredictions
     }
   };
 }
