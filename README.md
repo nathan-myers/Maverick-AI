@@ -212,13 +212,14 @@ erDiagram
 
 ### Deployment
 ```mermaid
+
 graph TB
     subgraph "Production Environment"
         NGINX[Nginx Server]
         DOCKER[Docker Container]
         ENV[Environment Variables]
         STATIC[Static Assets]
-        CACHE[Redis Cache]
+        
     end
 
     subgraph "Build Process"
@@ -264,8 +265,7 @@ graph TB
     TF --> MODELS
     HF --> MODELS
     
-    DOCKER --> CACHE
-    MODELS --> CACHE
+    
     
     DOCKER --> LOGS
     LOGS --> ALERTS
@@ -279,6 +279,7 @@ graph TB
 
     class TF,HF,MODELS ai
     class LOGS,METRICS,ALERTS monitoring
+
 ```
 
 ---
