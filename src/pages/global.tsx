@@ -79,7 +79,7 @@ export function Global() {
                         <img 
                             src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Flag_of_Australia.svg" 
                             alt="Australia" 
-                            className="h-12 w-12 mx-auto"
+                            className="h-12 w-14 mx-auto"
                         />
                     </div>
                     <h3 className="text-2xl font-semibold text-white mb-2">Australia</h3>
@@ -92,9 +92,9 @@ export function Global() {
                 <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors text-center">
                     <div className="mb-4">
                         <img 
-                            src="https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_Brazil.svg" 
+                            src="https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/1280px-Flag_of_Brazil.svg.png" 
                             alt="Brazil" 
-                            className="h-12 w-12 mx-auto"
+                            className="h-12 w-16 mx-auto"
                         />
                     </div>
                     <h3 className="text-2xl font-semibold text-white mb-2">South America</h3>
