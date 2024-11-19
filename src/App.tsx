@@ -10,6 +10,7 @@ import { Contributors } from './pages/Contributors';
 import { Mission } from './pages/mission';
 import { Team } from './pages/team';
 import { Global } from './pages/global';
+import { NotFound } from './pages/404';
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/moderate-text" element={<ModerateText />} />
           <Route path="/results" element={<Results />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
 
         {/* Background Decoration */}
