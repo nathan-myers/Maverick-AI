@@ -1,6 +1,8 @@
 import { ArrowLeft, Download } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
+import { DropdownButton } from '../components/DropdownButton';
+import { jsPDF } from "jspdf";
 
 interface Flag {
   word: string;
@@ -42,28 +44,58 @@ export function Results() {
     return 'text-green-400';
   };
 
-  const handleDownload = () => {
+  const downloadOptions = [
+    { label: 'PDF', onClick: () => handleDownload('pdf') },
+    { label: 'TXT', onClick: () => handleDownload('txt') },
+  ];
+
+  const handleDownload = (value: string) => {
     const report = `
-Content Moderation Report
-------------------------
-Date: ${new Date().toLocaleString()}
+      Content Moderation Report
+      ------------------------
+      Date: ${new Date().toLocaleString()}
 
-Original Text:
-${text}
+      Original Text:
+      ${text}
 
-Flags Found:
-${flags.map(flag => `- ${flag.word}: ${flag.type} (${flag.reason})`).join('\n')}
+      Flags Found:
+      ${flags.map(flag => `- ${flag.word}: ${flag.type} (${flag.reason})`).join('\n')}
     `.trim();
 
-    const blob = new Blob([report], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'moderation-report.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    if(value === 'txt') {
+      const blob = new Blob([report], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'moderation-report.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+    } else if (value === 'pdf') {
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.width;
+      const pageHeight = doc.internal.pageSize.height;
+      const leftMargin = 10;
+      const rightPadding = 10;
+      const lineHeight = 8;
+      let yPosition = 10;
+    
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      const lines = doc.splitTextToSize(report, pageWidth - leftMargin - rightPadding);
+    
+      lines.forEach((line : string) => {
+        if (yPosition + lineHeight > pageHeight - leftMargin) {
+          doc.addPage();
+          yPosition = 10;
+        }
+        doc.text(line, leftMargin, yPosition);
+        yPosition += lineHeight;
+      });
+      doc.save('moderation-report.pdf');
+    }
   };
 
   return (
@@ -76,13 +108,11 @@ ${flags.map(flag => `- ${flag.word}: ${flag.type} (${flag.reason})`).join('\n')}
         >
           Back to Input
         </Button>
-        <Button 
-          variant="secondary"
-          icon={Download}
-          onClick={handleDownload}
-        >
-          Download Report
-        </Button>
+        
+        <DropdownButton
+          label="Download Report"
+          items={downloadOptions}
+        />
       </div>
 
       <div className="space-y-8">
