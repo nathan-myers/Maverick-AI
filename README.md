@@ -60,6 +60,29 @@ In the future, this software API could serve as a comprehensive moderation backb
 1. Install dependencies: *npm install* in root directory
 2. Start the development server: *npm run dev* in root directory
 
+## Working with AI Features
+
+### Development without API Keys
+The project includes a mock service for developing AI features without requiring API keys:
+
+1. *Automatic Mock Service*
+   - When no API key is present, the system automatically uses mock responses
+   - Perfect for testing and development of AI-related features
+   - No configuration needed
+
+
+2. *Getting Real API Keys*
+   When you need to test with real API:
+   - Request a development API key from project maintainers
+   - Create .env.local file in project root
+   - Add: VITE_HUGGINGFACE_API_KEY=your_key_here
+
+3. *Switching Between Mock and Real API*
+   - Remove/rename .env.local file to use mock service
+   - Restore .env.local file to use real API
+   - No code changes required
+
+
 ### How It Works
 
 The application uses TensorFlow.js toxicity models to analyze text content in real-time. It evaluates content across multiple dimensions including:
