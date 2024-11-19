@@ -10,8 +10,12 @@ import { Contributors } from './pages/Contributors';
 import { Mission } from './pages/mission';
 import { Team } from './pages/team';
 import { Global } from './pages/global';
+
+import { NotFound } from './pages/404';
+
 import { LogIn } from './pages/logIn';
 import { SignUp } from './pages/signUp'; // Ensure correct import
+
 
 function App() {
   return (
@@ -31,6 +35,7 @@ function App() {
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/moderate-text" element={<ModerateText />} />
           <Route path="/results" element={<Results />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
 
         {/* Background Decoration */}
