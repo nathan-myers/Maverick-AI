@@ -35,7 +35,11 @@ export function Tooltip({
     <div
       className="relative inline-block"
       onMouseEnter={() => setIsVisible(true)}
-      onMouseLeave={() => setIsVisible(false)}>
+      onMouseLeave={() => setIsVisible(false)}
+      onFocus={() => setIsVisible(true)}
+      onBlur={() => setIsVisible(false)}
+      tabIndex={0} // Makes the element focusable
+      aria-describedby={isVisible ? "tooltip" : undefined}>
       {children}
       {isVisible && (
         <div
