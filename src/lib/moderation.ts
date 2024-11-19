@@ -26,7 +26,7 @@ export interface ModerationResult {
 
 export interface Flag {
   word: string;
-  type: 'offensive' | 'spam' | 'inappropriate' | 'hate_speech' | 'profanity' | 'threat' | 'personal_attack' | 'scam' | 'emotional_content' | 'toxicity';
+  type: 'offensive' | 'spam' | 'inappropriate' | 'hate_speech' | 'profanity' | 'threat' | 'personal_attack' | 'emotional_content';
   reason: string;
   confidence: number;
   context?: string;
@@ -34,57 +34,64 @@ export interface Flag {
 
 let model: toxicity.ToxicityClassifier | null = null;
 
-// Enhanced spam patterns with more comprehensive coverage
-const spamPatterns = [
+// Update the spam patterns type definition
+interface ContentPattern {
+  pattern: RegExp;
+  type: Flag['type'];  // This ensures type compatibility with Flag
+  confidence: number;
+  reason: string;
+}
+
+const spamPatterns: ContentPattern[] = [
   {
     pattern: /\b(buy|cheap|discount|free|offer|price|prize|win|winner|earned|earn|income|profit)\b/gi,
-    type: 'spam' as const,
+    type: 'spam',
     confidence: 0.75,
     reason: 'Commercial spam indicators'
   },
   {
     pattern: /\b(casino|lottery|bet|gambling|crypto|bitcoin|investment)\b/gi,
-    type: 'scam' as const,
+    type: 'spam',
     confidence: 0.85,
     reason: 'Potential scam content'
   },
   {
     pattern: /\b(viagra|cialis|medication|pills|weight loss|miracle|cure)\b/gi,
-    type: 'spam' as const,
+    type: 'spam',
     confidence: 0.8,
     reason: 'Medical spam indicators'
   },
   {
     pattern: /\b(click here|subscribe|sign up|limited time|act now|don't miss|hurry)\b/gi,
-    type: 'spam' as const,
+    type: 'spam',
     confidence: 0.7,
     reason: 'Urgency spam tactics'
   },
   {
     pattern: /(https?:\/\/[^\s]+)|(www\.[^\s]+)/g,
-    type: 'spam' as const,
+    type: 'spam',
     confidence: 0.6,
     reason: 'Contains URLs'
   },
   {
     pattern: /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g,
-    type: 'spam' as const,
+    type: 'spam',
     confidence: 0.6,
     reason: 'Contains email addresses'
   }
 ];
 
-// Enhanced profanity and hate speech patterns
-const offensivePatterns = [
+// Also update offensive patterns with the same type
+const offensivePatterns: ContentPattern[] = [
   {
     pattern: /\b(hate|kill|death|die|murder)\b/gi,
-    type: 'threat' as const,
+    type: 'threat',
     confidence: 0.9,
     reason: 'Violent content'
   },
   {
     pattern: /\b(stupid|idiot|dumb|loser|pathetic)\b/gi,
-    type: 'personal_attack' as const,
+    type: 'personal_attack',
     confidence: 0.8,
     reason: 'Personal attacks or insults'
   }
@@ -149,7 +156,7 @@ export async function moderateText(text: string): Promise<ModerationResult> {
       flags.push({
         word: '',
         type: 'offensive',
-        reason: `HuggingFace detected ${toxicityLabel}`,
+        reason: `Detected ${toxicityLabel}`,
         confidence: Math.round(hfToxicity * 100) / 100,
         context: text
       });
@@ -205,6 +212,33 @@ export async function moderateText(text: string): Promise<ModerationResult> {
       });
     }
   });
+
+  // Process emotion predictions
+  if (hfPredictions?.emotion) {
+    const emotionScores = Object.values(hfPredictions.emotion)
+      .filter(value => typeof value === 'object' && 'score' in value)
+      .map(r => ({
+        emotion: r.label,
+        score: r.score
+      }));
+
+    const strongEmotions = emotionScores.filter(e => e.score > 0.7);
+    
+    if (strongEmotions.length > 0) {
+      strongEmotions.forEach(emotion => {
+        const emotionWord = findEmotionalWords(text, emotion.emotion);
+        flags.push({
+          word: emotionWord || '',
+          type: 'emotional_content',
+          reason: `High ${emotion.emotion} content detected`,
+          confidence: Math.round(emotion.score * 100) / 100,
+          context: emotionWord ? getTextContext(text, emotionWord) : text
+        });
+      });
+      
+      emotionScore = Math.max(...strongEmotions.map(e => e.score));
+    }
+  }
 
   // Calculate weighted toxicity score
   const weightedToxicity = Math.max(
@@ -264,4 +298,20 @@ function getTextContext(text: string, match: string): string {
   const start = Math.max(0, index - 30);
   const end = Math.min(text.length, index + match.length + 30);
   return '...' + text.slice(start, end) + '...';
+}
+
+function findEmotionalWords(text: string, emotion: string): string {
+  const emotionPatterns: Record<string, RegExp> = {
+    joy: /(happy|joy|wonderful|great|excellent|amazing|excited|delighted)/gi,
+    anger: /(angry|mad|furious|rage|hate|annoyed|irritated)/gi,
+    sadness: /(sad|depressed|unhappy|miserable|crying|disappointed)/gi,
+    fear: /(scared|afraid|terrified|fearful|anxious|worried|nervous)/gi,
+    surprise: /(wow|omg|unexpected|surprised|shocking|amazed|astonished)/gi
+  };
+
+  const pattern = emotionPatterns[emotion.toLowerCase()];
+  if (!pattern) return '';
+
+  const match = text.match(pattern);
+  return match ? match[0] : '';
 }
