@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: LucideIcon;
   iconClassName?: string;
   tooltip?: string;
-  tooltipLocation?: "top" | "bottom" | "left" | "right";
+  tooltipPosition?: "top" | "bottom" | "left" | "right";
 }
 
 export function Button({
@@ -17,7 +17,7 @@ export function Button({
   iconClassName = "",
   className = "",
   tooltip = "",
-  tooltipLocation = "top",
+  tooltipPosition = "top",
   ...props
 }: ButtonProps) {
   const baseStyles =
@@ -37,7 +37,7 @@ export function Button({
   );
 
   return tooltip ? (
-    <Tooltip text={tooltip} position={tooltipLocation}>
+    <Tooltip text={tooltip} position={tooltipPosition}>
       {buttonContent}
     </Tooltip>
   ) : (
