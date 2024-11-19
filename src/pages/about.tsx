@@ -28,6 +28,7 @@ export function About() {
               "To protect online communities with intelligent, real-time content moderation.",
             color: "blue",
             navigate: "mission",
+            bgcolor : "bg-blue-500/10"
           },
           {
             Icon: Users,
@@ -36,6 +37,7 @@ export function About() {
               "A diverse group of experts in AI, machine learning, and community management.",
             color: "purple",
             navigate: "team",
+            bgcolor : "bg-purple-500/10"
           },
           {
             Icon: Globe,
@@ -44,6 +46,7 @@ export function About() {
               " Serving communities worldwide with scalable and reliable AI solutions.",
             color: "green",
             navigate: "global",
+            bgcolor : "bg-green-500/10"
           },
         ].map((feature, index) => (
           <motion.div
@@ -58,7 +61,7 @@ export function About() {
               onClick={() => navigate(`/${feature.navigate}`)}
             >
               <div
-                className={`bg-${feature.color}-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
+                className={`${feature.bgcolor} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
               >
                 <feature.Icon className={`h-6 w-6 text-${feature.color}-400`} />
               </div>

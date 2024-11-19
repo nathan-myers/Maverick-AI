@@ -43,6 +43,7 @@ export function Home() {
             description:
               "Instant content moderation with advanced AI processing for immediate results.",
             color: "blue",
+            bgcolor: "bg-blue-500/10"
           },
           {
             Icon: Shield,
@@ -50,6 +51,7 @@ export function Home() {
             description:
               "Advanced algorithms detect and filter inappropriate content automatically.",
             color: "purple",
+            bgcolor : "bg-purple-500/10"
           },
           {
             Icon: Rocket,
@@ -57,6 +59,7 @@ export function Home() {
             description:
               "Simple API integration with your existing platforms and workflows.",
             color: "green",
+            bgcolor : "bg-green-500/10"
           },
         ].map((feature, index) => (
           <motion.div
@@ -64,10 +67,11 @@ export function Home() {
             initial="hidden"
             animate={isInView1 ? "visible" : "hidden"}
             transition={{ duration: 0.5, delay: index * 0.2 }}
+            key={index}
           >
             <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg">
               <div
-                className={`bg-${feature.color}-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
+                className={`${feature.bgcolor} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
               >
                 <feature.Icon className={`h-6 w-6 text-${feature.color}-400`} />
               </div>
@@ -89,6 +93,7 @@ export function Home() {
               description:
                 "Submit text content through our intuitive interface or API for instant analysis.",
               color: "blue",
+              bgcolor : "bg-blue-500/10"
             },
             {
               Icon: Zap,
@@ -96,6 +101,7 @@ export function Home() {
               description:
                 "Our advanced AI models analyze content for toxicity, spam, and inappropriate material.",
               color: "purple",
+              bgcolor : "bg-purple-500/10"
             },
             {
               Icon: BarChart2,
@@ -103,6 +109,7 @@ export function Home() {
               description:
                 "Receive comprehensive reports with confidence scores and specific content flags.",
               color: "green",
+              bgcolor : "bg-green-500/10"
             },
           ].map((feature, index) => (
             <motion.div
@@ -110,10 +117,11 @@ export function Home() {
               initial="hidden"
               animate={isInView2 ? "visible" : "hidden"}
               transition={{ duration: 0.5, delay: index * 0.2 }}
+              key={index}
             >
               <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg">
                 <div
-                  className={`bg-${feature.color}-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
+                  className={`${feature.bgcolor} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
                 >
                   <feature.Icon
                     className={`h-6 w-6 text-${feature.color}-400`}
