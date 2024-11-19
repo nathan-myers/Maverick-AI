@@ -149,7 +149,7 @@ export async function moderateText(text: string): Promise<ModerationResult> {
       flags.push({
         word: '',
         type: 'offensive',
-        reason: `HuggingFace detected ${toxicityLabel}`,
+        reason: `Detected ${toxicityLabel}`,
         confidence: Math.round(hfToxicity * 100) / 100,
         context: text
       });
