@@ -10,6 +10,9 @@ import { Contributors } from './pages/Contributors';
 import { Mission } from './pages/mission';
 import { Team } from './pages/team';
 import { Global } from './pages/global';
+import { LogIn } from './pages/logIn';
+import { SignUp } from './pages/signUp'; // Ensure correct import
+
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +26,8 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/global" element={<Global />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<SignUp />} /> {/* Ensure correct path */}
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/moderate-text" element={<ModerateText />} />
           <Route path="/results" element={<Results />} />
@@ -37,6 +42,5 @@ function App() {
     </BrowserRouter>
   );
 }
-
 
 export default App;
