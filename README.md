@@ -1,6 +1,14 @@
 # Content Moderation Software
 
 ### Deploy Link : https://maverick-ai.onrender.com/
+
+___
+
+## Help & Support
+For any doubts & support, contact the maintainers of the project.
+1. Siddhesh Rajale ➡️ [![Twitter](https://img.shields.io/twitter/follow/Siddhesh_Rajale?style=social)](https://twitter.com/intent/follow?screen_name=Scholar_js)
+2. Mehul Pardeshi ➡️ [![Twitter](https://img.shields.io/twitter/follow/Mehul_Pardeshi?style=social)](https://twitter.com/intent/follow?screen_name=MehulPardeshi2)
+3. Divyesh Mali ➡️ [![Twitter](https://img.shields.io/twitter/follow/Divyesh_Mali?style=social)](https://twitter.com/intent/follow?screen_name=divyesh_mali_)
 ____
 
 ## AI-Powered Content Moderation Software
@@ -51,6 +59,29 @@ In the future, this software API could serve as a comprehensive moderation backb
 ### 2. Via Node JS
 1. Install dependencies: *npm install* in root directory
 2. Start the development server: *npm run dev* in root directory
+
+## Working with AI Features
+
+### Development without API Keys
+The project includes a mock service for developing AI features without requiring API keys:
+
+1. *Automatic Mock Service*
+   - When no API key is present, the system automatically uses mock responses
+   - Perfect for testing and development of AI-related features
+   - No configuration needed
+
+
+2. *Getting Real API Keys*
+   When you need to test with real API:
+   - Request a development API key from project maintainers
+   - Create .env.local file in project root
+   - Add: VITE_HUGGINGFACE_API_KEY=your_key_here
+
+3. *Switching Between Mock and Real API*
+   - Remove/rename .env.local file to use mock service
+   - Restore .env.local file to use real API
+   - No code changes required
+
 
 ### How It Works
 

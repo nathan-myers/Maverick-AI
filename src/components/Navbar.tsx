@@ -30,6 +30,7 @@ export function Navbar() {
 
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center space-x-6">
+
           <Link
             to="/pricing"
             className="hover:text-blue-400 transition-colors py-2"
@@ -111,6 +112,7 @@ export function Navbar() {
             <Github className="h-6 w-6" />
           </div>
       </div>
+
     </nav>
   );
 }
