@@ -43,8 +43,10 @@ export function Tooltip({
       {children}
       {isVisible && (
         <div
+          id="tooltip"
           role="tooltip"
-          className={`absolute z-10 p-2 text-sm text-white bg-gray-800 rounded shadow-lg ${positionClasses[position]} whitespace-nowrap transition-opacity duration-300 ease-in-out opacity-100`}>
+          className={`absolute z-10 p-2 text-sm text-white bg-gray-800 rounded shadow-lg ${positionClasses[position]} whitespace-nowrap transition-opacity duration-300 ease-in-out opacity-100`}
+          aria-live="polite">
           {text}
           <div
             className={`absolute w-0 h-0 border-8 border-transparent ${arrowClasses[position]}`}></div>
