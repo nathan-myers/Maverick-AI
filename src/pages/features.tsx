@@ -25,20 +25,23 @@ export function Features() {
             description:
               "Leverage cutting-edge AI technology for accurate and efficient content moderation.",
             color: "red",
+            bgcolor : "bg-red-500/10"
           },
           {
             Icon: Code,
             title: "Customizable Rules",
             description:
-              "Tailor moderation rules to fit the unique needs of your community.",
+            "Tailor moderation rules to fit the unique needs of your community.",
             color: "yellow",
+            bgcolor : "bg-yellow-500/10"
           },
           {
             Icon: Layout,
             title: "User-Friendly Interface",
             description:
-              "An intuitive and easy-to-use interface for seamless integration and operation.",
+            "An intuitive and easy-to-use interface for seamless integration and operation.",
             color: "green",
+            bgcolor : "bg-green-500/10"
           },
         ].map((feature, index) => (
           <motion.div
@@ -50,7 +53,7 @@ export function Features() {
           >
             <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg cursor-pointer">
               <div
-                className={`bg-${feature.color}-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
+                className={`${feature.bgcolor} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
               >
                 <feature.Icon className={`h-6 w-6 text-${feature.color}-400`} />
               </div>
