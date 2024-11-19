@@ -1,6 +1,14 @@
 # Content Moderation Software
 
 ### Deploy Link : https://maverick-ai.onrender.com/
+
+___
+
+## Help & Support
+For any doubts & support, contact the maintainers of the project.
+1. Siddhesh Rajale ➡️ [![Twitter](https://img.shields.io/twitter/follow/Siddhesh_Rajale?style=social)](https://twitter.com/intent/follow?screen_name=Scholar_js)
+2. Mehul Pardeshi ➡️ [![Twitter](https://img.shields.io/twitter/follow/Mehul_Pardeshi?style=social)](https://twitter.com/intent/follow?screen_name=MehulPardeshi2)
+3. Divyesh Mali ➡️ [![Twitter](https://img.shields.io/twitter/follow/Divyesh_Mali?style=social)](https://twitter.com/intent/follow?screen_name=divyesh_mali_)
 ____
 
 ## AI-Powered Content Moderation Software
