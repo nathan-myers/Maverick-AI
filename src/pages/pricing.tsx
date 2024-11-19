@@ -1,8 +1,15 @@
 import { DollarSign, CreditCard, TrendingUp } from 'lucide-react';
+import {motion} from 'framer-motion';
 
 export function Pricing() {
+    const cardVariants = {
+      hidden: { opacity: 0, y: 50 }, 
+      visible: { opacity: 1, y: 0 },
+    };
+
     return (
         <main className="container mx-auto px-6 py-20">
+            
             <div className="max-w-3xl mx-auto text-center">
                 <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text">
                     Premium Plans
@@ -11,9 +18,15 @@ export function Pricing() {
                     Choose a plan that fits your needs and start moderating content with Maverick AI today.
                 </p>
             </div>
-
+            
             <div className="grid md:grid-cols-3 gap-8 mt-20">
-                <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+            <motion.div 
+            variants={cardVariants}
+            initial="hidden" 
+            animate="visible" 
+            transition={{ duration: 0.5, delay: 0 * 0.2 }} 
+          >
+                <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg">
                     <div className="bg-blue-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <DollarSign className="h-6 w-6 text-blue-400" />
                     </div>
@@ -29,7 +42,14 @@ export function Pricing() {
                         Buy Now
                     </button>
                 </div>
-                <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+                </motion.div>
+                <motion.div 
+            variants={cardVariants}
+            initial="hidden" 
+            animate="visible" 
+            transition={{ duration: 0.5, delay: 1 * 0.2 }} 
+          >
+                <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg">
                     <div className="bg-yellow-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <CreditCard className="h-6 w-6 text-yellow-400" />
                     </div>
@@ -45,7 +65,14 @@ export function Pricing() {
                         Buy Now
                     </button>
                 </div>
-                <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+                </motion.div>
+                <motion.div 
+            variants={cardVariants}
+            initial="hidden" 
+            animate="visible" 
+            transition={{ duration: 0.5, delay: 2 * 0.2 }} 
+          >
+                <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg">
                     <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <TrendingUp className="h-6 w-6 text-green-400" />
                     </div>
@@ -61,6 +88,7 @@ export function Pricing() {
                         Buy Now
                     </button>
                 </div>
+                </motion.div>
             </div>
         </main>
     );

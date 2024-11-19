@@ -1,10 +1,12 @@
 import { Shield, Users, Globe } from 'lucide-react';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import {motion} from "framer-motion";
 export function About() {
     const navigate = useNavigate();
-
+    const cardVariants = {
+        hidden: { opacity: 0, y: 50 }, 
+        visible: { opacity: 1, y: 0 },
+      };
     return (
         <main className="container mx-auto px-6 py-20">
             <div className="max-w-3xl mx-auto text-center">
@@ -17,42 +19,35 @@ export function About() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 mt-20">
-                <div 
-                    className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors cursor-pointer" 
-                    onClick={() => navigate('/mission')}
+                {
+                    [
+                        {Icon : Shield , title : "Our Mission" , description : "To protect online communities with intelligent, real-time content moderation." , color : "blue" , navigate : "mission"},
+                        {Icon : Users , title : "Our Team" , description : "A diverse group of experts in AI, machine learning, and community management." , color : "purple" , navigate : "team"},
+                        {Icon : Globe , title : "Global Reach" , description : " Serving communities worldwide with scalable and reliable AI solutions." , color : "green" , navigate : "global"},
+                    ].map((feature , index) =>
+                    (
+                        <motion.div 
+            variants={cardVariants}
+            initial="hidden" 
+            animate="visible" 
+            transition={{ duration: 0.5, delay: index * 0.2 }} 
+            key={index}
+          >
+            <div 
+                    className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg cursor-pointer" 
+                    onClick={() => navigate(`/${feature.navigate}`)}
                 >
-                    <div className="bg-blue-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                        <Shield className="h-6 w-6 text-blue-400" />
+                    <div className={`bg-${feature.color}-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}>
+                        <feature.Icon className={`h-6 w-6 text-${feature.color}-400`} />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Our Mission</h3>
+                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                     <p className="text-gray-400">
-                        To protect online communities with intelligent, real-time content moderation.
+                        {feature.description}
                     </p>
                 </div>
-                <div 
-                    className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors cursor-pointer" 
-                    onClick={() => navigate('/team')}
-                >
-                    <div className="bg-purple-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                        <Users className="h-6 w-6 text-purple-400" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">Our Team</h3>
-                    <p className="text-gray-400">
-                        A diverse group of experts in AI, machine learning, and community management.
-                    </p>
-                </div>
-                <div 
-                    className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors cursor-pointer" 
-                    onClick={() => navigate('/global')}
-                >
-                    <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                        <Globe className="h-6 w-6 text-green-400" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">Global Reach</h3>
-                    <p className="text-gray-400">
-                        Serving communities worldwide with scalable and reliable AI solutions.
-                    </p>
-                </div>
+          </motion.div>
+                    ))
+                }
             </div>
         </main>
     );
