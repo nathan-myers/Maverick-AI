@@ -1,95 +1,129 @@
-import { Rocket, Shield, Zap, FileText, BarChart2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/Button';
+import { Rocket, Shield, Zap, FileText, BarChart2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../components/Button";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 export function Home() {
   const navigate = useNavigate();
-
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+  const cardContainerRef1 = useRef(null);
+  const isInView1 = useInView(cardContainerRef1);
+  const cardContainerRef2 = useRef(null);
+  const isInView2 = useInView(cardContainerRef2);
   return (
     <main className="container mx-auto px-6 py-20">
       {/* Hero Section */}
+
       <div className="max-w-3xl mx-auto text-center">
         <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
           AI-Powered Content Moderation
         </h1>
         <p className="text-xl text-gray-300 mb-12">
-          Protect your community with intelligent, real-time content moderation powered by advanced AI technology.
+          Protect your community with intelligent, real-time content moderation
+          powered by advanced AI technology.
         </p>
         <div className="flex justify-center space-x-4">
-          <Button 
-            icon={Rocket}
-            onClick={() => navigate('/moderate-text')}
-          >
+          <Button icon={Rocket} onClick={() => navigate("/moderate-text")}>
             Get Started
           </Button>
-          <Button variant="secondary">
-            Learn More
-          </Button>
+          <Button variant="secondary">Learn More</Button>
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="grid md:grid-cols-3 gap-8 mt-20">
-        <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-          <div className="bg-blue-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-            <Zap className="h-6 w-6 text-blue-400" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">Real-time Analysis</h3>
-          <p className="text-gray-400">
-            Instant content moderation with advanced AI processing for immediate results.
-          </p>
-        </div>
-        <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-          <div className="bg-purple-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-            <Shield className="h-6 w-6 text-purple-400" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">Smart Protection</h3>
-          <p className="text-gray-400">
-            Advanced algorithms detect and filter inappropriate content automatically.
-          </p>
-        </div>
-        <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-          <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-            <Rocket className="h-6 w-6 text-green-400" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">Easy Integration</h3>
-          <p className="text-gray-400">
-            Simple API integration with your existing platforms and workflows.
-          </p>
-        </div>
+      <div ref={cardContainerRef1} className="grid md:grid-cols-3 gap-8 mt-20">
+        {[
+          {
+            Icon: Zap,
+            title: "Real-time Analysis",
+            description:
+              "Instant content moderation with advanced AI processing for immediate results.",
+            color: "blue",
+          },
+          {
+            Icon: Shield,
+            title: "Smart Protection",
+            description:
+              "Advanced algorithms detect and filter inappropriate content automatically.",
+            color: "purple",
+          },
+          {
+            Icon: Rocket,
+            title: "Easy Integration",
+            description:
+              "Simple API integration with your existing platforms and workflows.",
+            color: "green",
+          },
+        ].map((feature, index) => (
+          <motion.div
+            variants={cardVariants}
+            initial="hidden"
+            animate={isInView1 ? "visible" : "hidden"}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+          >
+            <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg">
+              <div
+                className={`bg-${feature.color}-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
+              >
+                <feature.Icon className={`h-6 w-6 text-${feature.color}-400`} />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-gray-400">{feature.description}</p>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
       {/* How It Works Section */}
-      <section className="mt-20">
+      <section className="mt-20" ref={cardContainerRef2}>
         <h2 className="text-4xl font-bold mb-6 text-center">How It Works</h2>
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-            <div className="bg-blue-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-              <FileText className="h-6 w-6 text-blue-400" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Input Content</h3>
-            <p className="text-gray-400">
-              Submit text content through our intuitive interface or API for instant analysis.
-            </p>
-          </div>
-          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-            <div className="bg-purple-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-              <Zap className="h-6 w-6 text-purple-400" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">AI Analysis</h3>
-            <p className="text-gray-400">
-              Our advanced AI models analyze content for toxicity, spam, and inappropriate material.
-            </p>
-          </div>
-          <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-            <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-              <BarChart2 className="h-6 w-6 text-green-400" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Detailed Reports</h3>
-            <p className="text-gray-400">
-              Receive comprehensive reports with confidence scores and specific content flags.
-            </p>
-          </div>
+          {[
+            {
+              Icon: FileText,
+              title: "Input Content",
+              description:
+                "Submit text content through our intuitive interface or API for instant analysis.",
+              color: "blue",
+            },
+            {
+              Icon: Zap,
+              title: "AI Analysis",
+              description:
+                "Our advanced AI models analyze content for toxicity, spam, and inappropriate material.",
+              color: "purple",
+            },
+            {
+              Icon: BarChart2,
+              title: "Detailed Reports",
+              description:
+                "Receive comprehensive reports with confidence scores and specific content flags.",
+              color: "green",
+            },
+          ].map((feature, index) => (
+            <motion.div
+              variants={cardVariants}
+              initial="hidden"
+              animate={isInView2 ? "visible" : "hidden"}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+            >
+              <div className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg">
+                <div
+                  className={`bg-${feature.color}-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
+                >
+                  <feature.Icon
+                    className={`h-6 w-6 text-${feature.color}-400`}
+                  />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-400">{feature.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -98,16 +132,26 @@ export function Home() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 mb-6 md:mb-0">
-              &copy; {new Date().getFullYear()} Maverick AI. All rights reserved.
+              &copy; {new Date().getFullYear()} Maverick AI. All rights
+              reserved.
             </div>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 Privacy Policy
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 Terms of Service
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 Contact Us
               </a>
             </div>
