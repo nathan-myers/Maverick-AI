@@ -6,9 +6,10 @@ import { jsPDF } from "jspdf";
 
 interface Flag {
   word: string;
-  type: 'offensive' | 'spam' | 'inappropriate' | 'hate_speech';
+  type: 'offensive' | 'spam' | 'inappropriate' | 'hate_speech' | 'profanity' | 'threat' | 'personal_attack' | 'emotional_content';
   reason: string;
   confidence: number;
+  context?: string;
 }
 
 interface LocationState {
@@ -28,6 +29,10 @@ export function Results() {
       case 'spam': return 'bg-yellow-500/20 text-yellow-400';
       case 'inappropriate': return 'bg-blue-500/20 text-blue-400';
       case 'hate_speech': return 'bg-purple-500/20 text-purple-400';
+      case 'emotional_content': return 'bg-green-500/20 text-green-400';
+      case 'threat': return 'bg-orange-500/20 text-orange-400';
+      case 'personal_attack': return 'bg-pink-500/20 text-pink-400';
+      case 'profanity': return 'bg-red-500/20 text-red-400';
       default: return 'bg-gray-500/20 text-gray-400';
     }
   };
@@ -44,57 +49,47 @@ export function Results() {
     return 'text-green-400';
   };
 
-  const downloadOptions = [
-    { label: 'PDF', onClick: () => handleDownload('pdf') },
-    { label: 'TXT', onClick: () => handleDownload('txt') },
-  ];
-
-  const handleDownload = (value: string) => {
-    const report = `
-      Content Moderation Report
-      ------------------------
-      Date: ${new Date().toLocaleString()}
-
-      Original Text:
-      ${text}
-
-      Flags Found:
-      ${flags.map(flag => `- ${flag.word}: ${flag.type} (${flag.reason})`).join('\n')}
-    `.trim();
-
-    if(value === 'txt') {
-      const blob = new Blob([report], { type: 'text/plain' });
+  const handleDownload = (format: 'pdf' | 'json') => {
+    if (format === 'pdf') {
+      const doc = new jsPDF();
+      
+      // Add title
+      doc.setFontSize(16);
+      doc.text('Content Moderation Report', 20, 20);
+      
+      // Add analyzed text
+      doc.setFontSize(12);
+      doc.text('Analyzed Text:', 20, 40);
+      doc.setFontSize(10);
+      const splitText = doc.splitTextToSize(text, 170);
+      doc.text(splitText, 20, 50);
+      
+      // Add flags
+      doc.setFontSize(12);
+      doc.text('Detected Issues:', 20, 90);
+      flags.forEach((flag, index) => {
+        const yPos = 100 + (index * 10);
+        doc.setFontSize(10);
+        doc.text(`${flag.type}: ${flag.reason} (${Math.round(flag.confidence * 100)}% confidence)`, 20, yPos);
+      });
+      
+      // Add summary
+      doc.setFontSize(12);
+      doc.text(`Overall Toxicity: ${Math.round(overallToxicity * 100)}%`, 20, 200);
+      
+      doc.save('moderation-report.pdf');
+    } else {
+      // JSON download
+      const jsonData = JSON.stringify({ text, flags, overallToxicity }, null, 2);
+      const blob = new Blob([jsonData], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'moderation-report.txt';
+      a.download = 'moderation-report.json';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-
-    } else if (value === 'pdf') {
-      const doc = new jsPDF();
-      const pageWidth = doc.internal.pageSize.width;
-      const pageHeight = doc.internal.pageSize.height;
-      const leftMargin = 10;
-      const rightPadding = 10;
-      const lineHeight = 8;
-      let yPosition = 10;
-    
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(12);
-      const lines = doc.splitTextToSize(report, pageWidth - leftMargin - rightPadding);
-    
-      lines.forEach((line : string) => {
-        if (yPosition + lineHeight > pageHeight - leftMargin) {
-          doc.addPage();
-          yPosition = 10;
-        }
-        doc.text(line, leftMargin, yPosition);
-        yPosition += lineHeight;
-      });
-      doc.save('moderation-report.pdf');
     }
   };
 
@@ -110,9 +105,20 @@ export function Results() {
         </Button>
         
         <DropdownButton
-          label="Download Report"
-          items={downloadOptions}
-        />
+          icon={Download}
+          items={[
+            { 
+              label: 'Download PDF', 
+              onClick: () => handleDownload('pdf')
+            },
+            { 
+              label: 'Download JSON', 
+              onClick: () => handleDownload('json')
+            }
+          ]}
+        >
+          Download Report
+        </DropdownButton>
       </div>
 
       <div className="space-y-8">

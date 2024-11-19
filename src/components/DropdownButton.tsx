@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { Button } from './Button'; // Import your Button component
-import { ChevronDown } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 interface DropdownButtonProps {
-  label: string;
-  items: { label: string; onClick: () => void }[];
+  icon?: LucideIcon;
+  children?: React.ReactNode;
+  items: {
+    label: string;
+    onClick: () => void;
+  }[];
 }
 
-export function DropdownButton({ label, items }: DropdownButtonProps) {
+export function DropdownButton({ icon, children, items }: DropdownButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div className="relative inline-block text-left">
-      <Button 
-        onClick={toggleDropdown} 
-        variant="secondary" 
-        icon={ChevronDown} 
+    <div className="relative">
+      <Button
+        icon={icon}
+        onClick={toggleDropdown}
       >
-        {label}
+        {children}
       </Button>
 
       {isOpen && (
