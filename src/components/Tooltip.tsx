@@ -3,12 +3,14 @@ import React, { useState } from "react";
 interface TooltipProps {
   position?: "top" | "bottom" | "left" | "right";
   text?: string;
+  className?: string;
   children?: React.ReactNode;
 }
 
 export function Tooltip({
   position = "top",
   text = "",
+  className = "",
   children,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -45,7 +47,7 @@ export function Tooltip({
         <div
           id="tooltip"
           role="tooltip"
-          className={`absolute z-10 p-2 text-sm text-white bg-gray-800 rounded shadow-lg ${positionClasses[position]} whitespace-nowrap transition-opacity duration-300 ease-in-out opacity-100`}
+          className={`absolute z-10 p-2 text-sm text-white bg-gray-800 rounded shadow-lg ${positionClasses[position]} whitespace-nowrap transition-opacity duration-300 ease-in-out opacity-100 ${className}`}
           aria-live="polite">
           {text}
           <div
