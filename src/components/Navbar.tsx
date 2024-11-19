@@ -27,12 +27,7 @@ export function Navbar() {
           <Link to="/features" className="hover:text-blue-400 transition-colors py-2">Features</Link>
           <Link to="/about" className="hover:text-blue-400 transition-colors py-2">About</Link>
           <Link to="/contributors" className="hover:text-blue-400 transition-colors py-2">Contributors</Link>
-          <div 
-            onClick={() => window.open('https://github.com/Swifty9/Maverick-AI', '_blank')}
-            className="cursor-pointer py-2"
-          >
-            <Github className="h-6 w-6" />
-          </div>
+          <Link to="/login" className="hover:text-blue-400 transition-colors py-2">Log In</Link>
         </div>
       </div>
 
@@ -43,12 +38,7 @@ export function Navbar() {
           <Link to="/features" className="hover:text-blue-400 transition-colors py-2">Features</Link>
           <Link to="/about" className="hover:text-blue-400 transition-colors py-2">About</Link>
           <Link to="/contributors" className="hover:text-blue-400 transition-colors py-2">Contributors</Link>
-          <div 
-            onClick={() => window.open('https://github.com/Swifty9/Maverick-AI', '_blank')}
-            className="cursor-pointer py-2"
-          >
-            <Github className="h-6 w-6" />
-          </div>
+          <Link to="/login" className="hover:text-blue-400 transition-colors py-2">Log In</Link>
         </div>
       )}
     </nav>
