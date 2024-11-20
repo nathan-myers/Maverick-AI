@@ -20,7 +20,7 @@ export function Home() {
       {/* Hero Section */}
 
       <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+        <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-blue-400 text-transparent bg-clip-text animate-gradient">
           AI-Powered Content Moderation
         </h1>
         <p className="text-xl text-gray-300 mb-12">
