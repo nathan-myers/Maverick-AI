@@ -93,6 +93,21 @@ export function Navbar() {
             </Link>
           ))}
 
+          {/* Login Link */}
+          <Link
+            to="/login"
+            style={{
+              transitionDelay: `${isOpen ? 400 : 0}ms`,
+            }}
+            className={`py-2 hover:text-blue-400 transition-colors transition-transform duration-500 ease-in-out ${
+              isOpen
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-[-100%]"
+            }`}
+          >
+            Login
+          </Link>
+
           {/* GitHub Link */}
           <div
             onClick={() =>
