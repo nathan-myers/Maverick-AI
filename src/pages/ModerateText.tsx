@@ -1,15 +1,16 @@
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { TextArea } from '../components/TextArea';
 import { moderateText } from '../lib/moderation';
 
 export function ModerateText() {
-  const [text, setText] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [text, setText] = useState(location?.state?.text || '');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleAnalyze = async () => {
     if (!text.trim()) return;
@@ -52,15 +53,24 @@ export function ModerateText() {
           disabled={isAnalyzing}
           error={error}
         />
+        <div className="flex items-center justify-between"> 
+          <Button
+            onClick={handleAnalyze}
+            disabled={!text.trim() || isAnalyzing}
+            icon={isAnalyzing ? Loader2 : undefined}
+            iconClassName={isAnalyzing ? 'animate-spin' : ''}
+          >
+            {isAnalyzing ? 'Analyzing...' : 'Analyze Text'}
+          </Button>
 
-        <Button
-          onClick={handleAnalyze}
-          disabled={!text.trim() || isAnalyzing}
-          icon={isAnalyzing ? Loader2 : undefined}
-          iconClassName={isAnalyzing ? 'animate-spin' : ''}
-        >
-          {isAnalyzing ? 'Analyzing...' : 'Analyze Text'}
-        </Button>
+          <Button
+          variant = "secondary"
+            onClick={() => setText('')}
+          >
+            Clear Text
+          </Button>
+        </div>
+        
       </div>
     </div>
   );
