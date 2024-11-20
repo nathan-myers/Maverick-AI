@@ -26,7 +26,7 @@ export function DropdownButton({ icon, children, items }: DropdownButtonProps) {
       </Button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white/10 rounded-lg shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg z-10">
           <ul className="py-1">
             {items.map((item, index) => (
               <li key={index}>
@@ -37,7 +37,7 @@ export function DropdownButton({ icon, children, items }: DropdownButtonProps) {
                   }}
                   className="w-full px-4 py-2 text-left text-gray-100 hover:bg-white/10"
                 >
-                  {item.label}
+                  {item.label}  
                 </button>
               </li>
             ))}
