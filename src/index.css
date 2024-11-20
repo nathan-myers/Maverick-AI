@@ -25,5 +25,6 @@
 }
 
 .animate-gradient {
+  background-size: 200% 200%;
   animation: gradient 8s ease infinite;
 }
