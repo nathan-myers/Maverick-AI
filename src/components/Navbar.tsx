@@ -55,14 +55,12 @@ export function Navbar() {
           >
             Contributors
           </Link>
-          <div
-            onClick={() =>
-              window.open("https://github.com/Swifty9/Maverick-AI", "_blank")
-            }
-            className="cursor-pointer py-2"
+          <Link
+            to="/login"
+            className="hover:text-blue-400 transition-colors py-2"
           >
-            <Github className="h-6 w-6" />
-          </div>
+            Login
+          </Link>
         </div>
       </div>
 
