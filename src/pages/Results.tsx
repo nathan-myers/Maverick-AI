@@ -99,7 +99,7 @@ export function Results() {
         <Button 
           variant="secondary"
           icon={ArrowLeft}
-          onClick={() => navigate('/moderate-text')}
+          onClick={() => navigate('/moderate-text', {state: {text}})}
         >
           Back to Input
         </Button>
