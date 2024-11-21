@@ -2,37 +2,54 @@ import { ArrowLeft, Download } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { DropdownButton } from '../components/DropdownButton';
-import { jsPDF } from "jspdf";
-
-interface Flag {
-  word: string;
-  type: 'offensive' | 'spam' | 'inappropriate' | 'hate_speech' | 'profanity' | 'threat' | 'personal_attack' | 'emotional_content';
-  reason: string;
-  confidence: number;
-  context?: string;
-}
+import jsPDF from 'jspdf';
+import type { Flag } from '../lib/types';
 
 interface LocationState {
   text: string;
   flags: Flag[];
   overallToxicity: number;
+  summary: {
+    spamScore: number;
+    toxicityScore: number;
+    profanityCount: number;
+    emotionalIntensity: number;
+    threatLevel: number;
+    manipulationScore: number;
+    credibilityScore: number;
+  };
 }
 
 export function Results() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { text, flags, overallToxicity } = location.state as LocationState;
+  const state = location.state as LocationState;
+
+  if (!state) {
+    navigate('/moderate-text');
+    return null;
+  }
+
+  const { text, flags, overallToxicity, summary } = state;
 
   const getTypeColor = (type: Flag['type']) => {
     switch (type) {
-      case 'offensive': return 'bg-red-500/20 text-red-400';
+      case 'neutral': return 'bg-green-500/20 text-green-400';
       case 'spam': return 'bg-yellow-500/20 text-yellow-400';
-      case 'inappropriate': return 'bg-blue-500/20 text-blue-400';
       case 'hate_speech': return 'bg-purple-500/20 text-purple-400';
-      case 'emotional_content': return 'bg-green-500/20 text-green-400';
       case 'threat': return 'bg-orange-500/20 text-orange-400';
       case 'personal_attack': return 'bg-pink-500/20 text-pink-400';
-      case 'profanity': return 'bg-red-500/20 text-red-400';
+      case 'harassment': return 'bg-red-500/20 text-red-400';
+      case 'explicit_content': return 'bg-rose-500/20 text-rose-400';
+      case 'misinformation': return 'bg-blue-500/20 text-blue-400';
+      case 'self_harm': return 'bg-purple-600/20 text-purple-400';
+      case 'violence': return 'bg-red-600/20 text-red-400';
+      case 'emotional_manipulation': return 'bg-indigo-500/20 text-indigo-400';
+      case 'profanity': return 'bg-orange-600/20 text-orange-400';
+      case 'hate_group': return 'bg-purple-800/20 text-purple-400';
+      case 'conspiracy': return 'bg-blue-600/20 text-blue-400';
+      case 'impersonation': return 'bg-teal-500/20 text-teal-400';
+      case 'trolling': return 'bg-amber-500/20 text-amber-400';
       default: return 'bg-gray-500/20 text-gray-400';
     }
   };
@@ -69,18 +86,21 @@ export function Results() {
       doc.text('Detected Issues:', 20, 90);
       flags.forEach((flag, index) => {
         const yPos = 100 + (index * 10);
-        doc.setFontSize(10);
         doc.text(`${flag.type}: ${flag.reason} (${Math.round(flag.confidence * 100)}% confidence)`, 20, yPos);
       });
       
       // Add summary
       doc.setFontSize(12);
-      doc.text(`Overall Toxicity: ${Math.round(overallToxicity * 100)}%`, 20, 200);
+      const summaryY = Math.min(200, 110 + (flags.length * 10));
+      doc.text('Summary:', 20, summaryY);
+      doc.text(`Overall Toxicity: ${Math.round(overallToxicity * 100)}%`, 20, summaryY + 10);
+      doc.text(`Spam Score: ${Math.round(summary.spamScore * 100)}%`, 20, summaryY + 20);
+      doc.text(`Profanity Count: ${summary.profanityCount}`, 20, summaryY + 30);
+      doc.text(`Emotional Intensity: ${Math.round(summary.emotionalIntensity * 100)}%`, 20, summaryY + 40);
       
       doc.save('moderation-report.pdf');
     } else {
-      // JSON download
-      const jsonData = JSON.stringify({ text, flags, overallToxicity }, null, 2);
+      const jsonData = JSON.stringify({ text, flags, overallToxicity, summary }, null, 2);
       const blob = new Blob([jsonData], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -99,7 +119,7 @@ export function Results() {
         <Button 
           variant="secondary"
           icon={ArrowLeft}
-          onClick={() => navigate('/moderate-text', {state: {text}})}
+          onClick={() => navigate('/moderate-text', { state: { text } })}
         >
           Back to Input
         </Button>
@@ -107,14 +127,8 @@ export function Results() {
         <DropdownButton
           icon={Download}
           items={[
-            { 
-              label: 'Download PDF', 
-              onClick: () => handleDownload('pdf')
-            },
-            { 
-              label: 'Download JSON', 
-              onClick: () => handleDownload('json')
-            }
+            { label: 'Download PDF', onClick: () => handleDownload('pdf') },
+            { label: 'Download JSON', onClick: () => handleDownload('json') }
           ]}
         >
           Download Report
@@ -129,39 +143,95 @@ export function Results() {
               Found {flags.length} potential {flags.length === 1 ? 'issue' : 'issues'}
             </p>
             <span className="text-gray-400">•</span>
-            <p className={`${getToxicityColor(overallToxicity)}`}>
+            <p className={getToxicityColor(overallToxicity)}>
               {getToxicityLevel(overallToxicity)} ({Math.round(overallToxicity * 100)}% toxicity)
             </p>
           </div>
         </div>
 
-        <div className="bg-white/5 p-6 rounded-lg">
+        {/* Display the analyzed text */}
+        <div className="bg-white/5 p-6 rounded-xl">
           <h2 className="text-xl font-semibold mb-4">Analyzed Text</h2>
-          <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-            {text}
-          </p>
+          <p className="text-gray-300 whitespace-pre-wrap">{text}</p>
         </div>
 
-        <div className="bg-white/5 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Flagged Content</h2>
-          <div className="space-y-4">
-            {flags.map((flag, index) => (
-              <div 
-                key={index}
-                className="flex items-start space-x-4 p-4 rounded-lg bg-white/5"
-              >
-                <div className={`px-3 py-1 rounded-full text-sm ${getTypeColor(flag.type)}`}>
-                  {flag.type.replace('_', ' ')}
+        {/* Display flags */}
+        {flags.length > 0 && (
+          <div className="bg-white/5 p-6 rounded-xl">
+            <h2 className="text-xl font-semibold mb-4">Detected Issues</h2>
+            <div className="space-y-4">
+              {flags.map((flag, index) => (
+                <div key={index} className={`p-4 rounded-lg ${getTypeColor(flag.type)}`}>
+                  <div className="font-semibold mb-1 capitalize">
+                    {flag.type.replace(/_/g, ' ')}
+                  </div>
+                  <p className="text-sm opacity-90">{flag.reason}</p>
+                  {flag.context && (
+                    <p className="text-sm mt-2 opacity-75">
+                      Context: "{flag.context}"
+                    </p>
+                  )}
+                  <div className="text-sm mt-2 opacity-75">
+                    Confidence: {Math.round(flag.confidence * 100)}%
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="font-medium mb-1">"{flag.word}"</p>
-                  <p className="text-sm text-gray-400">{flag.reason}</p>
-                </div>
-                <div className={`text-sm ${getToxicityColor(flag.confidence)}`}>
-                  {Math.round(flag.confidence * 100)}% confidence
-                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Display summary */}
+        <div className="bg-white/5 p-6 rounded-xl">
+          <h2 className="text-xl font-semibold mb-4">Analysis Summary</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Toxicity Score</div>
+              <div className={`text-xl font-semibold ${getToxicityColor(summary.toxicityScore)}`}>
+                {Math.round(summary.toxicityScore * 100)}%
               </div>
-            ))}
+            </div>
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Spam Score</div>
+              <div className="text-xl font-semibold text-yellow-400">
+                {Math.round(summary.spamScore * 100)}%
+              </div>
+            </div>
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Profanity Count</div>
+              <div className="text-xl font-semibold text-red-400">
+                {summary.profanityCount}
+              </div>
+            </div>
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Emotional Intensity</div>
+              <div className="text-xl font-semibold text-purple-400">
+                {Math.round(summary.emotionalIntensity * 100)}%
+              </div>
+            </div>
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Threat Level</div>
+              <div className="text-xl font-semibold text-orange-400">
+                {Math.round(summary.threatLevel * 100)}%
+              </div>
+            </div>
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Manipulation Score</div>
+              <div className="text-xl font-semibold text-indigo-400">
+                {Math.round(summary.manipulationScore * 100)}%
+              </div>
+            </div>
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Credibility Score</div>
+              <div className="text-xl font-semibold text-emerald-400">
+                {Math.round(summary.credibilityScore * 100)}%
+              </div>
+            </div>
+            <div className="p-4 bg-white/5 rounded-lg">
+              <div className="text-sm text-gray-400">Overall Risk</div>
+              <div className={`text-xl font-semibold ${getToxicityColor(overallToxicity)}`}>
+                {getToxicityLevel(overallToxicity)}
+              </div>
+            </div>
           </div>
         </div>
       </div>
