@@ -1,15 +1,15 @@
-import { analyzeWithGemma } from './gemmaService';
+import { analyzeWithMistral } from './mistralService';
 import type { ModerationResult } from './types';
 
 export async function moderateText(text: string): Promise<ModerationResult> {
   try {
-    const gemmaAnalysis = await analyzeWithGemma(text);
+    const mistralAnalysis = await analyzeWithMistral(text);
     
     return {
       text,
-      flags: gemmaAnalysis.flags,
-      overallToxicity: gemmaAnalysis.overallToxicity,
-      summary: gemmaAnalysis.summary
+      flags: mistralAnalysis.flags,
+      overallToxicity: mistralAnalysis.overallToxicity,
+      summary: mistralAnalysis.summary
     };
   } catch (error) {
     console.error('Moderation failed:', error);

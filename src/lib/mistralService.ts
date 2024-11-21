@@ -64,7 +64,7 @@ const MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2";
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
-export async function analyzeWithGemma(text: string) {
+export async function analyzeWithMistral(text: string) {
   if (!import.meta.env.VITE_HUGGINGFACE_API_KEY) {
     throw new Error('HuggingFace API key is not configured');
   }
@@ -86,7 +86,7 @@ export async function analyzeWithGemma(text: string) {
       });
 
       if (!response.generated_text) {
-        throw new Error('No response from Gemma API');
+        throw new Error('No response from Mistral API');
       }
 
       // More aggressive cleanup of the response
