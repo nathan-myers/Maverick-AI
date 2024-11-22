@@ -159,62 +159,26 @@ erDiagram
         timestamp last_updated
     }
 
-    ROLE_MAPPING {
-        string username PK
-        string role FK
-    }
-
-    CUSTOM_ROLES {
-        string role_id PK
-        string role_name
-        string description
-        timestamp created_at
-    }
-
-    SYNC_LOGS {
-        string log_id PK
-        timestamp sync_time
-        string status
-        text error_message
-        integer contributors_updated
-    }
-
     MODERATION_RESULTS {
         string result_id PK
         text input_text
         float overall_toxicity
-        float spam_score
-        integer profanity_count
-        float emotional_intensity
+        json summary
         timestamp created_at
-        string user_id FK
     }
 
     CONTENT_FLAGS {
         string flag_id PK
         string result_id FK
-        string word
-        string flag_type
+        string type
         string reason
         float confidence
         string context
+        string severity
     }
 
-    AI_PREDICTIONS {
-        string prediction_id PK
-        string result_id FK
-        string model_source
-        string model_name
-        json raw_prediction
-        timestamp prediction_time
-    }
-
-    CONTRIBUTORS ||--o{ ROLE_MAPPING : has
-    ROLE_MAPPING }o--|| CUSTOM_ROLES : uses
-    CONTRIBUTORS ||--o{ SYNC_LOGS : tracked_in
     MODERATION_RESULTS ||--|{ CONTENT_FLAGS : contains
-    MODERATION_RESULTS ||--|{ AI_PREDICTIONS : includes
-    CONTRIBUTORS ||--o{ MODERATION_RESULTS : requests
+
 ```
 
 ---
