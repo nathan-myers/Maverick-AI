@@ -13,8 +13,11 @@ COPY . .
 # Create .env file from build args
 ARG VITE_SUPABASE_URL
 ARG VITE_SUPABASE_ANON_KEY
+ARG VITE_HUGGINGFACE_API_KEY
+
 RUN echo "VITE_SUPABASE_URL=$VITE_SUPABASE_URL" > .env && \
-    echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> .env
+    echo "VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY" >> .env && \
+    echo "VITE_HUGGINGFACE_API_KEY=$VITE_HUGGINGFACE_API_KEY" >> .env
 
 # Build the application
 RUN npm run build
@@ -28,4 +31,4 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD nginx -g 'daemon off;'
