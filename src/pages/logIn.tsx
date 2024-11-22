@@ -17,9 +17,9 @@ export function LogIn() {
       <main className="flex flex-col md:flex-row items-center justify-between px-12 py-16 gap-12 w-full max-w-6xl">
         {/* Left Section */}
         <div className="text-center md:text-left md:w-1/2">
-          <h2 className="text-5xl font-bold text-indigo-700 mb-4">
+          {/* <h2 className="text-5xl font-bold text-indigo-700 mb-4">
             LARGEST IMAGE SOURCE
-          </h2>
+          </h2> */}
           <p className="text-gray-700 mb-6">
             POWERED BY <span className="line-through">Creators</span> Developers AROUND THE WORLD.
           </p>
