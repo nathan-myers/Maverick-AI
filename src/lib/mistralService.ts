@@ -66,7 +66,11 @@ const RETRY_DELAY = 1000; // 1 second
 
 export async function analyzeWithMistral(text: string) {
   if (!import.meta.env.VITE_HUGGINGFACE_API_KEY) {
-    throw new Error('HuggingFace API key is not configured');
+    console.error('HuggingFace API key missing in environment:', {
+      exists: !!import.meta.env.VITE_HUGGINGFACE_API_KEY,
+      env: import.meta.env
+    });
+    throw new Error('HuggingFace API key is not configured in environment variables');
   }
 
   let attempts = 0;
