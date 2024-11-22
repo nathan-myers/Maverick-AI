@@ -145,41 +145,6 @@ sequenceDiagram
     
     deactivate WEB
 ```
----
-
-### Database Schema
-```mermaid
-erDiagram
-    CONTRIBUTORS {
-        string github_username PK
-        string name
-        string avatar_url
-        integer contributions
-        string role
-        timestamp last_updated
-    }
-
-    MODERATION_RESULTS {
-        string result_id PK
-        text input_text
-        float overall_toxicity
-        json summary
-        timestamp created_at
-    }
-
-    CONTENT_FLAGS {
-        string flag_id PK
-        string result_id FK
-        string type
-        string reason
-        float confidence
-        string context
-        string severity
-    }
-
-    MODERATION_RESULTS ||--|{ CONTENT_FLAGS : contains
-
-```
 
 ---
 
