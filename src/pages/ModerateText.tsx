@@ -20,9 +20,16 @@ export function ModerateText() {
 
     try {
       const result = await moderateText(text);
+      if (!result) {
+        throw new Error('No analysis results received');
+      }
       navigate('/results', { state: result });
-    } catch {
-      setError('Failed to analyze text. Please try again.');
+    } catch (error) {
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to analyze text. Please check your API key and try again.';
+      console.error('Analysis error:', error);
+      setError(errorMessage);
       setIsAnalyzing(false);
     }
   };
