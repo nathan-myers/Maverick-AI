@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 dotenv.config();
 
-const GITHUB_TOKEN = process.env.VITE_GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.PAT_TOKEN;
 const REPO_OWNER = 'Swifty9';
 const REPO_NAME = 'Maverick-AI';
 
