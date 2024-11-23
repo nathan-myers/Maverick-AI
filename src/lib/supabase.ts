@@ -2,20 +2,27 @@ import { createClient } from '@supabase/supabase-js';
 
 // Handle both Vite and Node.js environments
 const getEnvVariable = (key: string) => {
-  if (typeof process !== 'undefined' && process.env && process.env[key]) {
-    return process.env[key];
+  // Check for Vite's import.meta.env first since we're primarily a Vite app
+  if (typeof import.meta !== 'undefined' && import.meta.env) {
+    return import.meta.env[`VITE_${key}`];
   }
-  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[key]) {
-    return import.meta.env[key];
+  // Fallback to process.env for Node.js environment
+  if (typeof process !== 'undefined' && process.env) {
+    return process.env[`VITE_${key}`];
   }
   return undefined;
 };
 
-const supabaseUrl = getEnvVariable('VITE_SUPABASE_URL');
-const supabaseAnonKey = getEnvVariable('VITE_SUPABASE_ANON_KEY');
+const supabaseUrl = getEnvVariable('SUPABASE_URL');
+const supabaseAnonKey = getEnvVariable('SUPABASE_ANON_KEY');
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase credentials');
+  console.error('Supabase credentials missing:', {
+    url: !!supabaseUrl,
+    key: !!supabaseAnonKey,
+    env: typeof import.meta !== 'undefined' ? import.meta.env : process.env
+  });
+  throw new Error('Missing Supabase credentials. Please check your environment variables.');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
