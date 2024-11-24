@@ -10,7 +10,6 @@ import { Contributors } from './pages/Contributors';
 import { Mission } from './pages/mission';
 import { Team } from './pages/team';
 import { Global } from './pages/global';
-import { ModerateText as DemoTextModeration } from './pages/demoTextModeration'; // Ensure correct import
 import { NotFound } from './pages/404';
 
 import { LogIn } from './pages/logIn';
@@ -34,7 +33,6 @@ function App() {
           <Route path="/signup" element={<SignUp />} /> {/* Ensure correct path */}
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/moderate-text" element={<ModerateText />} />
-          <Route path="/demoTextModeration" element={<DemoTextModeration />} />
           <Route path="/results" element={<Results />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

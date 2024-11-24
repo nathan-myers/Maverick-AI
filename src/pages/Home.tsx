@@ -31,9 +31,6 @@ export function Home() {
           <Button icon={Rocket} onClick={() => navigate("/moderate-text")}>
             Get Started
           </Button>
-          <Button icon={Rocket} onClick={() => navigate("/demoTextModeration")}>
-            Try Out Demo
-          </Button>
           <Button variant="secondary">Learn More</Button>
         </div>
       </div>
