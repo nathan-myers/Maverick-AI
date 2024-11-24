@@ -1,4 +1,4 @@
-import { Github, Shield, Menu, X } from "lucide-react";
+import { Github, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import React from "react";
 
@@ -10,7 +10,6 @@ export function Navbar() {
       <div className="flex items-center justify-between">
         {/* Logo Section */}
         <Link to="/" className="flex items-center space-x-2">
-          <Shield className="h-8 w-8 text-blue-400" />
           <span className="text-xl font-bold">Maverick AI</span>
         </Link>
 

@@ -19,7 +19,41 @@ import { SignUp } from './pages/signUp'; // Ensure correct import
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+      <div className="min-h-screen bg-black text-white relative overflow-hidden">
+        {/* Fluid Gradient Background */}
+        <div className="fixed inset-0 -z-10">
+          {/* Primary gradient */}
+          <div 
+            className="absolute top-1/2 left-1/2 w-[1000px] h-[1000px] rounded-full fluid-gradient"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.05))',
+            }}
+          />
+          
+          {/* Secondary gradient */}
+          <div 
+            className="absolute top-1/2 left-1/2 w-[800px] h-[800px] rounded-full fluid-gradient"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.05))',
+              animationDelay: '-5s',
+              animationDuration: '20s'
+            }}
+          />
+          
+          {/* Accent gradient */}
+          <div 
+            className="absolute top-1/2 left-1/2 w-[600px] h-[600px] rounded-full fluid-gradient"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05))',
+              animationDelay: '-10s',
+              animationDuration: '25s'
+            }}
+          />
+
+          {/* Shimmer overlay */}
+          <div className="absolute inset-0 gradient-shimmer" />
+        </div>
+
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -36,12 +70,6 @@ function App() {
           <Route path="/results" element={<Results />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-
-        {/* Background Decoration */}
-        <div className="fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-b from-blue-500/20 to-purple-500/20 blur-3xl transform rotate-12 opacity-30" />
-          <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-t from-blue-500/20 to-purple-500/20 blur-3xl transform -rotate-12 opacity-30" />
-        </div>
       </div>
     </BrowserRouter>
   );

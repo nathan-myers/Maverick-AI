@@ -6,8 +6,8 @@ export default {
   ],
   theme: {
     extend: {
-      scale : {
-        '102' : "1.02",
+      animation: {
+        'gradient-x': 'gradient-x 3s ease-in-out infinite',
       },
     },
   },

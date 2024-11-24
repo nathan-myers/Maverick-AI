@@ -4,6 +4,7 @@ import { Button } from '../components/Button';
 import { DropdownButton } from '../components/DropdownButton';
 import jsPDF from 'jspdf';
 import type { Flag } from '../lib/types';
+import { motion } from 'framer-motion';
 
 
 interface LocationState {
@@ -35,23 +36,23 @@ export function Results() {
 
   const getTypeColor = (type: Flag['type']) => {
     switch (type) {
-      case 'neutral': return 'bg-green-500/20 text-green-400';
-      case 'spam': return 'bg-yellow-500/20 text-yellow-400';
-      case 'hate_speech': return 'bg-purple-500/20 text-purple-400';
-      case 'threat': return 'bg-orange-500/20 text-orange-400';
-      case 'personal_attack': return 'bg-pink-500/20 text-pink-400';
-      case 'harassment': return 'bg-red-500/20 text-red-400';
-      case 'explicit_content': return 'bg-rose-500/20 text-rose-400';
-      case 'misinformation': return 'bg-blue-500/20 text-blue-400';
-      case 'self_harm': return 'bg-purple-600/20 text-purple-400';
-      case 'violence': return 'bg-red-600/20 text-red-400';
-      case 'emotional_manipulation': return 'bg-indigo-500/20 text-indigo-400';
-      case 'profanity': return 'bg-orange-600/20 text-orange-400';
-      case 'hate_group': return 'bg-purple-800/20 text-purple-400';
-      case 'conspiracy': return 'bg-blue-600/20 text-blue-400';
-      case 'impersonation': return 'bg-teal-500/20 text-teal-400';
-      case 'trolling': return 'bg-amber-500/20 text-amber-400';
-      default: return 'bg-gray-500/20 text-gray-400';
+      case 'neutral': return 'bg-white/10 text-white';
+      case 'spam': return 'bg-gray-500/10 text-gray-300';
+      case 'hate_speech': return 'bg-zinc-500/10 text-zinc-300';
+      case 'threat': return 'bg-gray-600/10 text-gray-300';
+      case 'personal_attack': return 'bg-zinc-600/10 text-zinc-300';
+      case 'harassment': return 'bg-red-500/10 text-red-300';
+      case 'explicit_content': return 'bg-rose-500/10 text-rose-300';
+      case 'misinformation': return 'bg-blue-500/10 text-blue-300';
+      case 'self_harm': return 'bg-purple-600/10 text-purple-300';
+      case 'violence': return 'bg-red-600/10 text-red-300';
+      case 'emotional_manipulation': return 'bg-indigo-500/10 text-indigo-300';
+      case 'profanity': return 'bg-orange-600/10 text-orange-300';
+      case 'hate_group': return 'bg-purple-800/10 text-purple-300';
+      case 'conspiracy': return 'bg-blue-600/10 text-blue-300';
+      case 'impersonation': return 'bg-teal-500/10 text-teal-300';
+      case 'trolling': return 'bg-amber-500/10 text-amber-300';
+      default: return 'bg-gray-500/10 text-gray-400';
     }
   };
 
@@ -112,6 +113,46 @@ export function Results() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+  };
+
+  const MetricsGraph = ({ summary }: { summary: LocationState['summary'] }) => {
+    const metrics = [
+      { label: 'Toxicity', value: summary.toxicityScore * 100, color: 'from-red-500 to-red-600' },
+      { label: 'Threat', value: summary.threatLevel * 100, color: 'from-orange-500 to-orange-600' },
+      { label: 'Emotional', value: summary.emotionalIntensity * 100, color: 'from-purple-500 to-purple-600' },
+      { label: 'Manipulation', value: summary.manipulationScore * 100, color: 'from-blue-500 to-blue-600' },
+      { label: 'Credibility', value: summary.credibilityScore * 100, color: 'from-green-500 to-green-600' }
+    ];
+
+    return (
+      <div className="bg-black/40 backdrop-blur-xl p-8 rounded-3xl mt-8">
+        <h2 className="text-[32px] font-semibold tracking-tight mb-8">Metrics Analysis</h2>
+        <div className="space-y-8">
+          {metrics.map((metric, index) => (
+            <div key={metric.label} className="space-y-3">
+              <div className="flex justify-between items-baseline">
+                <span className="text-[17px] font-medium text-neutral-400">{metric.label}</span>
+                <span className="text-[21px] font-semibold">{Math.round(metric.value)}%</span>
+              </div>
+              <div className="h-[6px] bg-white/5 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${metric.value}%` }}
+                  transition={{ 
+                    duration: 1.2, 
+                    delay: index * 0.15,
+                    ease: [0.42, 0, 0.58, 1] // Apple's custom easing
+                  }}
+                  className={`h-full bg-gradient-to-r ${metric.color} relative group`}
+                >
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -181,9 +222,11 @@ export function Results() {
           </div>
         )}
 
+        <MetricsGraph summary={summary} />
+
         {/* Display summary */}
-        <div className="bg-white/5 p-6 rounded-xl">
-          <h2 className="text-xl font-semibold mb-4">Analysis Summary</h2>
+        <div className="bg-white/5 p-6 rounded-xl mt-8">
+          <h2 className="text-xl font-semibold mb-6">Analysis Summary</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-4 bg-white/5 rounded-lg">
               <div className="text-sm text-gray-400">Toxicity Score</div>

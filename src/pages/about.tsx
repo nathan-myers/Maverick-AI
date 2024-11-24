@@ -1,80 +1,197 @@
-import { Shield, Users, Globe } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Footer} from "../components/Footer";
-export function About() {
-  const navigate = useNavigate();
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 },
-  };
-  return (
-    <main className="container mx-auto px-6 py-20">
-      <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-blue-500 text-transparent bg-clip-text">
-          About Maverick AI
-        </h1>
-        <p className="text-xl text-gray-300 mb-12">
-          Maverick AI is dedicated to providing cutting-edge AI solutions for
-          content moderation, ensuring a safe and engaging community experience.
-        </p>
-      </div>
+import { ScrollSection } from "../components/ScrollSection";
+import { Footer } from "../components/Footer";
+import { Shield, Zap, Users } from "lucide-react";
 
-      <div className="grid md:grid-cols-3 gap-8 mt-20">
-        {[
-          {
-            Icon: Shield,
-            title: "Our Mission",
-            description:
-              "To protect online communities with intelligent, real-time content moderation.",
-            color: "blue",
-            navigate: "mission",
-            bgcolor : "bg-blue-500/10"
-          },
-          {
-            Icon: Users,
-            title: "Our Team",
-            description:
-              "A diverse group of experts in AI, machine learning, and community management.",
-            color: "purple",
-            navigate: "team",
-            bgcolor : "bg-purple-500/10"
-          },
-          {
-            Icon: Globe,
-            title: "Global Reach",
-            description:
-              " Serving communities worldwide with scalable and reliable AI solutions.",
-            color: "green",
-            navigate: "global",
-            bgcolor : "bg-green-500/10"
-          },
-        ].map((feature, index) => (
-          <motion.div
-            variants={cardVariants}
-            initial="hidden"
-            animate="visible"
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-            key={index}
+export function About() {
+  return (
+    <main className="relative">
+      {/* Hero Section */}
+      <ScrollSection className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-black z-10" />
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="w-full h-full object-cover opacity-40"
           >
-            <div
-              className="bg-white/5 p-6 rounded-xl transition-transform transform hover:scale-102 hover:shadow-lg hover:bg-white/10 focus:scale-103 focus:shadow-lg cursor-pointer"
-              onClick={() => navigate(`/${feature.navigate}`)}
+            <source src="https://www.apple.com/105/media/us/mac-pro/2019/466faaf3-8832-4c68-903f-74f86f58e0e5/anim/hero/large.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <div className="relative z-20 text-center space-y-6 max-w-4xl mx-auto px-6">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-7xl font-bold tracking-tight"
+          >
+            <span className="bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent">
+              Pioneering AI Safety
+            </span>
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-2xl text-neutral-200 font-medium"
+          >
+            Building the future of content moderation through advanced artificial intelligence
+          </motion.p>
+        </div>
+      </ScrollSection>
+
+      {/* Our Story Section */}
+      <ScrollSection className="py-32 relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-6"
             >
-              <div
-                className={`${feature.bgcolor} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
-              >
-                <feature.Icon className={`h-6 w-6 text-${feature.color}-400`} />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-400">{feature.description}</p>
-            </div>
+              <h2 className="text-4xl font-bold">Our Story</h2>
+              <p className="text-xl text-neutral-400">
+                Founded in 2024, Maverick AI emerged from a simple yet powerful idea: 
+                to make the internet a safer place for everyone. Our team of AI researchers 
+                and engineers came together with a shared vision of transforming content 
+                moderation through cutting-edge artificial intelligence.
+              </p>
+              <p className="text-xl text-neutral-400">
+                Today, we're proud to be at the forefront of AI safety, helping platforms 
+                of all sizes maintain healthy online communities.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-2 gap-4"
+            >
+              {[
+                { number: "100M+", label: "Content Pieces Processed" },
+                { number: "99.9%", label: "Accuracy Rate" },
+                { number: "1000+", label: "Platforms Protected" },
+                { number: "24/7", label: "Real-time Protection" }
+              ].map((stat, index) => (
+                <div key={index} className="bg-white/5 p-6 rounded-xl text-center">
+                  <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-sm text-neutral-400">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </ScrollSection>
+
+      {/* Our Values */}
+      <ScrollSection className="py-32 bg-black/50">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl font-bold mb-6">Our Values</h2>
+            <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
+              At Maverick AI, our values guide everything we do, from developing new features 
+              to supporting our customers.
+            </p>
           </motion.div>
-        ))}
-      </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Shield,
+                title: "Safety First",
+                description: "We prioritize user safety and content integrity above all else."
+              },
+              {
+                icon: Zap,
+                title: "Innovation",
+                description: "Constantly pushing the boundaries of what's possible with AI technology."
+              },
+              {
+                icon: Users,
+                title: "Community",
+                description: "Building and supporting healthy online communities through advanced moderation."
+              }
+            ].map((value, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white/5 p-8 rounded-xl text-center hover:bg-white/10 transition-all duration-300"
+              >
+                <value.icon className="w-12 h-12 text-purple-400 mx-auto mb-6" />
+                <h3 className="text-2xl font-semibold mb-4">{value.title}</h3>
+                <p className="text-neutral-400">{value.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </ScrollSection>
+
+      {/* Team Section */}
+      <ScrollSection className="py-32">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-4xl font-bold mb-6">Backed by Experts</h2>
+            <p className="text-xl text-neutral-400 max-w-3xl mx-auto">
+              Our team brings together expertise from leading tech companies and research institutions, 
+              united by the mission to create safer online spaces.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              "AI Research", "Engineering", "Safety", "Ethics"
+            ].map((expertise, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white/5 p-6 rounded-xl text-center"
+              >
+                <div className="text-lg font-semibold text-purple-400 mb-2">{expertise}</div>
+                <div className="text-sm text-neutral-400">Expert Team</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </ScrollSection>
+
+      {/* CTA Section */}
+      <ScrollSection className="py-32 bg-gradient-to-b from-purple-900/20 to-black">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
+          <p className="text-xl text-neutral-400 mb-8">
+            Join the growing number of platforms using Maverick AI to create safer online communities.
+          </p>
+          <button className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+            Contact Us
+          </button>
+        </div>
+      </ScrollSection>
+
       <Footer />
     </main>
-    
-    
   );
 }
