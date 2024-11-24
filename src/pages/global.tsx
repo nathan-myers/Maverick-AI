@@ -1,4 +1,5 @@
 import { easeInOut, motion } from "framer-motion";
+import { Footer } from "../components/Footer";
 export function Global() {
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.8, z: -50 },
@@ -191,6 +192,7 @@ export function Global() {
           safely online.
         </p>
       </div>
+      <Footer />
     </main>
   );
 }
