@@ -1,98 +1,139 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "../components/Footer";
 
 export function SignUp() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-  const handleSignUp = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    navigate('/home');
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle sign up logic here
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-      {/* <Navbar /> */}
-      {/* Main Content */}
-      <main className="flex flex-col md:flex-row items-center justify-between px-12 py-16 gap-12 w-full max-w-6xl">
-        {/* Left Section */}
-        <div className="text-center md:text-left md:w-1/2">
-          <h2 className="text-5xl font-bold text-purple-700 mb-4">
-            JOIN THE CRAZIEST AI COMMUNITY
-          </h2>
-          <p className="text-gray-700 mb-6">
-            POWERED BY <span className="line-through">Creators</span> Innovators AROUND THE WORLD.
-          </p>
-          <p className="text-gray-500">
-            Maverick AI offers cutting-edge AI solutions that push the boundaries of what's possible.{" "}
-            <a
-              href="/login"
-              className="text-purple-600 underline hover:text-purple-800"
-            >
-              →
-            </a>
-          </p>
+    <div className="flex flex-col min-h-screen bg-black">
+      <main className="flex-grow relative">
+        {/* Background with overlay */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/80 to-black z-10" />
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="w-full h-full object-cover opacity-20"
+          >
+            <source src="https://www.apple.com/105/media/us/mac-pro/2019/466faaf3-8832-4c68-903f-74f86f58e0e5/anim/hero/large.mp4" type="video/mp4" />
+          </video>
         </div>
 
-        {/* Right Section */}
-        <div className="bg-white shadow-lg rounded-lg p-8 md:w-1/3">
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
-            Sign Up
-          </h2>
-          <form onSubmit={handleSignUp}>
-            <div className="mb-4">
-              <label className="block text-gray-600 mb-2" htmlFor="email">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-2 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
-              />
+        {/* Sign Up Form */}
+        <div className="relative z-20 flex flex-col items-center justify-center min-h-screen p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full max-w-md"
+          >
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold mb-2">Create Account</h1>
+              <p className="text-neutral-400">Join Maverick AI and start moderating content</p>
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-600 mb-2" htmlFor="password">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="********"
-                className="w-full px-4 py-2 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
-              />
+
+            <div className="bg-white/5 backdrop-blur-xl p-8 rounded-2xl shadow-xl">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-neutral-200 mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors text-white"
+                    placeholder="John Doe"
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-neutral-200 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors text-white"
+                    placeholder="you@example.com"
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-neutral-200 mb-2">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors text-white"
+                    placeholder="Create a strong password"
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-neutral-200 mb-2">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors text-white"
+                    placeholder="Confirm your password"
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  />
+                </div>
+
+                <div className="text-sm text-neutral-400 text-center">
+                  <p className="mb-2">By signing up, you agree to our</p>
+                  <div className="flex gap-2 justify-center">
+                    <a href="/terms" className="text-purple-400 hover:text-purple-300">Terms of Service</a>
+                    <span>and</span>
+                    <a href="/privacy" className="text-purple-400 hover:text-purple-300">Privacy Policy</a>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 rounded-lg transition-colors"
+                >
+                  Create Account
+                </button>
+              </form>
+
+              <div className="mt-6 text-center">
+                <p className="text-neutral-400">
+                  Already have an account?{" "}
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
+                  >
+                    Sign In
+                  </button>
+                </p>
+              </div>
             </div>
-            <button
-              type="submit"
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
-            >
-              Sign Up
-            </button>
-          </form>
-          <p className="mt-4 text-center text-gray-600">
-            Already have an account?{" "}
-            <span
-              onClick={() => navigate('/login')}
-              className="text-purple-600 underline cursor-pointer hover:text-purple-800"
-            >
-              Log In
-            </span>
-          </p>
+          </motion.div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-purple-900 text-white py-8 w-full">
-        <div className="container mx-auto px-8 flex items-center">
-          <img src="/assets/Maverick-AI.png" alt="Maverick-AI logo" className="w-10 h-10 mr-4" />
-          <p className="text-sm">
-            We build software that helps people all around the world. We make
-            sure that we are building to ship.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

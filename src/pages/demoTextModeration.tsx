@@ -4,10 +4,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { TextArea } from '../components/TextArea';
 import { moderateText } from '../lib/moderation';
+import { Flag } from '../lib/types';
 
 interface AnalysisResult {
-  // Define the structure of the analysis result
-  [key: string]: any;
+  text: string;
+  flags: Flag[];
+  overallToxicity: number;
+  summary: {
+    spamScore: number;
+    toxicityScore: number;
+    profanityCount: number;
+    emotionalIntensity: number;
+    threatLevel: number;
+    manipulationScore: number;
+    credibilityScore: number;
+  };
 }
 
 export function ModerateText() {
@@ -56,8 +67,9 @@ export function ModerateText() {
             fileText = json.text;
           }
           setText(fileText);
-        } catch (error) {
-          setError(error.message);
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+          setError(errorMessage);
         }
       };
       reader.readAsText(file);
