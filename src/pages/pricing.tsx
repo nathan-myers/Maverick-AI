@@ -1,6 +1,6 @@
 import { DollarSign, CreditCard, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { Footer } from "../components/Footer";
 export function Pricing() {
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -90,6 +90,7 @@ export function Pricing() {
           </div>
         </motion.div>
       </div>
+      <Footer />
     </main>
   );
 }

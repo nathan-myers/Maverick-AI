@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Github } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { Footer } from "../components/Footer";
 
 interface Contributor {
   name: string;
@@ -131,6 +132,7 @@ export function Contributors() {
           Contribute Now
         </a>
       </div>
+      <Footer />
     </main>
   );
 }

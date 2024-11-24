@@ -1,6 +1,7 @@
 import { Shield, Users, Globe } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Footer} from "../components/Footer";
 export function About() {
   const navigate = useNavigate();
   const cardVariants = {
@@ -71,6 +72,9 @@ export function About() {
           </motion.div>
         ))}
       </div>
+      <Footer />
     </main>
+    
+    
   );
 }
