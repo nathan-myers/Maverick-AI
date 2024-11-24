@@ -5,6 +5,7 @@ import { DropdownButton } from '../components/DropdownButton';
 import jsPDF from 'jspdf';
 import type { Flag } from '../lib/types';
 
+
 interface LocationState {
   text: string;
   flags: Flag[];

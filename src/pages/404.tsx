@@ -1,6 +1,7 @@
 import { SearchCheck, FileQuestion, Code } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Footer } from "../components/Footer";
 
 export function NotFound() {
     const navigate = useNavigate();
@@ -72,6 +73,7 @@ export function NotFound() {
                     </p>
                 </motion.div>
             </motion.div>
+            <Footer />
         </main>
     );
 }

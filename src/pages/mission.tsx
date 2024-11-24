@@ -1,4 +1,6 @@
+import { Footer } from "../components/Footer";
 export function Mission() {
+    
     return (
         <main className="container mx-auto px-6 py-20">
             {/* Mission Header Section */}
@@ -51,6 +53,7 @@ export function Mission() {
                     At Maverick AI, our mission is not just about moderation, it's about building a trusted digital ecosystem that fosters healthy, respectful interactions across platforms.
                 </p>
             </div>
+            <Footer />
         </main>
     );
 }

@@ -1,5 +1,7 @@
 import { Code, Cpu, Layout } from "lucide-react";
 import { motion } from "framer-motion";
+import { Footer } from "../components/Footer";
+
 export function Features() {
   const cardVariants = {
     hidden: { opacity: 0 },
@@ -63,6 +65,7 @@ export function Features() {
           </motion.div>
         ))}
       </div>
+      <Footer />
     </main>
   );
 }
