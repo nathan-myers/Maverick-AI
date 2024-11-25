@@ -6,7 +6,6 @@ import { Results } from './pages/Results';
 import { About } from './pages/about';
 import { Features } from './pages/features';
 import { Pricing } from './pages/pricing';
-import { Contributors } from './pages/Contributors';
 import { Mission } from './pages/mission';
 import { Team } from './pages/team';
 import { Global } from './pages/global';
@@ -65,7 +64,6 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} /> {/* Ensure correct path */}
-          <Route path="/contributors" element={<Contributors />} />
           <Route path="/moderate-text" element={<ModerateText />} />
           <Route path="/results" element={<Results />} />
           <Route path="*" element={<NotFound />} />
