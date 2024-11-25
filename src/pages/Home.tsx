@@ -4,6 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { ScrollSection } from "../components/ScrollSection";
 import { Footer } from '../components/Footer';
 
+const SplitText = ({ text }: { text: string }) => {
+  return (
+    <span className="letter-glow">
+      {text.split('').map((char, i) => (
+        <span key={i}>{char}</span>
+      ))}
+    </span>
+  );
+};
+
 export function Home() {
   const navigate = useNavigate();
 
@@ -51,9 +61,9 @@ export function Home() {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-6"
+            className="text-6xl md:text-8xl font-bold mb-8 tracking-tight"
           >
-            <span className="text-white">Maverick</span>{" "}
+            <SplitText text="Maverick" />{" "}
             <span className="flowing-gradient">AI</span>
           </motion.h1>
           

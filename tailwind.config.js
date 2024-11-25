@@ -6,8 +6,19 @@ export default {
   ],
   theme: {
     extend: {
-      animation: {
-        'gradient-x': 'gradient-x 3s ease-in-out infinite',
+      fontFamily: {
+        sans: [
+          '-apple-system',
+          'SF Pro Display',
+          'SF Pro Icons',
+          'Helvetica Neue',
+          'Helvetica',
+          'Arial',
+          'sans-serif'
+        ],
+      },
+      letterSpacing: {
+        tighter: '-0.035em',
       },
     },
   },
