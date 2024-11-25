@@ -57,7 +57,7 @@ export function SignUp() {
                     type="text"
                     required
                     className="w-full px-4 py-3 bg-white/10 border border-white/10 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors text-white"
-                    placeholder="John Doe"
+                    placeholder="Enter your name"
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   />
                 </div>
