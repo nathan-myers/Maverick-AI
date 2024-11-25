@@ -279,4 +279,4 @@ Contributions are welcome! Please feel free to submit a Pull Request. For more d
 
 ## License
 
-#### MIT License - feel free to use this project for your own purposes.
+#### MIT License - feel free to use this project for your own purposes.  
