@@ -1,28 +1,29 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from 'framer-motion';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 interface ScrollSectionProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export function ScrollSection({ children, className = "" }: ScrollSectionProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
+export function ScrollSection({ children, className = '' }: ScrollSectionProps) {
+  const isMobile = useIsMobile();
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.4, 1, 0.4]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  // If on mobile, render without motion effects
+  if (isMobile) {
+    return <section className={className}>{children}</section>;
+  }
 
+  // On desktop, keep the motion effects
   return (
-    <motion.div
-      ref={ref}
-      style={{ opacity, scale }}
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
       className={className}
     >
       {children}
-    </motion.div>
+    </motion.section>
   );
 }

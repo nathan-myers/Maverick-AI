@@ -220,33 +220,66 @@ const WhyChooseUs = () => {
           className="bg-white/5 rounded-2xl p-8 backdrop-blur-sm"
         >
           <h3 className="text-2xl font-bold mb-8 text-center">How We Compare</h3>
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
             {[
               {
-                feature: "Processing Speed",
-                us: "0.05s",
-                others: "2-5s",
-                advantage: "40x faster response time"
+                metric: "99.9%",
+                label: "Accuracy Rate",
+                description: "Industry-leading precision in content classification",
+                comparison: {
+                  value: "95%",
+                  difference: "5x fewer false positives"
+                }
               },
               {
-                feature: "Accuracy",
-                us: "99.9%",
-                others: "95%",
-                advantage: "5x fewer false positives"
+                metric: "0.05s",
+                label: "Processing Speed",
+                description: "Real-time moderation at scale",
+                comparison: {
+                  value: "2-5s",
+                  difference: "40x faster response time"
+                }
               },
               {
-                feature: "Language Support",
-                us: "30+",
-                others: "5-10",
-                advantage: "3x more language coverage"
+                metric: "30+",
+                label: "Language Support",
+                description: "Multilingual content support",
+                comparison: {
+                  value: "5-10",
+                  difference: "3x more language coverage"
+                }
               }
-            ].map((item, index) => (
-              <div key={index} className="flex items-center gap-8 p-4 rounded-xl bg-white/5">
-                <div className="w-1/4 font-medium">{item.feature}</div>
-                <div className="w-1/4 text-green-400 font-semibold">{item.us}</div>
-                <div className="w-1/4 text-neutral-500">{item.others}</div>
-                <div className="w-1/4 text-sm text-purple-400">{item.advantage}</div>
-              </div>
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-all duration-300"
+              >
+                <div className="flex flex-col h-full">
+                  <div className="mb-4">
+                    <h3 className="text-lg font-medium text-neutral-400 mb-2">
+                      {stat.label}
+                    </h3>
+                    <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                      {stat.metric}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-auto">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-neutral-500">Competition</span>
+                      <span className="text-neutral-400">{stat.comparison.value}</span>
+                    </div>
+                    
+                    <div className="mt-2 text-sm text-purple-400 break-words">
+                      {stat.comparison.difference}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </motion.div>
@@ -295,7 +328,7 @@ export function Features() {
           </div>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 relative z-30">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 relative z-30">
             {[
               {
                 icon: Shield,

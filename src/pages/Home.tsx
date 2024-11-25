@@ -47,20 +47,11 @@ export function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative z-20 text-center space-y-4 -mt-32">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-neutral-400 text-lg tracking-wide"
-          >
-            Introducing
-          </motion.p>
-          
+        <div className="relative z-20 text-center space-y-4 -mt-32 px-4 sm:px-6 lg:px-8">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-7xl font-bold tracking-tight mb-6"
+            className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight mb-6"
           >
             <span className="text-white">Maverick</span>{" "}
             <span className="flowing-gradient">AI</span>
@@ -70,7 +61,7 @@ export function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-3xl text-neutral-200 font-medium"
+            className="text-xl sm:text-2xl lg:text-3xl text-neutral-200 font-medium"
           >
             The future of content moderation.
           </motion.p>

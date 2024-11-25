@@ -7,10 +7,11 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
   
   body {
-    @apply antialiased bg-black;
+    @apply antialiased bg-black min-w-[320px] overflow-x-hidden;
     font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -87,6 +88,18 @@
   
   .will-change-transform {
     will-change: transform;
+  }
+
+  .responsive-container {
+    @apply px-4 md:px-6 lg:px-8 max-w-[100vw] overflow-hidden;
+  }
+  
+  .responsive-text {
+    @apply text-base md:text-lg lg:text-xl;
+  }
+  
+  .responsive-heading {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold;
   }
 }
 

@@ -65,8 +65,8 @@ export function Navbar() {
 
       {/* Mobile Dropdown Menu with Smooth Animations */}
       <div
-        className={`lg:hidden flex flex-col mt-4 rounded-lg shadow-lg overflow-hidden transition-all duration-700 ease-in-out ${
-          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        className={`lg:hidden flex flex-col mt-4 px-4 rounded-lg shadow-lg overflow-hidden transition-all duration-700 ease-in-out ${
+          isOpen ? "max-h-[500px] opacity-100 py-4 space-y-4" : "max-h-0 opacity-0"
         }`}
       >
         {/* Animate Items */}
