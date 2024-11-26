@@ -35,7 +35,7 @@ export function Footer() {
     {
       title: "Developers",
       links: [
-        { label: "GitHub", href: "https://github.com/Maverick-AI" },
+        { label: "GitHub", href: "https://github.com/Swifty9/Maverick-AI" },
         { label: "Documentation", href: "/docs" },
         { label: "API Status", href: "/api-status" },
         { label: "Open Source", href: "/open-source" }
