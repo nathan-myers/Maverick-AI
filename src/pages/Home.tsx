@@ -25,16 +25,16 @@ export function Home() {
       linkedin: "https://www.linkedin.com/in/mehul-pardeshi/"
     },
     {
+      name: "Divyesh Mali",
+      image: "/assets/divyesh.jpg",
+      role: "Co-founder & Intern @Silicon Valley",
+      linkedin: "https://www.linkedin.com/in/divyeshmali/"
+    },
+    {
       name: "Siddhesh Rajale",
       image: "/assets/sid.jpeg",
       role: "Co-founder & System Architect",
       linkedin: "https://www.linkedin.com/in/siddhesh-rajale/"
-    },
-    {
-      name: "Divyesh Mali",
-      image: "/assets/dd.jpeg",
-      role: "Co-founder & React Expert",
-      linkedin: "https://www.linkedin.com/in/divyeshmali/"
     }
   ];
 
