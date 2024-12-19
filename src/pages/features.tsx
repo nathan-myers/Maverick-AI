@@ -12,6 +12,7 @@ import {
   Clock,
 } from "lucide-react";
 import { Footer } from "../components/Footer";
+import { Link } from "react-router-dom";
 
 export interface Feature {
   icon: React.ElementType;
@@ -143,9 +144,12 @@ const FeatureSection = () => {
           <p className="text-xl text-neutral-300 mb-8 max-w-2xl mx-auto">
             Join thousands of platforms using Maverick AI to create safer online communities.
           </p>
-          <button className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
-            Start Free Trial
-          </button>
+          <Link 
+            to="/waitlist" 
+            className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+          >
+            Join Waitlist
+          </Link>
         </motion.div>
       </div>
     </ScrollSection>

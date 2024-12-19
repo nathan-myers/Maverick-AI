@@ -14,6 +14,7 @@ import { NotFound } from './pages/404';
 import { LogIn } from './pages/logIn';
 import { SignUp } from './pages/signUp'; // Ensure correct import
 import { Contributors } from "./pages/Contributors"; // Make sure this import exists
+import { Waitlist } from "./pages/Waitlist";
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} /> {/* Ensure correct path */}
+          <Route path="/waitlist" element={<Waitlist />} />
           <Route path="/moderate-text" element={<ModerateText />} />
           <Route path="/results" element={<Results />} />
           <Route path="/contributors" element={<Contributors />} />
