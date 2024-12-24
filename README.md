@@ -275,6 +275,7 @@ graph TB
 ---
 ## Contributing
 
+
 Contributions are welcome! Please feel free to submit a Pull Request. For more details, refer to the [CONTRIBUTING.md](https://github.com/Swifty9/Maverick-AI/blob/main/CONTRIBUTING.md) file.
 
 ## License
