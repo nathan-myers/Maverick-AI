@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { CheckCircle, Clock, MessageCircle, ShoppingBag, Gamepad2, Chrome, ArrowRight } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { ScrollSection } from "../components/ScrollSection";
@@ -16,6 +17,43 @@ const SplitText = ({ text }: { text: string }) => {
 
 export function Home() {
   const navigate = useNavigate();
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  function calculateTimeLeft() {
+    const difference = +new Date("2025-01-01T00:00:00") - +new Date();
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
+      };
+    }
+
+    return timeLeft;
+  }
+
+  const timerComponents = Object.keys(timeLeft).map((interval, index) => {
+    if (!timeLeft[interval]) {
+      return null;
+    }
+  
+    return (
+      <span key={index} className="text-lg font-semibold text-blue-500">
+        {timeLeft[interval]} {interval}{" "}
+      </span>
+    );
+  });
 
   const founders = [
     {
@@ -105,6 +143,80 @@ export function Home() {
               Chrome Extension
             </Link>
           </motion.div>
+        {/* Countdown Timer */}
+              <div className="text-center mb-8">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-2xl font-medium text-blue-400/90 mb-6"
+        >
+          🚀 Launching January 1st, 2025! ✨ 🎉
+        </motion.h2>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        className="pt-6 flex items-center justify-center gap-6"
+      >
+        {timerComponents.length ? (
+          <div className="flex items-center justify-center gap-4 p-8 bg-gradient-to-br from-gray-900/50 to-black rounded-xl backdrop-blur-sm border border-gray-800/50">
+            {Object.keys(timeLeft).map((interval, index) => (
+              <div key={index} className="relative perspective-[1000px]">
+                <motion.div
+                  key={timeLeft[interval]}
+                  initial={{ rotateX: -90, opacity: 0 }}
+                  animate={{ rotateX: 0, opacity: 1 }}
+                  exit={{ rotateX: 90, opacity: 0 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                    mass: 1
+                  }}
+                  className="relative w-32 h-32"
+                >
+                  {/* Top Card */}
+                  <div className="absolute w-full h-full bg-gray-800 rounded-lg shadow-lg border-t border-gray-700 origin-bottom backface-hidden flex items-center justify-center">
+                    <span className="text-6xl font-mono font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+                      {timeLeft[interval]}
+                    </span>
+                  </div>
+                  
+                  {/* Bottom Card */}
+                  <div className="absolute w-full h-full bg-gray-800 rounded-lg shadow-lg border-t border-gray-700 origin-top backface-hidden flex items-center justify-center rotate-x-180">
+                    <span className="text-6xl font-mono font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent rotate-x-180">
+                      {timeLeft[interval]}
+                    </span>
+                  </div>
+
+                  {/* Label */}
+                  <span className="absolute -bottom-8 left-0 right-0 text-sm uppercase tracking-widest text-blue-400/80 font-medium">
+                    {interval}
+                  </span>
+
+                  {/* Shine effect */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-center"
+          >
+            <span className="text-2xl font-bold text-blue-500 block mb-2">
+              Time's up! 🎊
+            </span>
+            <span className="text-xl text-blue-400">
+              Let's begin! 🚀
+            </span>
+          </motion.div>
+        )}
+      </motion.div>
         </div>
 
         {/* Scroll Indicator */}
