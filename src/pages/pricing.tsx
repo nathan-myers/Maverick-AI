@@ -1,216 +1,384 @@
 import { motion } from "framer-motion";
 import { ScrollSection } from "../components/ScrollSection";
-import { Check, Zap, Shield, Globe } from "lucide-react";
+import { Check, Zap, Shield, Globe, AlertCircle, ArrowRight, X } from "lucide-react";
 import { Footer } from "../components/Footer";
+import { Fragment } from "react";
 
 export function Pricing() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.2 }
-    }
-  };
-
-  const planVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   const plans = [
     {
-      name: "Starter",
-      price: "9",
-      description: "Perfect for small projects and individual creators",
+      name: "Community",
+      description: "Perfect for individuals and small communities",
+      price: "Free",
+      period: "during beta",
       features: [
-        "Up to 1,000 content checks/month",
-        "Basic content moderation",
-        "Email support",
-        "API access",
-        "24-hour response time"
+        "Chrome extension access",
+        "Real-time content analysis",
+        "Basic toxicity detection",
+        "100 daily checks",
+        "Community support"
       ],
-      icon: Zap,
-      accent: "from-blue-400 to-blue-600"
+      cta: "Get Started",
+      href: "/signup",
+      gradient: "from-blue-600/20 via-blue-800/20 to-blue-600/20",
+      border: "border-blue-500/20",
+      icon: Zap
     },
     {
-      name: "Professional",
-      price: "49",
-      description: "Ideal for growing businesses and teams",
+      name: "Pro",
+      description: "Advanced features for growing communities",
+      price: "$19",
+      period: "per month",
       features: [
-        "Up to 10,000 content checks/month",
-        "Advanced content moderation",
-        "Priority support",
-        "Custom API integration",
-        "4-hour response time",
-        "Custom rules engine"
+        "Everything in Community",
+        "Advanced content filtering",
+        "Custom moderation rules",
+        "1,000 daily checks",
+        "Priority email support",
+        "Early access to new features"
       ],
-      icon: Shield,
-      accent: "from-purple-400 to-purple-600",
-      featured: true
+      cta: "Upgrade to Pro",
+      href: "/signup?plan=pro",
+      gradient: "from-purple-600/20 via-purple-800/20 to-purple-600/20",
+      border: "border-purple-500/20",
+      featured: true,
+      icon: Shield
     },
     {
       name: "Enterprise",
-      price: "199",
-      description: "For large-scale operations and platforms",
+      description: "Custom solutions for large organizations",
+      price: "Custom",
+      period: "based on needs",
       features: [
-        "Unlimited content checks",
-        "Enterprise-grade moderation",
-        "24/7 dedicated support",
-        "Custom AI model training",
-        "1-hour response time",
-        "Advanced analytics",
-        "SLA guarantee"
+        "Everything in Pro",
+        "Unlimited daily checks",
+        "Custom deployment options",
+        "Dedicated support",
+        "SLA guarantees",
+        "Priority feature requests"
       ],
-      icon: Globe,
-      accent: "from-indigo-400 to-indigo-600"
+      cta: "Contact Sales",
+      href: "/contact",
+      gradient: "from-indigo-600/20 via-indigo-800/20 to-indigo-600/20",
+      border: "border-indigo-500/20",
+      icon: Globe
     }
   ];
 
+  const renderFeatureValue = (value: boolean | string) => {
+    if (typeof value === 'boolean') {
+      return value ? (
+        <Check className="w-5 h-5 text-green-400 mx-auto" />
+      ) : (
+        <X className="w-5 h-5 text-neutral-600 mx-auto" />
+      );
+    }
+    return <span className="text-sm text-neutral-300">{value}</span>;
+  };
+
   return (
-    <main className="relative min-h-screen">
-      {/* Hero Section */}
-      <ScrollSection className="pt-32 pb-20 relative">
+    <main className="min-h-screen">
+      <ScrollSection className="py-32">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <motion.p
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-lg text-neutral-400 mb-4"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 bg-purple-500/10 rounded-full px-4 py-2 border border-purple-500/20 mb-6"
             >
-              Simple, transparent pricing
-            </motion.p>
+              <AlertCircle className="w-5 h-5 text-purple-400" />
+              <span className="text-sm font-medium text-purple-300">Beta Access Available</span>
+            </motion.div>
+            
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-6xl font-bold mb-6 bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl font-bold mb-6"
             >
-              Choose your plan
+              Simple, transparent pricing
+              <br />
+              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                for any size community
+              </span>
             </motion.h1>
+            
             <motion.p
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl text-neutral-300"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-neutral-400"
             >
-              Start with our flexible pricing options. Scale as you grow.
+              Start protecting your community for free. Upgrade as you grow.
             </motion.p>
           </div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid lg:grid-cols-3 gap-8 relative z-10"
-          >
+          {/* Pricing Grid */}
+          <div className="grid lg:grid-cols-3 gap-8">
             {plans.map((plan, index) => (
               <motion.div
-                key={index}
-                variants={planVariants}
+                key={plan.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 * index }}
                 className={`
-                  relative rounded-2xl backdrop-blur-xl
-                  ${plan.featured 
-                    ? 'bg-white/10 ring-1 ring-white/20 shadow-2xl' 
-                    : 'bg-white/5 hover:bg-white/10'}
-                  transition-all duration-300 p-8
+                  relative rounded-2xl border backdrop-blur-xl
+                  ${plan.featured ? 'bg-gradient-to-b from-purple-500/10 to-transparent' : 'bg-white/5'}
+                  ${plan.border}
+                  hover:border-white/20 transition-colors
+                  p-6
                 `}
               >
                 {plan.featured && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-purple-400 to-purple-600 px-4 py-1 rounded-full text-sm font-medium">
-                      Most Popular
-                    </span>
+                    <div className="bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 rounded-full">
+                      <span className="text-sm font-medium">Most Popular</span>
+                    </div>
                   </div>
                 )}
 
-                <div className="flex items-center justify-between mb-8">
-                  <div>
-                    <h3 className="text-2xl font-semibold mb-2">{plan.name}</h3>
-                    <p className="text-neutral-400">{plan.description}</p>
+                <div className="mb-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`p-2 rounded-lg bg-gradient-to-b ${plan.gradient}`}>
+                      <plan.icon className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold">{plan.name}</h3>
                   </div>
-                  <plan.icon className={`w-8 h-8 bg-gradient-to-r ${plan.accent} bg-clip-text text-transparent`} />
+                  <p className="text-neutral-400 text-sm">{plan.description}</p>
                 </div>
 
-                <div className="mb-8">
-                  <div className="flex items-baseline">
-                    <span className="text-3xl font-semibold">$</span>
-                    <span className="text-6xl font-bold mx-1">{plan.price}</span>
-                    <span className="text-neutral-400">/month</span>
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-bold">{plan.price}</span>
+                    <span className="text-neutral-400 text-sm">{plan.period}</span>
                   </div>
                 </div>
 
                 <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center">
-                      <Check className="w-5 h-5 text-green-400 mr-3" />
-                      <span className="text-neutral-300">{feature}</span>
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                      <span className="text-sm text-neutral-300">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <button
+                <a
+                  href={plan.href}
                   className={`
-                    w-full py-4 rounded-xl font-medium transition-all duration-300
+                    group flex items-center justify-center gap-2 w-full py-3 rounded-lg
+                    text-sm font-medium transition-all
                     ${plan.featured
-                      ? 'bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700'
-                      : 'bg-white/10 hover:bg-white/20'}
+                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600'
+                      : 'bg-white/5 hover:bg-white/10'}
+                    h-12 flex items-center justify-center
                   `}
                 >
-                  Get Started
-                </button>
+                  {plan.cta}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
               </motion.div>
             ))}
-          </motion.div>
-        </div>
-      </ScrollSection>
+          </div>
 
-      {/* FAQ Section */}
-      <ScrollSection className="py-32 relative">
-        <div className="max-w-4xl mx-auto px-6">
-          <motion.h2
+          {/* Feature Comparison Table */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl font-bold text-center mb-12"
+            className="mt-32 max-w-5xl mx-auto"
           >
-            Frequently Asked Questions
-          </motion.h2>
+            <h2 className="text-3xl font-bold text-center mb-12">
+              Compare Plans
+            </h2>
+            
+            <div className="overflow-x-auto">
+              <div className="inline-block min-w-full">
+                <div className="border border-white/10 rounded-xl backdrop-blur-xl">
+                  <table className="min-w-full divide-y divide-white/10">
+                    <thead>
+                      <tr className="bg-white/5">
+                        <th scope="col" className="py-6 px-6 text-left text-sm font-semibold text-white">
+                          Features
+                        </th>
+                        <th scope="col" className="py-6 px-6 text-center text-sm font-semibold text-white">
+                          Community
+                        </th>
+                        <th scope="col" className="py-6 px-6 text-center text-sm font-semibold text-white bg-purple-500/10">
+                          Pro
+                        </th>
+                        <th scope="col" className="py-6 px-6 text-center text-sm font-semibold text-white">
+                          Enterprise
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/10">
+                      {[
+                        {
+                          category: "Content Analysis",
+                          features: [
+                            {
+                              name: "Basic Toxicity Detection",
+                              community: true,
+                              pro: true,
+                              enterprise: true
+                            },
+                            {
+                              name: "Advanced Content Filtering",
+                              community: false,
+                              pro: true,
+                              enterprise: true
+                            },
+                            {
+                              name: "Custom Filter Rules",
+                              community: false,
+                              pro: true,
+                              enterprise: true
+                            },
+                            {
+                              name: "Multi-language Support",
+                              community: false,
+                              pro: "Limited",
+                              enterprise: true
+                            }
+                          ]
+                        },
+                        {
+                          category: "Usage & Limits",
+                          features: [
+                            {
+                              name: "Daily API Checks",
+                              community: "100",
+                              pro: "1,000",
+                              enterprise: "Unlimited"
+                            },
+                            {
+                              name: "Response Time",
+                              community: "< 2s",
+                              pro: "< 1s",
+                              enterprise: "< 500ms"
+                            },
+                            {
+                              name: "Concurrent Requests",
+                              community: "5",
+                              pro: "20",
+                              enterprise: "Unlimited"
+                            }
+                          ]
+                        },
+                        {
+                          category: "Support & Services",
+                          features: [
+                            {
+                              name: "Community Support",
+                              community: true,
+                              pro: true,
+                              enterprise: true
+                            },
+                            {
+                              name: "Email Support",
+                              community: false,
+                              pro: true,
+                              enterprise: true
+                            },
+                            {
+                              name: "Dedicated Support",
+                              community: false,
+                              pro: false,
+                              enterprise: true
+                            },
+                            {
+                              name: "Custom Integration",
+                              community: false,
+                              pro: false,
+                              enterprise: true
+                            }
+                          ]
+                        }
+                      ].map((section, sectionIndex) => (
+                        <Fragment key={section.category}>
+                          <tr className="bg-white/5">
+                            <th
+                              colSpan={4}
+                              scope="colgroup"
+                              className="py-3 px-6 text-left text-sm font-semibold text-neutral-400"
+                            >
+                              {section.category}
+                            </th>
+                          </tr>
+                          {section.features.map((feature, featureIndex) => (
+                            <tr
+                              key={feature.name}
+                              className={featureIndex % 2 === 0 ? 'bg-white/[0.02]' : ''}
+                            >
+                              <td className="py-4 px-6 text-sm text-neutral-300">
+                                {feature.name}
+                              </td>
+                              <td className="py-4 px-6 text-center">
+                                {renderFeatureValue(feature.community)}
+                              </td>
+                              <td className="py-4 px-6 text-center bg-purple-500/5">
+                                {renderFeatureValue(feature.pro)}
+                              </td>
+                              <td className="py-4 px-6 text-center">
+                                {renderFeatureValue(feature.enterprise)}
+                              </td>
+                            </tr>
+                          ))}
+                        </Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
+          {/* FAQ Section */}
           <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-6"
+            className="mt-32 max-w-3xl mx-auto"
           >
-            {[
-              {
-                q: "Can I switch plans later?",
-                a: "Yes, you can upgrade or downgrade your plan at any time. Changes will be reflected in your next billing cycle."
-              },
-              {
-                q: "What payment methods do you accept?",
-                a: "We accept all major credit cards, PayPal, and wire transfers for enterprise customers."
-              },
-              {
-                q: "Is there a free trial available?",
-                a: "Yes, all plans come with a 14-day free trial. No credit card required."
-              }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={planVariants}
-                className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors"
-              >
-                <h3 className="text-xl font-semibold mb-2">{item.q}</h3>
-                <p className="text-neutral-400">{item.a}</p>
-              </motion.div>
-            ))}
+            <h2 className="text-3xl font-bold text-center mb-12">Frequently asked questions</h2>
+            <div className="space-y-6">
+              {[
+                {
+                  q: "Can I switch plans later?",
+                  a: "Yes, you can upgrade, downgrade, or cancel your plan at any time. Changes will be reflected in your next billing cycle."
+                },
+                {
+                  q: "What happens after the beta period?",
+                  a: "Beta users will receive special pricing and priority access to new features when we launch officially."
+                },
+                {
+                  q: "Do you offer a free trial of Pro features?",
+                  a: "Yes, you can try Pro features for 14 days with our free trial. No credit card required."
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 * index }}
+                  className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors"
+                >
+                  <h3 className="text-lg font-semibold mb-2">{item.q}</h3>
+                  <p className="text-neutral-400">{item.a}</p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </ScrollSection>
-
+      
       <Footer />
     </main>
   );
