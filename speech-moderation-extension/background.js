@@ -2,16 +2,47 @@ const HF_API_ENDPOINT = "https://api-inference.huggingface.co/models/mistralai/M
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 
-// Get API key from extension storage
-let HF_API_KEY = "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";  // Your API key
+// Initialize API key storage
+let HF_API_KEY = '';
 
-// Initialize API key in storage when extension loads
+// Load API key when extension starts
+chrome.storage.local.get(['huggingface_api_key'], (result) => {
+  if (result.huggingface_api_key) {
+    HF_API_KEY = result.huggingface_api_key;
+  } else {
+    // Show options page for API key configuration
+    chrome.runtime.openOptionsPage();
+  }
+});
+
+// Add context menu for API key configuration
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({ 
-    'huggingface_api_key': HF_API_KEY 
-  }, () => {
-    console.log('API key initialized');
+  // Get API key from storage or initialize it
+  chrome.storage.local.get(['huggingface_api_key'], (result) => {
+    if (!result.huggingface_api_key) {
+      // Set initial API key from environment if available
+      const envApiKey = 'VITE_HUGGINGFACE_API_KEY';
+      if (envApiKey) {
+        chrome.storage.local.set({ 
+          huggingface_api_key: envApiKey 
+        });
+        HF_API_KEY = envApiKey;
+      }
+    }
   });
+});
+
+// Handle context menu clicks
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'configureApiKey') {
+    const apiKey = prompt('Enter your HuggingFace API key:');
+    if (apiKey) {
+      chrome.storage.local.set({ huggingface_api_key: apiKey }, () => {
+        HF_API_KEY = apiKey;
+        alert('API key saved successfully!');
+      });
+    }
+  }
 });
 
 const SYSTEM_PROMPT = `<start_of_turn>system
@@ -65,9 +96,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
     return true; // Required for async response
   }
+  if (request.action === 'updateApiKey') {
+    HF_API_KEY = request.apiKey;
+    sendResponse({ success: true });
+  }
 });
 
 async function handleModeration(text) {
+  if (!HF_API_KEY) {
+    throw new Error('API key not configured. Please set your HuggingFace API key in the extension settings.');
+  }
+  
   let attempts = 0;
   while (attempts < MAX_RETRIES) {
     try {
@@ -244,26 +283,3 @@ async function handleModeration(text) {
     }
   }
 }
-
-// Add options page handling
-chrome.runtime.onInstalled.addListener(() => {
-  // Create context menu for API key configuration
-  chrome.contextMenus.create({
-    id: 'configureApiKey',
-    title: 'Configure HuggingFace API Key',
-    contexts: ['action']
-  });
-});
-
-// Handle context menu clicks
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === 'configureApiKey') {
-    const apiKey = prompt('Enter your HuggingFace API key:');
-    if (apiKey) {
-      chrome.storage.local.set({ huggingface_api_key: apiKey }, () => {
-        HF_API_KEY = apiKey;
-        alert('API key saved successfully!');
-      });
-    }
-  }
-});
