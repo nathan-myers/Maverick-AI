@@ -1,283 +1,211 @@
-# Content Moderation Software
+# Maverick AI - Content Moderation Platform
 
-### Deploy Link : https://maverick-ai.onrender.com/
+[![Deploy Status](https://img.shields.io/badge/deploy-live-success)](https://maverick-ai.onrender.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-___
+A powerful, real-time content moderation platform powered by Mistral AI, designed to create safer online spaces through intelligent content analysis.
 
-## Help & Support
-For any doubts & support, contact the maintainers of the project.
-1. Siddhesh Rajale ➡️ [![Twitter](https://img.shields.io/twitter/follow/Siddhesh_Rajale?style=social)](https://twitter.com/intent/follow?screen_name=Scholar_js)
-2. Mehul Pardeshi ➡️ [![Twitter](https://img.shields.io/twitter/follow/Mehul_Pardeshi?style=social)](https://twitter.com/intent/follow?screen_name=MehulPardeshi2)
-3. Divyesh Mali ➡️ [![Twitter](https://img.shields.io/twitter/follow/Divyesh_Mali?style=social)](https://twitter.com/intent/follow?screen_name=divyesh_mali_)
-____
+## 🌟 Key Features
 
-## AI-Powered Content Moderation Software
++ 🚀 **Real-time Analysis**
+  - Instant content moderation
+  - Fast response times
+  - Live chat monitoring
 
-A modern, real-time content moderation platform powered by TensorFlow.js and advanced AI models to help protect online communities from harmful content.
++ 🛡️ **Advanced Detection**
+  - Toxicity detection
+  - Self-harm content identification
+  - Threat detection
+  - Inappropriate language filtering
 
-### Purpose and Vision
++ 🌐 **Chrome Extension**
+  - Browser-wide protection
+  - Google Meet integration
+  - Custom moderation preferences
+  - Instant notifications
 
-This open source project aims to create a scalable, AI-powered content moderation software that can be integrated into various social media platforms and online communities. By offering an API, this software will enable platforms to seamlessly moderate text (and potentially image) content to ensure a safer environment for users. The long-term goal is to develop a robust, versatile solution that can be adopted by social media apps and other online platforms requiring effective content moderation.
++ ⚡ **Performance**
+  - High accuracy moderation
+  - 7B+ parameter AI model
+  - Support for 30+ languages
+  - 24/7 availability
 
-In the future, this software API could serve as a comprehensive moderation backbone for various apps, handling moderation tasks across diverse platforms and helping developers maintain community standards. This vision allows the project to expand beyond individual applications, providing a reliable, adaptable, and scalable content moderation service.
+## 🛠 System Architecture
 
-### Features
-
-+ 🚀 Real-time content analysis and moderation
-+ 🛡️ Detection of multiple content categories:
-+ Toxicity and hate speech
-+ Spam and scam content
-+ Inappropriate language
-+ Personal attacks and threats
-+ 📊 Detailed analysis reports with confidence scores
-+ 💾 Exportable moderation reports
-+ ⚡ Built with modern web technologies
-
-### Tech Stack
-
-+ React 18 with TypeScript
-+ TensorFlow.js for AI-powered analysis
-+ Tailwind CSS for styling
-+ Vite for blazing fast development
-+ Node js & Supabase for backend
-+ Github Actions for CI/CD
-+ Docker for containerization
-
-### Getting Started
-
-1. Fork the repository
-2. Clone the repository: *git clone https://github.com/yourusername/content-moderation-software.git*
-
-## Running the project
-
-### 1. Via Docker
-1. Install dependencies: *npm install* in root directory
-2. Start Docker Desktop
-3. Run command `docker-compose up --build` in root directory
-4. In Docker Desktop, go to Containers section and select 'maverick-ai'. Now click on `3000:80` port to open website in browser
-
-### 2. Via Node JS
-1. Install dependencies: *npm install* in root directory
-2. Start the development server: *npm run dev* in root directory
-
-## Working with AI Features
-
-### Development without API Keys
-The project includes a mock service for developing AI features without requiring API keys:
-
-1. *Automatic Mock Service*
-   - When no API key is present, the system automatically uses mock responses
-   - Perfect for testing and development of AI-related features
-   - No configuration needed
-
-
-2. *Getting Real API Keys*
-   When you need to test with real API:
-   - Request a development API key from project maintainers
-   - Create .env.local file in project root
-   - Add: VITE_HUGGINGFACE_API_KEY=your_key_here
-
-3. *Switching Between Mock and Real API*
-   - Remove/rename .env.local file to use mock service
-   - Restore .env.local file to use real API
-   - No code changes required
-
-
-### How It Works
-
-The application uses TensorFlow.js toxicity models to analyze text content in real-time. It evaluates content across multiple dimensions including:
-
-+ Toxicity levels
-+ Identity-based attacks
-+ Insults and threats
-+ Obscene content
-+ Spam patterns
-+ Inappropriate language
-   
-### Each analysis provides detailed feedback with:
-
-+ Specific content flags
-+ Confidence scores
-+ Context highlighting
-+ Overall toxicity assessment
----
-
-### Data Flow Architecture
+### Data Flow
 ```mermaid
-sequenceDiagram
-    participant GHA as GitHub Actions
-    participant GH as GitHub API
-    participant SS as Sync Script
-    participant SB as Supabase
-    participant WEB as Web Frontend
-    participant UI as User Interface
-    participant MS as Mistral Service
-    
-    Note over GHA: Triggers every 6 hours
-    
-    GHA->>SS: Initialize sync process
-    activate SS
-    
-    SS->>GH: Request contributors list
-    GH-->>SS: Return contributor data
-    
-    loop For each contributor
-        SS->>GH: Fetch detailed user info
-        GH-->>SS: Return user details
-        SS->>SB: Upsert contributor data
-        SB-->>SS: Confirm storage
+flowchart TD
+    subgraph Client
+        UI[User Interface]
+        CE[Chrome Extension]
     end
-    
-    deactivate SS
-    
-    WEB->>SB: Request contributors
-    activate WEB
-    SB-->>WEB: Return contributor list
-    
-    WEB->>UI: Render contributor grid
-    
-    Note over UI: User submits text for moderation
-    
-    UI->>WEB: Text submission
-    WEB->>MS: Text classification
-    MS-->>WEB: Mistral predictions
-    WEB->>UI: Display moderation results
-    
-    deactivate WEB
+
+    subgraph Core_Services
+        MM[Moderation Module]
+        AI[Mistral AI Engine]
+        AP[API Layer]
+    end
+
+    subgraph Processing
+        TC[Text Classification]
+        SA[Sentiment Analysis]
+        TD[Threat Detection]
+    end
+
+    UI --> |Text Input| MM
+    CE --> |Real-time Content| MM
+    MM --> |Content Analysis| AI
+    AI --> |Results| AP
+    AP --> TC & SA & TD
+    TC & SA & TD --> |Analysis Results| UI
 ```
 
----
-
-### Deployment
+### Deployment Architecture
 ```mermaid
-
-graph TB
-    subgraph "Production Environment"
-        NGINX[Nginx Server]
-        DOCKER[Docker Container]
-        ENV[Environment Variables]
-        STATIC[Static Assets]
+flowchart TD
+    subgraph Development
+        LC[Local Development]
+        DK[Docker Container]
     end
 
-    subgraph "Build Process"
-        NPM[npm build]
-        VITE[Vite Bundler]
-        TS[TypeScript Compiler]
+    subgraph Production
+        RD[Render Deployment]
+        subgraph Services
+            FE[Frontend Static Files]
+            BE[Backend API]
+        end
     end
 
-    subgraph "Version Control"
-        GIT[Git Repository]
-        GHA[GitHub Actions]
-        SECRETS[GitHub Secrets]
+    subgraph CI_CD
+        GA[GitHub Actions]
+        DB[Docker Build]
     end
 
-    subgraph "External Services"
-        GITHUB[GitHub API]
-        SUPABASE[Supabase]
-        MISTRAL[Mistral API]
-    end
-
-    GIT --> GHA
-    SECRETS --> GHA
-    GHA --> NPM
-    NPM --> VITE
-    VITE --> TS
-    TS --> DOCKER
-    DOCKER --> NGINX
-    ENV --> DOCKER
-    STATIC --> NGINX
-    
-    DOCKER --> MISTRAL
-    
-    classDef primary fill:#2563eb,stroke:#fff,stroke-width:2px,color:#fff
-    classDef secondary fill:#4b5563,stroke:#fff,stroke-width:2px,color:#fff
-    classDef external fill:#059669,stroke:#fff,stroke-width:2px,color:#fff
-    classDef ai fill:#9333ea,stroke:#fff,stroke-width:2px,color:#fff
-
-    class MISTRAL ai
-    class GITHUB,SUPABASE external
-
+    LC --> |npm run dev| DK
+    DK --> |docker-compose| GA
+    GA --> |Build & Test| DB
+    DB --> |Deploy| RD
+    RD --> FE & BE
 ```
-
----
 
 ### System Components
-
 ```mermaid
-graph TB
-    subgraph "Frontend Application"
-        WEB[Web Interface]
-        COMP[React Components]
-        HOOKS[React Hooks]
-        ROUTE[React Router]
-        MOD_UI[Moderation UI]
-        
-        WEB --> COMP
-        COMP --> HOOKS
-        WEB --> ROUTE
-        COMP --> MOD_UI
-    end
-
-    subgraph "Backend Services"
-        GHA[GitHub Actions]
-        SYNC[Sync Service]
-        FETCH[Data Fetcher]
-        
-        subgraph "AI Services"
-            MS[Mistral Service]
-            MOD[Moderation Logic]
-            
-            MS --> MOD
+graph TD
+    subgraph Frontend
+        RC[React Components]
+        RT[Router]
+        PS[Pages]
+        subgraph Components
+            FT[Features]
+            AB[About]
+            TM[Team]
+            PR[Pricing]
         end
-        
-        GHA --> SYNC
-        SYNC --> FETCH
     end
 
-    subgraph "External APIs"
-        GITHUB[GitHub API]
-        SUPA[Supabase API]
-        MISTRAL[Mistral API]
-        
-        FETCH --> GITHUB
-        MS --> MISTRAL
+    subgraph Core_Features
+        TM[Text Moderation]
+        subgraph Analysis
+            TX[Toxicity Detection]
+            TH[Threat Analysis]
+            EM[Emotional Analysis]
+            CR[Credibility Scoring]
+        end
     end
 
-    subgraph "Database Layer"
-        DB[(Supabase DB)]
-        
-        SUPA --> DB
+    subgraph Integration
+        API[API Layer]
+        MA[Mistral AI]
+        WH[Webhooks]
     end
 
-    subgraph "CI/CD Pipeline"
-        DOCKER[Docker Container]
-        NGINX[Nginx Server]
-        ENV[Environment Variables]
-        
-        DOCKER --> NGINX
-        ENV --> DOCKER
-    end
-
-    WEB --> SUPA
-    MOD_UI --> MOD
-    
-    classDef primary fill:#2563eb,stroke:#fff,stroke-width:2px,color:#fff
-    classDef secondary fill:#4b5563,stroke:#fff,stroke-width:2px,color:#fff
-    classDef external fill:#059669,stroke:#fff,stroke-width:2px,color:#fff
-    classDef ai fill:#9333ea,stroke:#fff,stroke-width:2px,color:#fff
-    
-    class WEB,COMP,HOOKS,ROUTE primary
-    class GHA,SYNC,FETCH secondary
-    class GITHUB,SUPA,MISTRAL external
-    class MS,MOD ai
+    RC --> RT
+    RT --> PS
+    PS --> FT & AB & TM & PR
+    FT --> TM
+    TM --> TX & TH & EM & CR
+    TX & TH & EM & CR --> API
+    API --> MA
+    MA --> WH
 ```
 
----
-## Contributing
+## 🛠️ Tech Stack
 
+- Frontend: React 18 + TypeScript
+- AI Engine: Mistral-7B
+- Styling: Tailwind CSS
+- Build Tool: Vite
+- Backend: Node.js + Supabase
+- CI/CD: Github Actions
+- Containerization: Docker
 
-Contributions are welcome! Please feel free to submit a Pull Request. For more details, refer to the [CONTRIBUTING.md](https://github.com/Swifty9/Maverick-AI/blob/main/CONTRIBUTING.md) file.
+## 🚀 Getting Started
 
-## License
+### Prerequisites
+- Node.js 16+
+- Docker Desktop (for containerized deployment)
+- Git
 
-#### MIT License - feel free to use this project for your own purposes.  
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/maverick-ai.git
+cd maverick-ai
+```
+
+2. Choose your preferred setup method:
+
+#### Via Docker
+```bash
+npm install
+docker-compose up --build
+# Access at http://localhost:3000
+```
+
+#### Via Node.js
+```bash
+npm install
+npm run dev
+# Access at http://localhost:5173
+```
+
+## 🔑 API Configuration
+
+1. Request API access from project maintainers
+2. Create `.env.local` file:
+```env
+VITE_MISTRAL_API_KEY=your_key_here
+```
+
+## 🧩 Chrome Extension
+
+Our extension provides real-time content moderation across browsers:
+
+1. Install from Chrome Web Store (coming soon)
+2. Configure moderation preferences
+3. Enjoy automatic content monitoring
+4. Receive instant alerts for harmful content
+
+## 🤝 Contributing
+
+We welcome contributions! See our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## 📈 Project Stats
+
+- Growing number of processed content pieces
+- Powered by Mistral-7B language model
+- Active development and improvements
+- 24/7 Real-time Protection
+
+## 🆘 Support & Contact
+
+Need help? Contact our maintainers:
+
+- Siddhesh Rajale ➡️ [![Twitter](https://img.shields.io/twitter/follow/Siddhesh_Rajale?style=social)](https://twitter.com/intent/follow?screen_name=Scholar_js)
+- Mehul Pardeshi ➡️ [![Twitter](https://img.shields.io/twitter/follow/Mehul_Pardeshi?style=social)](https://twitter.com/intent/follow?screen_name=MehulPardeshi2)
+- Divyesh Mali ➡️ [![Twitter](https://img.shields.io/twitter/follow/Divyesh_Mali?style=social)](https://twitter.com/intent/follow?screen_name=divyesh_mali_)
+
+## 📄 License
+
+MIT License - See [LICENSE](LICENSE) for details.
