@@ -1,24 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Speech Test</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 10px;
-  }
-  button {
-    margin: 5px 0;
-    padding: 10px;
-    font-size: 14px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Maverick AI Content Moderation</title>
+  <style>
+    body {
+      width: 300px;
+      padding: 20px;
+      margin: 0;
+      background: #000;
+      color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, white, #9ca3af);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    #startBtn {
+      background: rgba(167, 139, 250, 0.2);
+    }
+
+    #startBtn:hover {
+      background: rgba(167, 139, 250, 0.3);
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      opacity: 0.9;
+    }
+  </style>
 </head>
 <body>
-  <h1>Speech Test</h1>
-  <button id="startBtn">Start Speech Recognition</button>
-  <button id="stopBtn">Stop Speech Recognition</button>
+  <h1>Maverick <span style="color: #a78bfa;">AI</span></h1>
+  <p style="text-align: center; margin: -0.5rem 0 1.5rem; color: #9ca3af; font-size: 0.875rem;">
+    Real-time content moderation
+  </p>
+  <div class="button-container">
+    <button id="startBtn">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+      </svg>
+      Start Recognition
+    </button>
+    <button id="stopBtn">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+      </svg>
+      Stop Recognition
+    </button>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
