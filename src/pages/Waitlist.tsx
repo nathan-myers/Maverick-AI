@@ -2,30 +2,41 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Footer } from "../components/Footer";
 import { Rocket, Shield, Users, ArrowRight, Sparkles } from "lucide-react";
-
-interface WaitlistForm {
-  fullName: string;
-  email: string;
-  company: string;
-  role: string;
-  useCase: string;
-  monthlyUsers: string;
-}
+import { waitlistService } from '../services/waitlist';
+import { WaitlistForm } from '../types/waitlist';
 
 export function Waitlist() {
-  const [formData, setFormData] = useState<WaitlistForm>({
-    fullName: "",
-    email: "",
-    company: "",
-    role: "",
-    useCase: "",
-    monthlyUsers: "",
-  });
   const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState<WaitlistForm>({
+    fullName: '',
+    email: '',
+    company: '',
+    role: '',
+    useCase: '',
+    monthlyUsers: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    try {
+      // Add to waitlist
+      const waitlistData = await waitlistService.addToWaitlist({
+        full_name: formData.fullName,
+        email: formData.email,
+        company: formData.company,
+        role: formData.role,
+        use_case: formData.useCase,
+        monthly_users: formData.monthlyUsers
+      });
+
+      console.log('Waitlist submission successful:', waitlistData);
+
+      // Show success state
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to submit. Please try again.');
+    }
   };
 
   return (
