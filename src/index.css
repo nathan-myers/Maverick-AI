@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/digital-7-mono');
 
 @tailwind base;
 @tailwind components;
@@ -333,4 +334,11 @@
       0 0 30px rgba(255, 223, 186, 0.2);
     opacity: 1;
   }
+}
+
+/* Add these styles for the countdown timer */
+.digital-number {
+  font-family: 'Digital-7 Mono', monospace;
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.4),
+               0 0 20px rgba(168, 85, 247, 0.2);
 }
