@@ -51,7 +51,7 @@ export function CountdownTimer() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="flex flex-wrap justify-center gap-8 md:gap-12"
+        className="flex justify-center gap-4 md:gap-8 min-w-[320px] px-2"
       >
         {timeUnits.map((unit, index) => (
           <motion.div
@@ -73,10 +73,10 @@ export function CountdownTimer() {
                   style={{
                     animationDelay: `${(index * 2 + i) * 0.2}s`,
                     fontFamily: "'Digital-7 Mono', monospace",
-                    fontSize: '4rem',
+                    fontSize: 'clamp(2rem, 4vw, 4rem)',
                     lineHeight: '1',
                     display: 'inline-block',
-                    margin: '0 2px'
+                    margin: '0 1px'
                   }}
                   className="desert-gold-glow"
                 >
@@ -84,7 +84,7 @@ export function CountdownTimer() {
                 </span>
               ))}
             </div>
-            <span className="text-sm tracking-wider text-neutral-400 font-medium mt-4">
+            <span className="text-xs sm:text-sm tracking-wider text-neutral-400 font-medium mt-2">
               {unit.label}
             </span>
           </motion.div>
