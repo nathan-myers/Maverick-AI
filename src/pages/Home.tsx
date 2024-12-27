@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle, Clock, MessageCircle, ShoppingBag, Gamepad2, Chrome, ArrowRight } from "lucide-react";
+import { CheckCircle, Clock, MessageCircle, ShoppingBag, Gamepad2, Chrome, ArrowRight, PlayCircle, UserPlus } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { ScrollSection } from "../components/ScrollSection";
 import { Footer } from '../components/Footer';
@@ -89,20 +89,29 @@ export function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="pt-6 flex items-center justify-center gap-6"
+            className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
           >
-            <button 
-              onClick={() => navigate("/moderate-text")}
-              className="text-lg font-semibold text-blue-500 hover:text-blue-400 transition-colors"
+            <Link
+              to="/moderate-text"
+              className="w-full sm:w-auto px-6 py-3 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg transition-all backdrop-blur-sm border border-blue-500/20 text-center flex items-center justify-center gap-2"
             >
-              Try it now <span className="ml-2">→</span>
-            </button>
+              <PlayCircle className="w-4 h-4" />
+              Demo
+            </Link>
+            
+            <Link
+              to="/waitlist"
+              className="w-full sm:w-auto px-6 py-3 bg-green-500/10 hover:bg-green-500/20 text-green-400 rounded-lg transition-all backdrop-blur-sm border border-green-500/20 text-center flex items-center justify-center gap-2"
+            >
+              <UserPlus className="w-4 h-4" />
+              Join Waitlist
+            </Link>
             
             <Link
               to="/chrome-extension"
-              className="inline-flex items-center gap-2 text-lg font-semibold text-purple-400 hover:text-purple-300 transition-colors"
+              className="w-full sm:w-auto px-6 py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 rounded-lg transition-all flex items-center justify-center gap-2 backdrop-blur-sm border border-purple-500/20"
             >
-              <Chrome className="w-5 h-5" />
+              <Chrome className="w-4 h-4" />
               Chrome Extension
             </Link>
           </motion.div>
