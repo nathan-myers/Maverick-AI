@@ -217,6 +217,42 @@ function showMessage(text, isFinal = false) {
   contentEl.scrollTop = contentEl.scrollHeight;
 }
 
+function isMicrophoneMuted() {
+  const muteButton = document.querySelector('[aria-label*="Turn off microphone"], [aria-label*="Turn on microphone"]');
+  if (!muteButton) return false;
+  return muteButton.getAttribute('aria-label').includes('Turn on microphone');
+}
+
+let mutationObserver = null;
+
+function setupMuteObserver() {
+  if (mutationObserver) {
+    mutationObserver.disconnect();
+  }
+
+  mutationObserver = new MutationObserver(() => {
+    const isMuted = isMicrophoneMuted();
+    
+    if (isMuted && isRecognitionActive) {
+      stopSpeechRecognition();
+      showMessage('Recognition stopped: Microphone muted');
+    } else if (!isMuted && !isRecognitionActive) {
+      // Automatically restart recognition when unmuted
+      startSpeechRecognition();
+      showMessage('Recognition restarted: Microphone unmuted');
+    }
+  });
+
+  // Observe mute button for changes
+  const muteButton = document.querySelector('[aria-label*="microphone"]');
+  if (muteButton) {
+    mutationObserver.observe(muteButton, {
+      attributes: true,
+      attributeFilter: ['aria-label']
+    });
+  }
+}
+
 function startSpeechRecognition() {
   if (!recognition) {
     const initSuccessful = initializeSpeechRecognition();
@@ -226,11 +262,18 @@ function startSpeechRecognition() {
     }
   }
 
+  // Check if microphone is muted
+  if (isMicrophoneMuted()) {
+    showMessage('Microphone is muted. Cannot start recognition.');
+    return;
+  }
+
   if (!isRecognitionActive) {
     isRecognitionActive = true;
     showMessage('Starting speech recognition...');
     try {
       recognition.start();
+      setupMuteObserver(); // Setup observer when recognition starts
       showMessage('Listening... Please speak.');
     } catch (e) {
       console.error(e);
@@ -242,13 +285,20 @@ function startSpeechRecognition() {
 }
 
 function stopSpeechRecognition() {
-  if (recognition && isRecognitionActive) {
-    isRecognitionActive = false;
+  if (isRecognitionActive && recognition) {
     recognition.stop();
-    showMessage('Stopped listening.');
-  } else {
-    showMessage('Recognition not active or not initialized.');
+    isRecognitionActive = false;
+    showMessage('Recognition stopped.');
   }
+}
+
+// Clean up observer when extension is deactivated
+function cleanup() {
+  if (mutationObserver) {
+    mutationObserver.disconnect();
+    mutationObserver = null;
+  }
+  stopSpeechRecognition();
 }
 
 // Make functions available globally
@@ -350,3 +400,4 @@ if (document.readyState === 'loading') {
 } else {
   injectStyles();
 }
+
