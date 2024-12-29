@@ -3,10 +3,14 @@ let isRecognitionActive = false;
 
 function initializeSpeechRecognition() {
   try {
-    recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
+    // Create new recognition instance if null
+    if (!recognition) {
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+    }
     
+    // Always reattach event listeners when initializing
     recognition.onresult = handleRecognitionResult;
     recognition.onerror = (event) => {
       showMessage(`Error: ${event.error}`);
@@ -217,13 +221,54 @@ function showMessage(text, isFinal = false) {
   contentEl.scrollTop = contentEl.scrollHeight;
 }
 
-function startSpeechRecognition() {
-  if (!recognition) {
-    const initSuccessful = initializeSpeechRecognition();
-    if (!initSuccessful) {
-      showMessage('Initialization failed. Cannot start.');
-      return;
+function isMicrophoneMuted() {
+  const muteButton = document.querySelector('[aria-label*="Turn off microphone"], [aria-label*="Turn on microphone"]');
+  if (!muteButton) return false;
+  return muteButton.getAttribute('aria-label').includes('Turn on microphone');
+}
+
+let mutationObserver = null;
+
+function setupMuteObserver() {
+  if (mutationObserver) {
+    mutationObserver.disconnect();
+  }
+
+  mutationObserver = new MutationObserver(() => {
+    const isMuted = isMicrophoneMuted();
+    
+    if (isMuted && isRecognitionActive) {
+      stopSpeechRecognition();
+      showMessage('Recognition stopped: Microphone muted');
+    } else if (!isMuted && !isRecognitionActive) {
+      // Automatically restart recognition when unmuted
+      startSpeechRecognition();
+      showMessage('Recognition restarted: Microphone unmuted');
     }
+  });
+
+  // Observe mute button for changes
+  const muteButton = document.querySelector('[aria-label*="microphone"]');
+  if (muteButton) {
+    mutationObserver.observe(muteButton, {
+      attributes: true,
+      attributeFilter: ['aria-label']
+    });
+  }
+}
+
+function startSpeechRecognition() {
+  // Initialize recognition and event listeners
+  const initSuccessful = initializeSpeechRecognition();
+  if (!initSuccessful) {
+    showMessage('Initialization failed. Cannot start.');
+    return;
+  }
+
+  // Check if microphone is muted
+  if (isMicrophoneMuted()) {
+    showMessage('Microphone is muted. Cannot start recognition.');
+    return;
   }
 
   if (!isRecognitionActive) {
@@ -231,6 +276,7 @@ function startSpeechRecognition() {
     showMessage('Starting speech recognition...');
     try {
       recognition.start();
+      setupMuteObserver(); // Setup observer when recognition starts
       showMessage('Listening... Please speak.');
     } catch (e) {
       console.error(e);
@@ -242,13 +288,20 @@ function startSpeechRecognition() {
 }
 
 function stopSpeechRecognition() {
-  if (recognition && isRecognitionActive) {
-    isRecognitionActive = false;
+  if (isRecognitionActive && recognition) {
     recognition.stop();
-    showMessage('Stopped listening.');
-  } else {
-    showMessage('Recognition not active or not initialized.');
+    isRecognitionActive = false;
+    showMessage('Recognition stopped.');
   }
+}
+
+// Clean up observer when extension is deactivated
+function cleanup() {
+  if (mutationObserver) {
+    mutationObserver.disconnect();
+    mutationObserver = null;
+  }
+  stopSpeechRecognition();
 }
 
 // Make functions available globally
@@ -350,3 +403,4 @@ if (document.readyState === 'loading') {
 } else {
   injectStyles();
 }
+
