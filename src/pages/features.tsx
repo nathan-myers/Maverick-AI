@@ -2,378 +2,224 @@ import { motion } from "framer-motion";
 import { ScrollSection } from "../components/ScrollSection";
 import { 
   Shield, 
-  Zap, 
-  Globe, 
-  Bot, 
+  Chrome,
+  MessageCircle,
   Settings,
-  Code,
-  CheckCircle,
-  Target,
   Clock,
+  CheckCircle,
+  AlertCircle,
+  Zap,
+  ArrowRight
 } from "lucide-react";
-import { Footer } from "../components/Footer";
 import { Link } from "react-router-dom";
 
-export interface Feature {
-  icon: React.ElementType;
-  title: string;
-  description: string;
-  features?: string[];
-  items?: string[];
-}
-
-const FeatureSection = () => {
+export function Features() {
   return (
-    <ScrollSection className="py-32 relative">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Core Features */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-20"
-        >
-          <h2 className="text-4xl font-bold mb-6">Powerful Features</h2>
-          <p className="text-xl text-neutral-400">
-            Advanced AI-powered content moderation that scales with your needs, 
-            providing real-time protection across multiple platforms and languages.
-          </p>
-        </motion.div>
-
-        {/* Feature Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-32">
-          {[
-            {
-              icon: Shield,
-              title: "Content Safety",
-              description: "Real-time detection of harmful content, hate speech, and inappropriate material with 99.9% accuracy.",
-              features: [
-                "Toxicity Detection",
-                "Hate Speech Filtering",
-                "NSFW Content Blocking",
-                "Custom Safety Rules"
-              ]
-            },
-            {
-              icon: Zap,
-              title: "Lightning Fast",
-              description: "Process millions of content pieces in milliseconds with our optimized AI pipeline.",
-              features: [
-                "<50ms Response Time",
-                "Parallel Processing",
-                "Real-time Moderation",
-                "Bulk Analysis Support"
-              ]
-            },
-            {
-              icon: Globe,
-              title: "Global Scale",
-              description: "Support for multiple languages and regional content moderation requirements.",
-              features: [
-                "30+ Languages",
-                "Regional Compliance",
-                "Cultural Context",
-                "24/7 Availability"
-              ]
-            },
-            {
-              icon: Bot,
-              title: "AI Intelligence",
-              description: "Powered by advanced language models for superior understanding and accuracy.",
-              features: [
-                "Context Awareness",
-                "Sentiment Analysis",
-                "Intent Recognition",
-                "Adaptive Learning"
-              ]
-            },
-            {
-              icon: Code,
-              title: "Easy Integration",
-              description: "Simple API integration with comprehensive documentation and support.",
-              features: [
-                "RESTful API",
-                "WebSocket Support",
-                "SDK Libraries",
-                "Custom Webhooks"
-              ]
-            },
-            {
-              icon: Settings,
-              title: "Customization",
-              description: "Tailor the moderation rules and thresholds to your specific needs.",
-              features: [
-                "Custom Rulesets",
-                "Threshold Control",
-                "Category Management",
-                "Workflow Automation"
-              ]
-            }
-          ].map((feature, index) => (
+    <main className="relative min-h-screen">
+      {/* Hero Section */}
+      <ScrollSection className="pt-32 pb-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-20">
             <motion.div
-              key={index}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white/5 rounded-xl p-8 hover:bg-white/10 transition-all duration-300"
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 bg-purple-500/10 rounded-full px-4 py-2 border border-purple-500/20 mb-6"
             >
-              <feature.icon className="w-12 h-12 text-purple-400 mb-6" />
-              <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
-              <p className="text-neutral-400 mb-6">{feature.description}</p>
-              <ul className="space-y-3">
-                {feature.features.map((item, i) => (
-                  <li key={i} className="flex items-center text-sm text-neutral-300">
-                    <CheckCircle className="w-4 h-4 text-purple-400 mr-2" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <Chrome className="w-5 h-5 text-purple-400" />
+              <span className="text-sm font-medium text-purple-300">Chrome Extension Beta</span>
             </motion.div>
-          ))}
-        </div>
-
-        {/* Integration Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-2xl p-12 text-center"
-        >
-          <h3 className="text-3xl font-bold mb-6">Ready to Get Started?</h3>
-          <p className="text-xl text-neutral-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of platforms using Maverick AI to create safer online communities.
-          </p>
-          <Link 
-            to="/waitlist" 
-            className="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
-          >
-            Join Waitlist
-          </Link>
-        </motion.div>
-      </div>
-    </ScrollSection>
-  );
-};
-
-const WhyChooseUs = () => {
-  return (
-    <ScrollSection className="py-32 relative bg-black">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-20"
-        >
-          <h2 className="text-4xl font-bold mb-6">Why Choose Us?</h2>
-          <p className="text-xl text-neutral-400">
-            Our AI-powered platform delivers unmatched performance and reliability for content moderation at any scale.
-          </p>
-        </motion.div>
-
-        {/* Stats Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {[
-            {
-              value: "0.05s",
-              label: "Average Response Time",
-              description: "Lightning-fast processing for real-time moderation",
-              icon: Zap,
-              color: "purple"
-            },
-            {
-              value: "99.9%",
-              label: "Accuracy Rate",
-              description: "Industry-leading precision in content classification",
-              icon: Target,
-              color: "blue"
-            },
-            {
-              value: "24/7",
-              label: "Availability",
-              description: "Continuous monitoring and protection",
-              icon: Clock,
-              color: "green"
-            }
-          ].map((stat, index) => (
-            <motion.div
-              key={index}
+            
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="relative bg-gradient-to-b from-white/10 to-white/5 rounded-2xl p-8 overflow-hidden group"
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl font-bold leading-tight"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full transition-all duration-1000" />
-              <stat.icon className={`w-12 h-12 mb-4 text-${stat.color}-400`} />
-              <div className="text-4xl font-bold mb-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-                {stat.value}
-              </div>
-              <div className="text-lg font-medium text-white/90 mb-2">{stat.label}</div>
-              <p className="text-sm text-neutral-400">{stat.description}</p>
-            </motion.div>
-          ))}
-        </div>
+              Experience Maverick AI
+              <br />
+              <span className="flowing-gradient-text">
+                right in your browser
+              </span>
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-neutral-400"
+            >
+              Experience real-time content analysis powered by advanced AI
+            </motion.p>
+          </div>
 
-        {/* Feature Comparison */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white/5 rounded-2xl p-8 backdrop-blur-sm"
-        >
-          <h3 className="text-2xl font-bold mb-8 text-center">How We Compare</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+          {/* Current Features Grid */}
+          <div className="grid md:grid-cols-3 gap-8 mb-32">
             {[
               {
-                metric: "99.9%",
-                label: "Accuracy Rate",
-                description: "Industry-leading precision in content classification",
-                comparison: {
-                  value: "95%",
-                  difference: "5x fewer false positives"
-                }
+                icon: Shield,
+                title: "Content Analysis",
+                description: "Real-time detection of potentially harmful or inappropriate content",
+                features: [
+                  "Text content scanning",
+                  "Basic toxicity detection",
+                  "Instant alerts",
+                  "Content warnings"
+                ]
               },
               {
-                metric: "0.05s",
-                label: "Processing Speed",
-                description: "Real-time moderation at scale",
-                comparison: {
-                  value: "2-5s",
-                  difference: "40x faster response time"
-                }
+                icon: Settings,
+                title: "Customization",
+                description: "Adjust the extension settings to match your needs",
+                features: [
+                  "Sensitivity levels",
+                  "Alert preferences",
+                  "Scanning options",
+                  "Language settings"
+                ]
               },
               {
-                metric: "30+",
-                label: "Language Support",
-                description: "Multilingual content support",
-                comparison: {
-                  value: "5-10",
-                  difference: "3x more language coverage"
-                }
+                icon: Zap,
+                title: "Performance",
+                description: "Fast and efficient content moderation",
+                features: [
+                  "Real-time scanning",
+                  "Low latency",
+                  "Browser optimized",
+                  "Lightweight"
+                ]
               }
-            ].map((stat, index) => (
+            ].map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-all duration-300"
+                className="relative group"
               >
-                <div className="flex flex-col h-full">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-medium text-neutral-400 mb-2">
-                      {stat.label}
-                    </h3>
-                    <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                      {stat.metric}
+                <div className="absolute inset-0 bg-gradient-to-b from-purple-500/20 to-transparent rounded-xl blur-xl group-hover:opacity-75 transition-opacity opacity-0" />
+                <div className="relative bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-purple-500/50 transition-colors">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-3 rounded-lg bg-gradient-to-b from-purple-500/20 to-transparent">
+                      <feature.icon className="w-6 h-6 text-purple-400" />
                     </div>
+                    <h3 className="text-xl font-semibold">{feature.title}</h3>
                   </div>
-                  
-                  <div className="mt-auto">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-neutral-500">Competition</span>
-                      <span className="text-neutral-400">{stat.comparison.value}</span>
-                    </div>
-                    
-                    <div className="mt-2 text-sm text-purple-400 break-words">
-                      {stat.comparison.difference}
-                    </div>
-                  </div>
+                  <p className="text-neutral-400 mb-6">{feature.description}</p>
+                  <ul className="space-y-3">
+                    {feature.features.map((item, i) => (
+                      <li key={i} className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-400" />
+                        <span className="text-sm text-neutral-300">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </motion.div>
             ))}
           </div>
-        </motion.div>
-      </div>
-    </ScrollSection>
-  );
-};
 
-export function Features() {
-  return (
-    <main className="relative bg-black min-h-screen">
-      {/* Hero Section */}
-      <ScrollSection className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/80 to-black z-10" />
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            className="w-full h-full object-cover opacity-40"
-          >
-            <source src="https://www.apple.com/105/media/us/mac-pro/2019/466faaf3-8832-4c68-903f-74f86f58e0e5/anim/hero/large.mp4" type="video/mp4" />
-          </video>
-        </div>
-
-        <div className="relative z-20 max-w-7xl mx-auto px-6">
-          {/* Hero Content */}
-          <div className="text-center space-y-6 mb-16">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-7xl font-bold tracking-tight mb-6"
+          {/* Roadmap Section */}
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
             >
-              <span className="flowing-gradient-grey">Powerful Features</span>
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-2xl text-white max-w-3xl mx-auto"
-            >
-              Experience the next generation of content moderation with our AI-powered platform
-            </motion.p>
-          </div>
+              <h2 className="text-3xl font-bold mb-4">Development Roadmap</h2>
+              <p className="text-neutral-400">
+                Our vision for the future of content moderation
+              </p>
+            </motion.div>
 
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 relative z-30">
-            {[
-              {
-                icon: Shield,
-                title: "Advanced Protection",
-                description: "Real-time threat detection and content filtering"
-              },
-              {
-                icon: Zap,
-                title: "Lightning Fast",
-                description: "Process millions of requests in milliseconds"
-              },
-              {
-                icon: Globe,
-                title: "Global Scale",
-                description: "Support for 30+ languages and regional content"
-              }
-            ].map((feature, index) => (
+            <div className="grid md:grid-cols-2 gap-8">
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + (index * 0.1) }}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/20 transition-all duration-300"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-b from-purple-500/10 to-transparent backdrop-blur-sm rounded-xl p-8 border border-purple-500/20"
               >
-                <feature.icon className="w-12 h-12 mb-4 text-purple-400" />
-                <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-purple-400" />
+                  Coming Soon
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Advanced toxicity detection",
+                    "Multi-language support",
+                    "Custom filter rules",
+                    "Browser extension dashboard"
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-center gap-3">
+                      <AlertCircle className="w-5 h-5 text-yellow-400" />
+                      <span className="text-neutral-300">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
-            ))}
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-b from-blue-500/10 to-transparent backdrop-blur-sm rounded-xl p-8 border border-blue-500/20"
+              >
+                <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                  <MessageCircle className="w-5 h-5 text-blue-400" />
+                  Future Vision
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Developer API access",
+                    "Enterprise deployment options",
+                    "Advanced analytics dashboard",
+                    "Integration with popular platforms"
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-center gap-3">
+                      <Clock className="w-5 h-5 text-blue-400" />
+                      <span className="text-neutral-300">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            </div>
           </div>
+
+          {/* CTA Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-32 text-center"
+          >
+            <h2 className="text-3xl font-bold mb-6">
+              Ready to try Maverick AI?
+            </h2>
+            <p className="text-neutral-400 mb-8">
+              Join our beta program and help shape the future of content moderation
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://chrome.google.com/webstore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+              >
+                <Chrome className="w-5 h-5" />
+                Add to Chrome
+              </a>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center gap-2 text-neutral-300 hover:text-white transition-colors"
+              >
+                View pricing
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </ScrollSection>
-
-      {/* Features Section */}
-      <FeatureSection />
-
-      {/* Why Choose Us */}
-      <WhyChooseUs />
-
-      {/* Footer */}
-      <Footer />
     </main>
   );
 }

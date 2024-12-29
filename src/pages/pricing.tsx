@@ -97,11 +97,11 @@ export function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-4xl md:text-5xl font-bold mb-6"
+              className="text-4xl md:text-5xl font-bold text-center mb-4"
             >
               Simple, transparent pricing
               <br />
-              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="flowing-gradient-community">
                 for any size community
               </span>
             </motion.h1>
@@ -300,7 +300,7 @@ export function Pricing() {
                             }
                           ]
                         }
-                      ].map((section, sectionIndex) => (
+                      ].map((section) => (
                         <Fragment key={section.category}>
                           <tr className="bg-white/5">
                             <th

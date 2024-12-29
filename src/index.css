@@ -342,3 +342,35 @@
   text-shadow: 0 0 10px rgba(168, 85, 247, 0.4),
                0 0 20px rgba(168, 85, 247, 0.2);
 }
+
+.flowing-gradient-community {
+  background: linear-gradient(
+    270deg,
+    #a78bfa,
+    #818cf8,
+    #93c5fd,
+    #a78bfa
+  );
+  background-size: 200% auto;
+  animation: gradient-flow 5s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
+}
+
+.flowing-gradient-text {
+  background: linear-gradient(
+    270deg,
+    #a78bfa,
+    #818cf8,
+    #93c5fd,
+    #a78bfa
+  );
+  background-size: 200% auto;
+  animation: gradient-flow 6s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
+}
