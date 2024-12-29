@@ -3,10 +3,14 @@ let isRecognitionActive = false;
 
 function initializeSpeechRecognition() {
   try {
-    recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
+    // Create new recognition instance if null
+    if (!recognition) {
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+    }
     
+    // Always reattach event listeners when initializing
     recognition.onresult = handleRecognitionResult;
     recognition.onerror = (event) => {
       showMessage(`Error: ${event.error}`);
@@ -254,12 +258,11 @@ function setupMuteObserver() {
 }
 
 function startSpeechRecognition() {
-  if (!recognition) {
-    const initSuccessful = initializeSpeechRecognition();
-    if (!initSuccessful) {
-      showMessage('Initialization failed. Cannot start.');
-      return;
-    }
+  // Initialize recognition and event listeners
+  const initSuccessful = initializeSpeechRecognition();
+  if (!initSuccessful) {
+    showMessage('Initialization failed. Cannot start.');
+    return;
   }
 
   // Check if microphone is muted
