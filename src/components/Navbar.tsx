@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Github } from "lucide-react";
+import img2 from '../assests/maverick_logo.png'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,13 +26,20 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo Section */}
           <Link 
-            to="/" 
-            className="flex items-center space-x-2 relative z-10"
-          >
-            <span className="text-xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-              Maverick AI
-            </span>
-          </Link>
+  to="/" 
+  className="flex items-center space-x-2 relative z-10"
+>
+  <img 
+    src={img2} 
+    alt="Maverick AI Logo" 
+    className="h-12 w-14 object-contain md:h-12 md:w-12" // Increased size for larger screens
+  />
+  <span 
+    className="text-xl font-bold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent md:text-2xl"
+  >
+    Maverick AI
+  </span>
+</Link>
 
           {/* Mobile Menu Toggle Button */}
           <div className="lg:hidden">
