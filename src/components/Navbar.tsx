@@ -61,7 +61,7 @@ export function Navbar() {
               { label: "Pricing", path: "/pricing" },
               { label: "Features", path: "/features" },
               { label: "About", path: "/about" },
-              { label: "Contributors", path: "/contributors" },
+              // { label: "Contributors", path: "/contributors" },
             ].map((item) => (
               <Link
                 key={item.path}
@@ -95,7 +95,7 @@ export function Navbar() {
               { label: "Pricing", path: "/pricing" },
               { label: "Features", path: "/features" },
               { label: "About", path: "/about" },
-              { label: "Contributors", path: "/contributors" },
+              // { label: "Contributors", path: "/contributors" },
               { label: "Login", path: "/login" },
             ].map((item) => (
               <Link

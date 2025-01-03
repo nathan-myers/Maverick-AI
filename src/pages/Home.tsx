@@ -27,7 +27,7 @@ export function Home() {
     },
     {
       name: "Divyesh Mali",
-      image: "/assets/divyesh.jpg",
+      image: "/assets/divyeshmali.jpg",
       role: "Co-founder & Intern @Silicon Valley",
       linkedin: "https://www.linkedin.com/in/divyeshmali/"
     },
@@ -117,7 +117,7 @@ export function Home() {
           </motion.div>
 
           {/* Countdown Timer */}
-          <motion.div 
+          {/* <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
@@ -132,7 +132,7 @@ export function Home() {
               Chrome Extension Launching in
             </motion.p>
             <CountdownTimer />
-          </motion.div>
+          </motion.div> */}
         </div>
 
         {/* Scroll Indicator */}
