@@ -52,13 +52,13 @@ export function About() {
                   <Github className="w-5 h-5" />
                   View on GitHub
                 </a>
-                <Link
+                {/* <Link
                   to="/contributors"
                   className="inline-flex items-center gap-2 text-neutral-300 hover:text-white transition-colors"
                 >
                   Join our community
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </Link> */}
               </div>
             </motion.div>
 
@@ -124,7 +124,7 @@ export function About() {
                 </ul>
               </motion.div>
 
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -150,7 +150,7 @@ export function About() {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </motion.div> */}
             </div>
           </div>
 
@@ -219,13 +219,13 @@ export function About() {
               there's a place for you in our mission.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
+              {/* <Link
                 to="/contributors"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
               >
                 Get Involved
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </Link> */}
               <a
                 href="https://chrome.google.com/webstore"
                 target="_blank"

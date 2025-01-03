@@ -40,7 +40,7 @@ export function LogIn() {
             </p>
 
             <div className="space-y-4 mb-8">
-              <a
+              {/* <a
                 href="https://github.com/Swifty9/Maverick-AI"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -48,8 +48,8 @@ export function LogIn() {
               >
                 <Github className="w-5 h-5" />
                 Continue with GitHub
-              </a>
-              
+              </a> */}
+{/*               
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-white/10" />
@@ -57,7 +57,7 @@ export function LogIn() {
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-black text-neutral-500">or</span>
                 </div>
-              </div>
+              </div> */}
 
               <Link
                 to="/waitlist"
