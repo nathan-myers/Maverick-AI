@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ScrollSection } from "../components/ScrollSection";
-import { Check, Zap, Shield, Globe, AlertCircle, ArrowRight, X } from "lucide-react";
+import { Check, Zap, Shield, Globe, ArrowRight, X } from "lucide-react";
 import { Footer } from "../components/Footer";
 import { Fragment } from "react";
 

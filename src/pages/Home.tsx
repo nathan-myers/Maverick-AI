@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
 import { CheckCircle, Clock, MessageCircle, ShoppingBag, Gamepad2, Chrome, ArrowRight, PlayCircle, UserPlus } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ScrollSection } from "../components/ScrollSection";
 import { Footer } from '../components/Footer';
-import { CountdownTimer } from "../components/CountdownTimer";
 
 const SplitText = ({ text }: { text: string }) => {
   return (
@@ -16,8 +15,6 @@ const SplitText = ({ text }: { text: string }) => {
 };
 
 export function Home() {
-  const navigate = useNavigate();
-
   const founders = [
     {
       name: "Mehul Pardeshi",
@@ -341,7 +338,7 @@ export function Home() {
           >
             <h2 className="text-4xl font-bold mb-6">Why Maverick AI?</h2>
             <p className="text-xl text-neutral-400">
-              Powered by Mistral's advanced language models and our proprietary algorithms, 
+              Powered by advanced language models and our proprietary technology, 
               we're building a safer internet through intelligent content moderation.
             </p>
           </motion.div>
