@@ -43,12 +43,12 @@ function handleRecognitionResult(event) {
   }
 }
 
-async function moderateTranscript(text) {
+async function moderateTranscript(text, participantId = 'self') {
   try {
-    // Send message to background script for moderation
     const result = await chrome.runtime.sendMessage({
       action: 'moderateText',
-      text: text
+      text: text,
+      participantId: participantId
     });
 
     if (!result) {
@@ -56,11 +56,8 @@ async function moderateTranscript(text) {
       return;
     }
 
-    // Remove any existing moderation result for this text
-    removeExistingModeration(text);
-
-    // Display moderation results
-    showModerationResult(text, result);
+    removeExistingModeration(text, participantId);
+    showModerationResult(text, result, participantId);
   } catch (error) {
     console.error('Failed to moderate text:', error);
   }
@@ -79,7 +76,7 @@ function removeExistingModeration(text) {
   });
 }
 
-function showModerationResult(text, moderationResult) {
+function showModerationResult(text, moderationResult, participantId = 'self') {
   if (!moderationResult || typeof moderationResult !== 'object') {
     console.error('Invalid moderation result:', moderationResult);
     return;
@@ -91,11 +88,9 @@ function showModerationResult(text, moderationResult) {
   const msgEl = document.createElement('div');
   msgEl.className = 'message moderation-result';
   
-  // Default values if properties are undefined
   const toxicity = moderationResult.overallToxicity || 0;
   const flags = moderationResult.flags || [];
   
-  // Check for harmful content patterns
   const textLower = text.toLowerCase();
   const selfHarmPatterns = ['kill myself', 'suicide', 'self harm', 'end my life'];
   const threatPatterns = ['kill', 'murder', 'hurt', 'harm'];
@@ -103,7 +98,6 @@ function showModerationResult(text, moderationResult) {
   const hasSelfHarm = selfHarmPatterns.some(pattern => textLower.includes(pattern));
   const hasThreats = threatPatterns.some(pattern => textLower.includes(pattern));
   
-  // Override neutral flags if harmful content is detected
   if (hasSelfHarm || hasThreats) {
     flags.push({
       type: hasSelfHarm ? 'self_harm' : 'threat',
@@ -127,11 +121,12 @@ function showModerationResult(text, moderationResult) {
         </div>
       `;
     })
-    .filter(html => html !== '') // Remove empty strings
+    .filter(html => html !== '')
     .join('');
 
   msgEl.innerHTML = `
     <div class="message-content">
+      <div class="participant-id">${participantId === 'self' ? 'You' : `Participant ${participantId}`}</div>
       <div class="moderated-text ${toxicityColor}">
         ${text}
       </div>
@@ -258,12 +253,16 @@ function setupMuteObserver() {
 }
 
 function startSpeechRecognition() {
-  // Initialize recognition and event listeners
+  // Initialize recognition for self
   const initSuccessful = initializeSpeechRecognition();
   if (!initSuccessful) {
     showMessage('Initialization failed. Cannot start.');
     return;
   }
+
+  // Initialize recognition for other participants
+  initializeAllParticipantsRecognition();
+  setupParticipantObserver();
 
   // Check if microphone is muted
   if (isMicrophoneMuted()) {
@@ -297,11 +296,21 @@ function stopSpeechRecognition() {
 
 // Clean up observer when extension is deactivated
 function cleanup() {
+  // Clean up self recognition
   if (mutationObserver) {
     mutationObserver.disconnect();
     mutationObserver = null;
   }
   stopSpeechRecognition();
+
+  // Clean up participant recognitions
+  participantRecognitions.forEach((data, participantId) => {
+    data.recognition.stop();
+    data.context.close();
+    data.source.disconnect();
+    data.processor.disconnect();
+  });
+  participantRecognitions.clear();
 }
 
 // Make functions available globally
@@ -404,3 +413,80 @@ if (document.readyState === 'loading') {
   injectStyles();
 }
 
+function initializeAllParticipantsRecognition() {
+  // Get all audio elements from other participants
+  const participantAudios = document.querySelectorAll('audio[data-participant-id]');
+  
+  participantAudios.forEach(audio => {
+    const participantId = audio.getAttribute('data-participant-id');
+    if (!participantRecognitions.has(participantId)) {
+      const context = new AudioContext();
+      const source = context.createMediaElementSource(audio);
+      const processor = context.createScriptProcessor(1024, 1, 1);
+      
+      // Create recognition instance for this participant
+      const recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      
+      recognition.onresult = (event) => {
+        handleParticipantRecognitionResult(event, participantId);
+      };
+      
+      recognition.onerror = (event) => {
+        console.error(`Error in participant recognition (${participantId}):`, event.error);
+      };
+      
+      // Store recognition instance
+      participantRecognitions.set(participantId, {
+        recognition,
+        context,
+        source,
+        processor
+      });
+      
+      // Start recognition
+      recognition.start();
+    }
+  });
+}
+
+function handleParticipantRecognitionResult(event, participantId) {
+  const results = event.results;
+  for (let i = event.resultIndex; i < results.length; i++) {
+    const result = results[i];
+    const text = result[0].transcript;
+    const isFinal = result.isFinal;
+    
+    // Show message with participant identifier
+    showMessage(`[Participant ${participantId}]: ${text}`, isFinal);
+    
+    // Send final text for moderation
+    if (isFinal) {
+      moderateTranscript(text, participantId);
+    }
+  }
+}
+
+// Add to the existing code
+const participantRecognitions = new Map();
+
+// Add observer for new participants
+function setupParticipantObserver() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length) {
+        initializeAllParticipantsRecognition();
+      }
+    });
+  });
+
+  // Observe the meeting container for new participants
+  const meetingContainer = document.querySelector('[data-meeting-container]');
+  if (meetingContainer) {
+    observer.observe(meetingContainer, {
+      childList: true,
+      subtree: true
+    });
+  }
+}
