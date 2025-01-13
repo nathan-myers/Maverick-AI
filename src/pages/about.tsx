@@ -6,7 +6,6 @@ import {
   Users,
   Globe,
   ArrowRight,
-  Github,
   Chrome
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -43,22 +42,13 @@ export function About() {
               </p>
 
               <div className="flex items-center gap-4 pt-4">
-                <a
-                  href="https://github.com/Swifty9/Maverick-AI"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-white/10 px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors"
-                >
-                  <Github className="w-5 h-5" />
-                  View on GitHub
-                </a>
-                {/* <Link
+                <Link
                   to="/contributors"
                   className="inline-flex items-center gap-2 text-neutral-300 hover:text-white transition-colors"
                 >
                   Join our community
                   <ArrowRight className="w-4 h-4" />
-                </Link> */}
+                </Link>
               </div>
             </motion.div>
 
@@ -124,7 +114,7 @@ export function About() {
                 </ul>
               </motion.div>
 
-              {/* <motion.div
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -132,16 +122,16 @@ export function About() {
                 className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10"
               >
                 <Code className="w-12 h-12 text-blue-400 mb-6" />
-                <h3 className="text-xl font-semibold mb-4">Open Source</h3>
+                <h3 className="text-xl font-semibold mb-4">Enterprise Ready</h3>
                 <p className="text-neutral-400 mb-6">
-                  We believe in transparency and community collaboration. Our project
-                  is open source and welcomes contributions from developers.
+                  Built with scalability and reliability in mind, our solution is ready
+                  for enterprise-level content moderation needs.
                 </p>
                 <ul className="space-y-3">
                   {[
-                    "MIT Licensed",
-                    "Community driven",
-                    "Public roadmap",
+                    "99.9% Uptime",
+                    "Enterprise support",
+                    "Custom solutions",
                     "Regular updates"
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center gap-3 text-sm text-neutral-300">
@@ -150,7 +140,7 @@ export function About() {
                     </li>
                   ))}
                 </ul>
-              </motion.div> */}
+              </motion.div>
             </div>
           </div>
 
@@ -219,13 +209,13 @@ export function About() {
               there's a place for you in our mission.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              {/* <Link
+              <Link
                 to="/contributors"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
               >
                 Get Involved
                 <ArrowRight className="w-4 h-4" />
-              </Link> */}
+              </Link>
               <a
                 href="https://chrome.google.com/webstore"
                 target="_blank"
