@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Github, ArrowRight, Chrome } from "lucide-react";
+import { ArrowRight, Chrome } from "lucide-react";
 
 export function LogIn() {
   const navigate = useNavigate();
