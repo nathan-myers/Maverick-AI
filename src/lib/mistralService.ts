@@ -65,76 +65,62 @@ const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
 export async function analyzeWithMistral(text: string) {
-  if (!import.meta.env.VITE_HUGGINGFACE_API_KEY) {
-    console.error('HuggingFace API key missing in environment:', {
-      exists: !!import.meta.env.VITE_HUGGINGFACE_API_KEY,
-      env: import.meta.env
-    });
-    throw new Error('HuggingFace API key is not configured in environment variables');
-  }
-
   let attempts = 0;
   while (attempts < MAX_RETRIES) {
     try {
+      const prompt = SYSTEM_PROMPT.replace('TEXT_TO_ANALYZE', text);
+      
       const response = await hf.textGeneration({
         model: MODEL_ID,
-        inputs: SYSTEM_PROMPT.replace('TEXT_TO_ANALYZE', text),
+        inputs: prompt,
         parameters: {
           max_new_tokens: 1000,
-          temperature: 0.05,
+          temperature: 0.01,
           top_p: 0.9,
           return_full_text: false,
-          stop: ["<end_of_turn>"],
-          repetition_penalty: 1.3,
+          stop: ["<end_of_turn>"]
         }
       });
 
       if (!response.generated_text) {
-        throw new Error('No response from Mistral API');
+        throw new Error('No response from Mistral');
       }
 
-      // More aggressive cleanup of the response
-      const jsonStr = response.generated_text
-        .trim()
-        .replace(/<[^>]+>/g, '') // Remove all XML-like tags
-        .replace(/```[^`]*```/g, '') // Remove code blocks
-        .replace(/^[^{]*({.*})[^}]*$/, '$1') // Extract just the JSON object
+      // Extract JSON from response
+      const jsonMatch = response.generated_text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No valid JSON found in response');
+      }
+
+      // Clean and parse JSON
+      const cleanJson = jsonMatch[0]
+        .replace(/\n/g, ' ')
+        .replace(/\s+/g, ' ')
         .trim();
 
-      try {
-        const parsed = JSON.parse(jsonStr);
-        // Validate the response structure
-        if (!parsed.flags || !parsed.summary || !parsed.overallToxicity) {
-          throw new Error('Invalid response structure');
-        }
-        return parsed;
-      } catch (jsonError) {
-        console.error('JSON parsing failed:', { error: jsonError, response: jsonStr });
-        // Return a more appropriate fallback for the specific text
-        return {
-          flags: [{
-            type: 'neutral',
-            reason: `Unable to detect any issues with the content`,
-            confidence: 0.9,
-            context: text,
-            severity: 'low'
-          }],
-          overallToxicity: 0.1,
-          summary: {
-            spamScore: 0.1,
-            toxicityScore: 0.1,
-            profanityCount: 0,
-            emotionalIntensity: 0.2,
-            threatLevel: 0.1,
-            manipulationScore: 0.1,
-            credibilityScore: 0.9
-          }
-        };
+      const result = JSON.parse(cleanJson);
+
+      // Add profanity check
+      const hasProfanity = /fuck|shit|damn|bitch|ass/i.test(text);
+      if (hasProfanity && (!result.flags || !result.flags.length)) {
+        result.flags = [{
+          type: 'profanity',
+          reason: 'Content contains strong language or profanity',
+          confidence: 0.95,
+          severity: 'medium'
+        }];
+        result.overallToxicity = Math.max(0.7, result.overallToxicity || 0);
       }
+
+      return result;
     } catch (error) {
       attempts++;
-      if (attempts === MAX_RETRIES) throw error;
+      if (attempts === MAX_RETRIES) {
+        console.error('Mistral analysis failed:', error);
+        throw error;
+      }
       await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
     }
   }
+  throw new Error('Max retries exceeded');
 }

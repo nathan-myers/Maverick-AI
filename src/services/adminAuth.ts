@@ -2,7 +2,7 @@ export const adminAuthService = {
   // Hardcoded admin credentials
   ADMIN_CREDENTIALS: {
     email: 'admin@maverick-ai.com',
-    password: 'admin123'
+    password: 'l'
   },
 
   async login(email: string, password: string): Promise<boolean> {

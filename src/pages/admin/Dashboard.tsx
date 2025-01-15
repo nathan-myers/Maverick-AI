@@ -11,6 +11,8 @@ import {
   Users
 } from "lucide-react";
 
+import { ChatSimulator } from "../../components/admin/ChatSimulator";
+
 export function AdminDashboard() {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('overview');
@@ -125,6 +127,12 @@ export function AdminDashboard() {
               ))}
             </div>
           </motion.div>
+
+          {activeSection === 'live-chats' && (
+            <div className="space-y-6">
+              <ChatSimulator />
+            </div>
+          )}
         </div>
       </div>
     </div>
