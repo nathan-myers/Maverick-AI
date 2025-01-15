@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Github } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import img2 from '../assests/maverick_logo.png'
 
 export function Navbar() {
