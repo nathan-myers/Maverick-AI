@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Chrome, Lock } from "lucide-react";
 import { useState } from "react";
 import { adminAuthService } from '../services/adminAuth';
+import { ArrowRight, Chrome } from "lucide-react";
 
 export function LogIn() {
   const navigate = useNavigate();
