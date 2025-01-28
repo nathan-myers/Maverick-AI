@@ -9,6 +9,17 @@ interface Message {
   role: 'driver' | 'passenger';
   content: string;
   timestamp: Date;
+  context?: {
+    tripStatus: 'before_pickup' | 'during_ride' | 'after_dropoff';
+    location?: string;
+    rideDetails?: {
+      pickupLocation?: string;
+      dropoffLocation?: string;
+      estimatedDuration?: number;
+      currentStatus?: string;
+    };
+    previousMessages?: Message[];
+  };
   moderation?: {
     flags: Flag[];
     toxicity: number;
@@ -20,25 +31,54 @@ export function ChatSimulator() {
   const [newMessage, setNewMessage] = useState('');
   const [activeRole, setActiveRole] = useState<'driver' | 'passenger'>('driver');
   const [isModerating, setIsModerating] = useState(false);
+  const [tripContext, setTripContext] = useState({
+    tripStatus: 'before_pickup' as 'before_pickup' | 'during_ride' | 'after_dropoff',
+    pickupLocation: '',
+    dropoffLocation: '',
+    estimatedDuration: 0,
+    currentStatus: 'Waiting for pickup'
+  });
+
+  const updateTripStatus = (status: 'before_pickup' | 'during_ride' | 'after_dropoff') => {
+    setTripContext(prev => ({
+      ...prev,
+      tripStatus: status,
+      currentStatus: status === 'during_ride' ? 'En route' : 
+                    status === 'after_dropoff' ? 'Completed' : 'Waiting for pickup'
+    }));
+  };
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || isModerating) return;
-
-    setIsModerating(true);
+    
     const messageId = `msg_${Date.now()}`;
+    setIsModerating(true);
+
+    const recentMessages = messages.slice(-5);
 
     const message: Message = {
       id: messageId,
       role: activeRole,
       content: newMessage,
-      timestamp: new Date()
+      timestamp: new Date(),
+      context: {
+        tripStatus: tripContext.tripStatus,
+        location: 'Current location',
+        rideDetails: {
+          pickupLocation: tripContext.pickupLocation,
+          dropoffLocation: tripContext.dropoffLocation,
+          estimatedDuration: tripContext.estimatedDuration,
+          currentStatus: tripContext.currentStatus
+        },
+        previousMessages: recentMessages
+      }
     };
 
     setMessages(prev => [...prev, message]);
     setNewMessage('');
 
     try {
-      const moderationResult = await moderateText(newMessage);
+      const moderationResult = await moderateText(newMessage, message.context);
 
       setMessages(prev => prev.map(msg => 
         msg.id === messageId 
@@ -65,6 +105,40 @@ export function ChatSimulator() {
         <div className="flex items-center gap-2">
           <Shield className="w-5 h-5 text-purple-400" />
           <span className="text-sm text-neutral-400">Live Moderation</span>
+        </div>
+      </div>
+
+      {/* Add Trip Context Controls */}
+      <div className="mb-6 p-4 bg-white/5 rounded-lg">
+        <h3 className="text-sm font-medium mb-3">Trip Context</h3>
+        <div className="flex gap-4 mb-3">
+          <button
+            onClick={() => updateTripStatus('before_pickup')}
+            className={`px-3 py-1 rounded text-sm ${
+              tripContext.tripStatus === 'before_pickup' ? 'bg-blue-500/20 text-blue-400' : 'text-neutral-400'
+            }`}
+          >
+            Before Pickup
+          </button>
+          <button
+            onClick={() => updateTripStatus('during_ride')}
+            className={`px-3 py-1 rounded text-sm ${
+              tripContext.tripStatus === 'during_ride' ? 'bg-blue-500/20 text-blue-400' : 'text-neutral-400'
+            }`}
+          >
+            During Ride
+          </button>
+          <button
+            onClick={() => updateTripStatus('after_dropoff')}
+            className={`px-3 py-1 rounded text-sm ${
+              tripContext.tripStatus === 'after_dropoff' ? 'bg-blue-500/20 text-blue-400' : 'text-neutral-400'
+            }`}
+          >
+            After Dropoff
+          </button>
+        </div>
+        <div className="text-sm text-neutral-400">
+          Current Status: {tripContext.currentStatus}
         </div>
       </div>
 

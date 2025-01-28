@@ -1,9 +1,34 @@
 import { HfInference } from '@huggingface/inference';
+import { ModerationContext } from './moderation';
+import { analyzeMessageSequence, TRIP_STAGE_RULES, RELATIONSHIP_RULES } from './contextRules';
 
 const hf = new HfInference(import.meta.env.VITE_HUGGINGFACE_API_KEY);
 
 const SYSTEM_PROMPT = `<start_of_turn>system
-You are a content moderation AI. Analyze text and classify it accurately into appropriate categories. For neutral or safe content, use the 'neutral' type. You must respond ONLY with valid JSON.
+You are a context-aware content moderation AI. Analyze text based on the following contexts:
+
+1. TRIP STAGES:
+- before_pickup: Monitor for scams, verify identity
+- during_ride: Heightened awareness for safety threats
+- after_dropoff: Strict monitoring of personal boundaries
+
+2. RELATIONSHIP CONTEXT:
+- Driver-Passenger: Professional service relationship
+- Power Dynamics: Driver has responsibility for passenger safety
+- Boundaries: Strict professional conduct requirements
+
+3. CONVERSATION PATTERNS:
+- Previous Messages: Consider full conversation context
+- Escalation: Monitor for increasing hostility/inappropriate behavior
+- Professional Boundaries: Enforce service-appropriate communication
+- Defensive Responses: Recognize legitimate responses to inappropriate behavior
+Guidelines for classification:
+4. RESPONSE CONTEXT:
+- Consider previous message context when analyzing responses
+- Defensive responses to harassment are NOT personal attacks
+- Expressions of discomfort with inappropriate behavior are legitimate
+- Prioritize user safety and professional boundaries
+- 'harassment': Targeted, persistent negative behavior or bullying
 
 Guidelines for classification:
 - 'neutral': Safe, appropriate content with no issues or concerns
@@ -26,6 +51,12 @@ Guidelines for classification:
 - 'copyright': Unauthorized use of copyrighted material
 - 'phishing': Scam attempts or fraudulent content
 - 'extremism': Content promoting extreme ideological views
+
+Additional Severity Modifiers:
+- After-dropoff personal requests: +50% severity
+- During-ride threats: +100% severity
+- Driver-initiated personal comments: +50% severity
+- Sequential boundary violations: +75% severity
 
 Example classifications:
 - "The weather is beautiful today" -> neutral
@@ -64,63 +95,75 @@ const MODEL_ID = "mistralai/Mistral-7B-Instruct-v0.2";
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
-export async function analyzeWithMistral(text: string) {
+export async function analyzeWithMistral(text: string, context?: ModerationContext) {
   let attempts = 0;
+  
   while (attempts < MAX_RETRIES) {
     try {
-      const prompt = SYSTEM_PROMPT.replace('TEXT_TO_ANALYZE', text);
-      
-      const response = await hf.textGeneration({
+      // Analyze message sequence if previous messages exist
+      let escalationAnalysis: {
+        escalation_score: number;
+        pattern_detected: string[];
+      } = { 
+        escalation_score: 0, 
+        pattern_detected: [] 
+      };
+      if (context?.previousMessages?.length) {
+        escalationAnalysis = analyzeMessageSequence(context.previousMessages);
+      }
+
+      // Apply context-specific rules
+      const tripRules = TRIP_STAGE_RULES[context?.tripStatus || 'during_ride'];
+      const relationshipRules = RELATIONSHIP_RULES['driver_to_passenger'];
+
+      const contextualizedPrompt = {
+        text,
+        context: {
+          ...context,
+          escalation_analysis: escalationAnalysis,
+          trip_rules: tripRules,
+          relationship_rules: relationshipRules
+        }
+      };
+
+      const prompt = SYSTEM_PROMPT.replace('TEXT_TO_ANALYZE', 
+        JSON.stringify(contextualizedPrompt)
+      );
+
+      const hfResponse = await hf.textGeneration({
         model: MODEL_ID,
         inputs: prompt,
         parameters: {
           max_new_tokens: 1000,
-          temperature: 0.01,
-          top_p: 0.9,
+          temperature: 0.1,
           return_full_text: false,
           stop: ["<end_of_turn>"]
         }
       });
 
-      if (!response.generated_text) {
-        throw new Error('No response from Mistral');
-      }
-
-      // Extract JSON from response
-      const jsonMatch = response.generated_text.match(/\{[\s\S]*\}/);
+      // Extract JSON from the response
+      const jsonMatch = hfResponse.generated_text.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
         throw new Error('No valid JSON found in response');
       }
 
-      // Clean and parse JSON
+      // Clean and parse the JSON
       const cleanJson = jsonMatch[0]
-        .replace(/\n/g, ' ')
-        .replace(/\s+/g, ' ')
+        .replace(/[^\x20-\x7E]/g, '')    // Keep only printable ASCII characters
+        .replace(/,\s*([\]}])/g, '$1')   // Remove trailing commas
+        .replace(/\s+/g, ' ')            // Normalize whitespace
         .trim();
 
-      const result = JSON.parse(cleanJson);
-
-      // Add profanity check
-      const hasProfanity = /fuck|shit|damn|bitch|ass/i.test(text);
-      if (hasProfanity && (!result.flags || !result.flags.length)) {
-        result.flags = [{
-          type: 'profanity',
-          reason: 'Content contains strong language or profanity',
-          confidence: 0.95,
-          severity: 'medium'
-        }];
-        result.overallToxicity = Math.max(0.7, result.overallToxicity || 0);
+      try {
+        return JSON.parse(cleanJson);
+      } catch (parseError) {
+        console.error('JSON Parse Error:', cleanJson);
+        throw parseError;
       }
-
-      return result;
     } catch (error) {
       attempts++;
-      if (attempts === MAX_RETRIES) {
-        console.error('Mistral analysis failed:', error);
-        throw error;
-      }
+      if (attempts === MAX_RETRIES) throw error;
       await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
     }
   }
-  throw new Error('Max retries exceeded');
 }
