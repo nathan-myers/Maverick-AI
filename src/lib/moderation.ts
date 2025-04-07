@@ -29,6 +29,17 @@ export async function moderateText(text: string, context?: ModerationContext): P
     });
     
     const modifiedFlags = mistralAnalysis.flags.map((flag: Flag) => {
+      // Update flag reason to correctly reflect trip context
+      if (flag.reason && context?.tripStatus) {
+        const contextPhrase = getContextPhrase(context.tripStatus);
+        // Replace any mentions of trip context with the correct one
+        flag.reason = flag.reason
+          .replace(/during a ride/g, contextPhrase)
+          .replace(/during the ride/g, contextPhrase)
+          .replace(/in a ride/g, contextPhrase)
+          .replace(/in the ride/g, contextPhrase);
+      }
+      
       // For defensive responses from passengers, remove harassment flags and mark as defensive
       if (isDefensive && role === 'passenger') {
         if (['harassment', 'personal_attack'].includes(flag.type)) {
@@ -72,6 +83,19 @@ export async function moderateText(text: string, context?: ModerationContext): P
   } catch (error) {
     console.error('Moderation failed:', error);
     throw error;
+  }
+}
+
+function getContextPhrase(tripStatus: 'before_pickup' | 'during_ride' | 'after_dropoff'): string {
+  switch (tripStatus) {
+    case 'before_pickup':
+      return 'during the pickup stage';
+    case 'during_ride':
+      return 'during a ride';
+    case 'after_dropoff':
+      return 'after dropoff';
+    default:
+      return 'during the interaction';
   }
 }
 

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AlertCircle, Shield, User, Car } from 'lucide-react';
 import { moderateText } from '../../lib/moderation';
-import { Flag } from '../../lib/types';
+import { Flag, Message as MessageType } from '../../lib/types';
+import { useChat } from '../../contexts/ChatContext';
 
 interface Message {
   id: string;
@@ -27,6 +28,7 @@ interface Message {
 }
 
 export function ChatSimulator() {
+  const { addMessage } = useChat();
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [activeRole, setActiveRole] = useState<'driver' | 'passenger'>('driver');
@@ -80,17 +82,32 @@ export function ChatSimulator() {
     try {
       const moderationResult = await moderateText(newMessage, message.context);
 
+      const moderatedMessage = {
+        ...message,
+        moderation: {
+          flags: moderationResult.flags,
+          toxicity: moderationResult.overallToxicity
+        }
+      };
+
       setMessages(prev => prev.map(msg => 
-        msg.id === messageId 
-          ? {
-              ...msg,
-              moderation: {
-                flags: moderationResult.flags,
-                toxicity: moderationResult.overallToxicity
-              }
-            }
-          : msg
+        msg.id === messageId ? moderatedMessage : msg
       ));
+
+      // Add the message to the global chat context with the correct format
+      // Create a message object in the format expected by the ChatContext
+      const contextMessage: MessageType = {
+        id: messageId,
+        role: activeRole,
+        content: newMessage,
+        timestamp: new Date(),
+        flags: moderationResult.flags,
+        toxicity: moderationResult.overallToxicity,
+        moderated: true
+      };
+
+      // Add the properly formatted message to the global chat context
+      addMessage(contextMessage);
     } catch (error) {
       console.error('Moderation failed:', error);
     } finally {
