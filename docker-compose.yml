@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+        - VITE_HUGGINGFACE_API_KEY=${VITE_HUGGINGFACE_API_KEY}
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+      - VITE_HUGGINGFACE_API_KEY=${VITE_HUGGINGFACE_API_KEY}

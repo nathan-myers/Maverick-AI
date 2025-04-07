@@ -1,47 +1,225 @@
-import { Code, Cpu, Layout } from 'lucide-react';
-import React from 'react';
+import { motion } from "framer-motion";
+import { ScrollSection } from "../components/ScrollSection";
+import { 
+  Shield, 
+  Chrome,
+  MessageCircle,
+  Settings,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Zap,
+  ArrowRight
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function Features() {
-    return (
-        <main className="container mx-auto px-6 py-20">
-            <div className="max-w-3xl mx-auto text-center">
-                <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-red-400 to-yellow-500 text-transparent bg-clip-text">
-                    Maverick AI Features
-                </h1>
-                <p className="text-xl text-gray-300 mb-12">
-                    Discover the powerful features of Maverick AI that make content moderation seamless and effective.
-                </p>
-            </div>
+  return (
+    <main className="relative min-h-screen">
+      {/* Hero Section */}
+      <ScrollSection className="pt-32 pb-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 bg-purple-500/10 rounded-full px-4 py-2 border border-purple-500/20 mb-6"
+            >
+              <Chrome className="w-5 h-5 text-purple-400" />
+              <span className="text-sm font-medium text-purple-300">Chrome Extension Beta</span>
+            </motion.div>
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl font-bold leading-tight"
+            >
+              Experience Maverick AI
+              <br />
+              <span className="flowing-gradient-text">
+                right in your browser
+              </span>
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-neutral-400"
+            >
+              Experience real-time content analysis powered by advanced AI
+            </motion.p>
+          </div>
 
-            <div className="grid md:grid-cols-3 gap-8 mt-20">
-                <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-                    <div className="bg-red-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                        <Cpu className="h-6 w-6 text-red-400" />
+          {/* Current Features Grid */}
+          <div className="grid md:grid-cols-3 gap-8 mb-32">
+            {[
+              {
+                icon: Shield,
+                title: "Content Analysis",
+                description: "Real-time detection of potentially harmful or inappropriate content",
+                features: [
+                  "Text content scanning",
+                  "Basic toxicity detection",
+                  "Instant alerts",
+                  "Content warnings"
+                ]
+              },
+              {
+                icon: Settings,
+                title: "Customization",
+                description: "Adjust the extension settings to match your needs",
+                features: [
+                  "Sensitivity levels",
+                  "Alert preferences",
+                  "Scanning options",
+                  "Language settings"
+                ]
+              },
+              {
+                icon: Zap,
+                title: "Performance",
+                description: "Fast and efficient content moderation",
+                features: [
+                  "Real-time scanning",
+                  "Low latency",
+                  "Browser optimized",
+                  "Lightweight"
+                ]
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-purple-500/20 to-transparent rounded-xl blur-xl group-hover:opacity-75 transition-opacity opacity-0" />
+                <div className="relative bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 hover:border-purple-500/50 transition-colors">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-3 rounded-lg bg-gradient-to-b from-purple-500/20 to-transparent">
+                      <feature.icon className="w-6 h-6 text-purple-400" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Advanced AI</h3>
-                    <p className="text-gray-400">
-                        Leverage cutting-edge AI technology for accurate and efficient content moderation.
-                    </p>
+                    <h3 className="text-xl font-semibold">{feature.title}</h3>
+                  </div>
+                  <p className="text-neutral-400 mb-6">{feature.description}</p>
+                  <ul className="space-y-3">
+                    {feature.features.map((item, i) => (
+                      <li key={i} className="flex items-center gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-400" />
+                        <span className="text-sm text-neutral-300">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-                    <div className="bg-yellow-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                        <Code className="h-6 w-6 text-yellow-400" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">Customizable Rules</h3>
-                    <p className="text-gray-400">
-                        Tailor moderation rules to fit the unique needs of your community.
-                    </p>
-                </div>
-                <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
-                    <div className="bg-green-500/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                        <Layout className="h-6 w-6 text-green-400" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">User-Friendly Interface</h3>
-                    <p className="text-gray-400">
-                        An intuitive and easy-to-use interface for seamless integration and operation.
-                    </p>
-                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Roadmap Section */}
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl font-bold mb-4">Development Roadmap</h2>
+              <p className="text-neutral-400">
+                Our vision for the future of content moderation
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-b from-purple-500/10 to-transparent backdrop-blur-sm rounded-xl p-8 border border-purple-500/20"
+              >
+                <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-purple-400" />
+                  Coming Soon
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Advanced toxicity detection",
+                    "Multi-language support",
+                    "Custom filter rules",
+                    "Browser extension dashboard"
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-center gap-3">
+                      <AlertCircle className="w-5 h-5 text-yellow-400" />
+                      <span className="text-neutral-300">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-b from-blue-500/10 to-transparent backdrop-blur-sm rounded-xl p-8 border border-blue-500/20"
+              >
+                <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
+                  <MessageCircle className="w-5 h-5 text-blue-400" />
+                  Future Vision
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Developer API access",
+                    "Enterprise deployment options",
+                    "Advanced analytics dashboard",
+                    "Integration with popular platforms"
+                  ].map((item, index) => (
+                    <li key={index} className="flex items-center gap-3">
+                      <Clock className="w-5 h-5 text-blue-400" />
+                      <span className="text-neutral-300">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
             </div>
-        </main>
-    );
+          </div>
+
+          {/* CTA Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-32 text-center"
+          >
+            <h2 className="text-3xl font-bold mb-6">
+              Ready to try Maverick AI?
+            </h2>
+            <p className="text-neutral-400 mb-8">
+              Join our beta program and help shape the future of content moderation
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://chrome.google.com/webstore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-blue-500 px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+              >
+                <Chrome className="w-5 h-5" />
+                Add to Chrome
+              </a>
+              <Link
+                to="/pricing"
+                className="inline-flex items-center gap-2 text-neutral-300 hover:text-white transition-colors"
+              >
+                View pricing
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </ScrollSection>
+    </main>
+  );
 }

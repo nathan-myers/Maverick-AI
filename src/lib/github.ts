@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 dotenv.config();
 
-const GITHUB_TOKEN = process.env.VITE_GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.PAT_TOKEN;
 const REPO_OWNER = 'Swifty9';
 const REPO_NAME = 'Maverick-AI';
 
@@ -25,31 +25,37 @@ interface GitHubUserDetails {
 
 export async function fetchGitHubContributors() {
   try {
-    console.log(`Fetching contributors from: https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors`);
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors`;
+    console.log(`Fetching contributors from: ${apiUrl}`);
     
-    const response = await fetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors`,
-      {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'Maverick-AI'
-        },
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'Maverick-AI',
+        'If-None-Match': '',  // Force fresh data
+        'Cache-Control': 'no-cache'  // Prevent caching
       }
-    );
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('GitHub API Error:', {
         status: response.status,
         statusText: response.statusText,
-        error: errorText
+        error: errorText,
+        headers: response.headers,
+        rateLimit: {
+          limit: response.headers.get('x-ratelimit-limit'),
+          remaining: response.headers.get('x-ratelimit-remaining'),
+          reset: response.headers.get('x-ratelimit-reset')
+        }
       });
       throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json() as GitHubContributor[];
-    console.log(`Successfully fetched ${data.length} contributors`);
+    console.log(`Successfully fetched ${data.length} contributors:`, data);
     return data;
   } catch (error) {
     console.error('Error in fetchGitHubContributors:', error);

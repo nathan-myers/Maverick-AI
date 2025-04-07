@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Maverick AI Extension Settings</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, white, #9ca3af);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+    }
+    
+    button {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0 auto;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    
+    button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .success-message {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(34, 197, 94, 0.9);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      backdrop-filter: blur(8px);
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .success-message.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Maverick <span style="color: #a78bfa;">AI</span> Settings</h1>
+    <div class="form-group">
+      <label for="apiKey">HuggingFace API Key</label>
+      <input type="text" id="apiKey" placeholder="Enter your API key">
+    </div>
+    <button id="save">Save Settings</button>
+  </div>
+  <div id="successMessage" class="success-message">Settings saved successfully!</div>
+  <script src="options.js"></script>
+</body>
+</html> 
